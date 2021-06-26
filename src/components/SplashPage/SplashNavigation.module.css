@@ -1,0 +1,76 @@
+.splash-navigation {
+  display: flex;
+}
+
+.row {
+  width: 100%;
+  height: 100%;
+}
+
+.element {
+  background: #051a2c;
+  margin: 2em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 300px;
+  min-width: 300px;
+  font-weight: 300;
+  font-size: 1.5em;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+  -webkit-box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.89);
+  box-shadow: 1px 1px 4px 0px rgba(0, 0, 0, 0.89);
+  -webkit-animation: scale-down-center 0.2s cubic-bezier(0.39, 0.575, 0.565, 1)
+    both;
+  animation: scale-down-center 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+.element:hover {
+  -webkit-animation: scale-up-center 0.2s cubic-bezier(0.39, 0.575, 0.565, 1)
+    both;
+  animation: scale-up-center 0.2s cubic-bezier(0.39, 0.575, 0.565, 1) both;
+}
+
+@-webkit-keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+@keyframes scale-up-center {
+  0% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+  100% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+}
+
+@-webkit-keyframes scale-down-center {
+  0% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
+@keyframes scale-down-center {
+  0% {
+    -webkit-transform: scale(1.2);
+    transform: scale(1.2);
+  }
+  100% {
+    -webkit-transform: scale(1);
+    transform: scale(1);
+  }
+}
