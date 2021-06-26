@@ -60,7 +60,7 @@ const Carousel = (props) => {
           <img alt="" className={classes.image} src={images[i]} />
           <div className={classes.controller}>
             <div className={classes["arrow-left"]}>
-              <img alt="Previous Image" onClick={prevSlide} src={ArrowLeft} />
+              <img alt="Previous" onClick={prevSlide} src={ArrowLeft} />
             </div>
             <div className={classes["call-to-action"]}>
               <h1>{callsToAction[i].hero}</h1>
@@ -70,7 +70,7 @@ const Carousel = (props) => {
               </Button>
             </div>
             <div className={classes["arrow-right"]}>
-              <img alt="Next Image" onClick={nextSlide} src={ArrowRight} />
+              <img alt="Next" onClick={nextSlide} src={ArrowRight} />
             </div>
           </div>
         </animated.div>

@@ -1,0 +1,41 @@
+.container {
+  background: #051a2c;
+  width: 100%;
+  color: white;
+  padding: 5em 0;
+}
+
+.title {
+  text-transform: uppercase;
+  font-size: 2em;
+  letter-spacing: 0.2em;
+  margin-bottom: 1em;
+}
+
+.flex {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+}
+
+.left-information {
+  flex-basis: 25%;
+  transform: translateY(-3em);
+}
+.right-information {
+  flex-basis: 25%;
+}
+
+.contact-title {
+  display: inline-block;
+  width: 10%;
+}
+
+.contact-item {
+  text-align: right;
+  width: 60%;
+  display: inline-block;
+  margin: 0 2em;
+}

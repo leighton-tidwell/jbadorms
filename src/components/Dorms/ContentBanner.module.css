@@ -1,0 +1,14 @@
+.background {
+  background: url(../../images/additional_information.png);
+  background-size: cover;
+  background-position: center center;
+  padding: 2em 0;
+  margin: 3em 0;
+}
+
+.title {
+  text-transform: uppercase;
+  font-size: 2em;
+  letter-spacing: 0.2em;
+  color: white;
+}

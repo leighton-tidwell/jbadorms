@@ -18,6 +18,7 @@
 .arrow-left {
   flex-basis: 17.5%;
   text-align: left;
+  cursor: pointer;
 }
 
 .call-to-action {
@@ -47,9 +48,10 @@
 .arrow-right {
   flex-basis: 17.5%;
   text-align: right;
+  cursor: pointer;
 }
 
-@media (min-width: 1920px) {
+@media (min-width: 1921px) {
   .carousel {
     width: 65%;
   }

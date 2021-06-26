@@ -1,0 +1,58 @@
+.background {
+  width: 100%;
+  background: #051a2c;
+  color: white;
+  padding: 3em 0;
+}
+
+.background a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.background a:hover {
+  text-decoration: underline;
+}
+
+.logo-container {
+  flex-basis: 20%;
+  border-right: 1px solid #cfcdcd;
+  min-height: 150px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.logo-container h2 {
+  font-weight: 600;
+  font-size: 1.2em;
+  margin: 0;
+}
+.logo-container h3 {
+  margin: 0;
+  font-size: 1em;
+  font-weight: 400;
+}
+
+.link-navigation {
+  flex-basis: 60%;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  min-height: 150px;
+  border-right: 1px solid #cfcdcd;
+  font-weight: 300;
+  text-transform: uppercase;
+  padding-left: 5em;
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+}
+
+.credited-to {
+  flex-basis: 20%;
+  font-weight: 300;
+  padding-left: 2em;
+  font-size: 0.8em;
+}

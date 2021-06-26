@@ -1,0 +1,30 @@
+.grid {
+  color: white;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10em;
+  flex-basis: 100%;
+  margin: 5em 0;
+}
+
+.grid-item {
+  width: 100%;
+  background: #051a2c;
+  padding: 1em;
+}
+
+.item-title {
+  font-size: 1.2em;
+  font-weight: 300;
+  margin-bottom: 0.5em;
+}
+
+.item-row {
+  font-weight: 200;
+  font-size: 1em;
+  margin-bottom: 1em;
+}
+
+.bold {
+  font-weight: 500;
+}
