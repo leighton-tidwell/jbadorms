@@ -1,2 +1,2 @@
 # JBA Military Housing Office
-## Unofficial website GitHub
+This is the (currently) unofficial website for the military housing office on Joint Base Andrews. Currently it is a work in progress.
