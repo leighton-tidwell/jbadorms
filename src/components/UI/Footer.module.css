@@ -1,8 +1,12 @@
+.mobile {
+  flex-direction: column;
+}
+
 .background {
-  width: 100%;
   background: #051a2c;
   color: white;
   padding: 3em 0;
+  margin-top: 3em;
 }
 
 .background a {
@@ -10,17 +14,13 @@
   text-decoration: none;
 }
 
-.background a:hover {
-  text-decoration: underline;
-}
-
 .logo-container {
-  flex-basis: 20%;
-  border-right: 1px solid #cfcdcd;
-  min-height: 150px;
+  border-bottom: 1px solid #cfcdcd;
   display: flex;
   flex-direction: column;
   justify-content: center;
+  padding: 1em 5em;
+  text-align: center;
 }
 
 .logo-container h2 {
@@ -28,6 +28,7 @@
   font-size: 1.2em;
   margin: 0;
 }
+
 .logo-container h3 {
   margin: 0;
   font-size: 1em;
@@ -37,22 +38,71 @@
 .link-navigation {
   flex-basis: 60%;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr;
-  min-height: 150px;
-  border-right: 1px solid #cfcdcd;
+  grid-template-columns: 1fr;
+  border-bottom: 1px solid #cfcdcd;
   font-weight: 300;
   text-transform: uppercase;
-  padding-left: 5em;
-}
-
-.link-item {
-  display: flex;
-  align-items: center;
+  padding: 1em 5em;
+  gap: 1.5em;
+  text-align: center;
 }
 
 .credited-to {
-  flex-basis: 20%;
   font-weight: 300;
-  padding-left: 2em;
-  font-size: 0.8em;
+  font-size: 1em;
+  text-align: center;
+  padding: 1em 5em;
+}
+
+@media only screen and (min-width: 1200px) {
+  .mobile {
+    flex-direction: row;
+  }
+
+  .background {
+    width: 100%;
+    margin: 0;
+  }
+
+  .background a:hover {
+    text-decoration: underline;
+  }
+
+  .logo-container {
+    flex-basis: 20%;
+    border-right: 1px solid #cfcdcd;
+    border-bottom: none;
+    min-height: 150px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 0;
+    text-align: left;
+  }
+
+  .link-navigation {
+    flex-basis: 60%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    min-height: 150px;
+    border-right: 1px solid #cfcdcd;
+    border-bottom: none;
+    font-weight: 300;
+    text-transform: uppercase;
+    padding-left: 5em;
+    text-align: left;
+    gap: 0;
+  }
+
+  .link-item {
+    display: flex;
+    align-items: center;
+  }
+
+  .credited-to {
+    flex-basis: 20%;
+    padding: 0 0 0 2em;
+    font-size: 0.8em;
+    text-align: left;
+  }
 }

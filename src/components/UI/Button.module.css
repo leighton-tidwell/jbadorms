@@ -1,17 +1,24 @@
 .button {
   background: #1d7dcf;
-  font-weight: 800;
+  font-weight: 700;
   outline: none;
   border: none;
   margin-top: 5px;
   padding: 0.5em 1.5em;
-  font-size: 1.2em;
+  font-size: 1em;
   color: inherit;
   cursor: pointer;
-  transition: 0.2s ease-in-out;
-  -webkit-transition: 0.2s ease-in-out;
 }
 
-.button:hover {
-  transform: translateY(-0.5em);
+@media only screen and (min-width: 1200px) {
+  .button {
+    font-weight: 800;
+    font-size: 1.2em;
+    transition: 0.2s ease-in-out;
+    -webkit-transition: 0.2s ease-in-out;
+  }
+
+  .button:hover {
+    transform: translateY(-0.5em);
+  }
 }

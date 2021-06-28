@@ -1,30 +1,57 @@
 .grid {
   color: white;
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 10em;
-  flex-basis: 100%;
-  margin: 5em 0;
+  grid-template-columns: 1fr;
+  gap: 5em;
+  padding: 2em;
 }
 
 .grid-item {
-  width: 100%;
   background: #051a2c;
-  padding: 1em;
+  padding: 0.5em;
 }
 
 .item-title {
-  font-size: 1.2em;
-  font-weight: 300;
+  font-size: 1em;
+  font-weight: 400;
   margin-bottom: 0.5em;
+  text-align: center;
 }
 
 .item-row {
-  font-weight: 200;
-  font-size: 1em;
+  font-weight: 300;
+  font-size: 0.9em;
   margin-bottom: 1em;
 }
 
 .bold {
   font-weight: 500;
+}
+
+@media only screen and (min-width: 1200px) {
+  .grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 10em;
+    flex-basis: 100%;
+    margin: 5em 0;
+    padding: 0;
+  }
+
+  .grid-item {
+    width: 100%;
+    background: #051a2c;
+    padding: 1em;
+  }
+  .item-title {
+    font-size: 1.2em;
+    font-weight: 300;
+    margin-bottom: 0.5em;
+    text-align: left;
+  }
+
+  .item-row {
+    font-weight: 200;
+    font-size: 1em;
+    margin-bottom: 1em;
+  }
 }

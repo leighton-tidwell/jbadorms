@@ -45,7 +45,7 @@ const Footer = (props) => {
   ];
   return (
     <div className={classes.background}>
-      <ContentWrapper>
+      <ContentWrapper className={classes.mobile}>
         <div className={classes["logo-container"]}>
           <h2>{props.logoTitle}</h2>
           <h3>{props.logoSubTitle}</h3>

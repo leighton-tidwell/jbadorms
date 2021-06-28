@@ -1,7 +1,6 @@
 .carousel {
-  width: 100%;
   position: relative;
-  height: 300px;
+  height: 250px;
   overflow: hidden;
   left: 50%;
   transform: translateX(-50%);
@@ -11,44 +10,98 @@
   position: absolute;
   display: flex;
   align-items: center;
+  height: 250px;
   width: 100%;
-  height: 300px;
 }
 
 .arrow-left {
-  flex-basis: 17.5%;
+  flex-basis: 10%;
   text-align: left;
   cursor: pointer;
 }
 
+.arrow-left img {
+  height: 50px;
+}
+
 .call-to-action {
-  flex-basis: 65%;
+  flex-basis: 80%;
   color: white;
 }
 
-.image {
-  position: absolute;
-  height: 400px;
-  object-fit: cover;
-}
-
 .call-to-action h1 {
-  line-height: 1.2em;
-  font-size: 2.5em;
+  line-height: 1em;
+  font-size: 1.5em;
   font-weight: 600;
   width: 15ch;
 }
 
 .call-to-action h3 {
   margin-bottom: 5px;
-  font-size: 1.2em;
+  font-size: 1em;
   font-weight: 300;
 }
 
+.image {
+  position: absolute;
+  height: 250px;
+  object-fit: cover;
+}
+
 .arrow-right {
-  flex-basis: 17.5%;
+  flex-basis: 10%;
   text-align: right;
   cursor: pointer;
+}
+
+.arrow-right img {
+  height: 50px;
+}
+
+@media only screen and (min-width: 1200px) {
+  .carousel {
+    width: 100%;
+    height: 300px;
+  }
+
+  .controller {
+    flex-basis: 67.5%;
+    height: 300px;
+  }
+
+  .call-to-action h1 {
+    line-height: 1.2em;
+    font-size: 2.5em;
+  }
+
+  .image {
+    height: 400px;
+  }
+
+  .call-to-action {
+    flex-basis: 65%;
+  }
+
+  .call-to-action h3 {
+    margin-bottom: 5px;
+    font-size: 1.2em;
+    font-weight: 300;
+  }
+
+  .arrow-left {
+    flex-basis: 17.5%;
+  }
+  .arrow-right {
+    flex-basis: 17.5%;
+  }
+
+  .arrow-right img {
+    height: auto;
+  }
+
+  .arrow-left img {
+    height: auto;
+  }
 }
 
 @media (min-width: 1921px) {

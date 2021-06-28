@@ -1,11 +1,20 @@
 .logo {
   flex-basis: 100%;
-  font-size: 2em;
-  font-weight: 800;
+  font-size: 1.5em;
+  font-weight: 600;
   letter-spacing: 0.05em;
 }
 
 .logo-link {
   text-decoration: none;
   color: inherit;
+}
+
+@media only screen and (min-width: 1200px) {
+  .logo {
+    flex-basis: 100%;
+    font-size: 2em;
+    font-weight: 800;
+    text-align: left;
+  }
 }

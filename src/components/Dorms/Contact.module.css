@@ -1,31 +1,30 @@
 .container {
-  background: #051a2c;
-  width: 100%;
   color: white;
-  padding: 5em 0;
+  background: #051a2c;
+  padding: 2em 0;
 }
 
 .title {
+  font-size: 1.2em;
   text-transform: uppercase;
-  font-size: 2em;
-  letter-spacing: 0.2em;
-  margin-bottom: 1em;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5em;
 }
 
 .flex {
   display: flex;
-  flex-direction: row;
-  width: 100%;
+  flex-direction: column;
   align-items: center;
   justify-content: center;
+  padding-left: 2em;
 }
 
 .left-information {
-  flex-basis: 25%;
-  transform: translateY(-3em);
+  margin: 1em auto;
 }
+
 .right-information {
-  flex-basis: 25%;
+  margin: 1em auto;
 }
 
 .contact-title {
@@ -38,4 +37,33 @@
   width: 60%;
   display: inline-block;
   margin: 0 2em;
+}
+
+@media only screen and (min-width: 1200px) {
+  .container {
+    width: 100%;
+    padding: 5em 0;
+  }
+
+  .title {
+    font-size: 2em;
+    letter-spacing: 0.2em;
+    margin-bottom: 1em;
+  }
+
+  .flex {
+    flex-direction: row;
+    padding-left: 0;
+    width: 100%;
+  }
+
+  .left-information {
+    flex-basis: 25%;
+    transform: translateY(-3em);
+    margin-bottom: 0;
+  }
+  .right-information {
+    flex-basis: 25%;
+    margin-bottom: 0;
+  }
 }

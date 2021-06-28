@@ -2,7 +2,7 @@
   text-decoration: none;
   color: inherit;
   flex-basis: 100%;
-  font-size: 2em;
+  font-size: 1.5em;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -10,6 +10,8 @@
   text-align: center;
   background-position: center center;
   background-size: cover;
+  height: 150px;
+  margin-bottom: 1.5em;
 }
 
 .text {
@@ -17,13 +19,28 @@
 }
 
 .image {
+  height: 150px;
   position: absolute;
   z-index: -1;
-  transition: 0.2s ease-in-out;
 }
 
-.link-element:hover .image {
-  opacity: 0.2;
-  -webkit-box-shadow: 1px 1px 15px 2px rgba(0, 0, 0, 0.42);
-  box-shadow: 1px 1px 15px 2px rgba(0, 0, 0, 0.42);
+@media only screen and (min-width: 1200px) {
+  .link-element {
+    font-size: 2em;
+    height: auto;
+    margin-bottom: 0;
+  }
+
+  .image {
+    height: auto;
+    position: absolute;
+    z-index: -1;
+    transition: 0.2s ease-in-out;
+  }
+
+  .link-element:hover .image {
+    opacity: 0.2;
+    -webkit-box-shadow: 1px 1px 15px 2px rgba(0, 0, 0, 0.42);
+    box-shadow: 1px 1px 15px 2px rgba(0, 0, 0, 0.42);
+  }
 }

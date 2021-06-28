@@ -1,17 +1,37 @@
 .container {
   color: white;
-  padding: 5em 0;
+  padding: 2em 0;
 }
 
 .title {
+  font-size: 1.2em;
   text-transform: uppercase;
-  font-size: 2em;
-  letter-spacing: 0.2em;
+  letter-spacing: 0.1em;
+  margin-bottom: 1.5em;
 }
 
 .address {
-  text-align: left;
-  width: 100%;
-  padding-top: 1em;
-  padding-bottom: 0.5em;
+  text-align: center;
+  font-weight: 300;
+  padding-bottom: 2em;
+}
+
+@media only screen and (min-width: 1200px) {
+  .container {
+    padding: 5em 0;
+  }
+
+  .title {
+    text-transform: uppercase;
+    font-size: 2em;
+    letter-spacing: 0.2em;
+    margin-bottom: 0;
+  }
+
+  .address {
+    text-align: left;
+    width: 100%;
+    padding-top: 1em;
+    padding-bottom: 0.5em;
+  }
 }
