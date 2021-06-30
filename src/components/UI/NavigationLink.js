@@ -9,6 +9,7 @@ const NavigationLink = (props) => {
       activeClassName={classes.active}
       className={classes["navigation-link"]}
       to={props.href}
+      exact
     >
       {props.text}
     </NavLink>

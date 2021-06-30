@@ -4,6 +4,7 @@ import "./App.css";
 
 import SplashPage from "./pages/SplashPage";
 import DormHomePage from "./pages/Dorms/HomePage";
+import Appointments from "./pages/Dorms/Appointments";
 
 const App = () => {
   return (
@@ -11,6 +12,11 @@ const App = () => {
       <Switch>
         <Route path="/" exact component={() => <SplashPage />} />
         <Route path="/dorms" exact component={() => <DormHomePage />} />
+        <Route
+          path="/dorms/appointments"
+          exact
+          component={() => <Appointments />}
+        />
       </Switch>
     </Router>
   );
