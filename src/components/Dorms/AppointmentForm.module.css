@@ -1,0 +1,54 @@
+.form {
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.form-control {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+.calendar-form-control {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+.label {
+  font-weight: 500;
+  text-align: center;
+  margin: 1em;
+  font-size: 1.1em;
+}
+
+.calendar-time-picker {
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+}
+
+@media only screen and (min-width: 1200px) {
+  .calendar-time-picker {
+    flex-direction: row;
+  }
+  .form-control {
+    flex-direction: row;
+  }
+  .label {
+    flex-basis: 15%;
+    text-align: right;
+  }
+  .calendar-form-control .label {
+    text-align: center;
+  }
+  .select {
+    flex-basis: 80%;
+    max-width: 20%;
+    width: 20%;
+  }
+}

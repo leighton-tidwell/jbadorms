@@ -2,7 +2,6 @@ import React from "react";
 
 import classes from "./Header.module.css";
 
-import ContentWrapper from "./ContentWrapper";
 import Navigation from "./Navigation";
 import Logo from "./Logo";
 

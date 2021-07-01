@@ -1,0 +1,14 @@
+.container {
+  background: #051a2c;
+  display: flex;
+  flex-basis: 80%;
+  padding: 1em;
+  color: white;
+  margin-bottom: 3em;
+}
+
+@media only screen and (min-width: 1200px) {
+  .container {
+    flex-basis: 100%;
+  }
+}
