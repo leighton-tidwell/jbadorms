@@ -1,0 +1,17 @@
+.input {
+  border: none;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.486);
+  font-size: 1em;
+  font-weight: 400;
+  padding: 0.5em;
+  display: flex;
+  outline: none;
+  color: white;
+  background: #122536;
+}
+
+@media only screen and (min-width: 1200px) {
+  .input {
+    height: 20px;
+  }
+}

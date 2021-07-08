@@ -4,6 +4,7 @@
   flex-basis: 100%;
   margin: 0 auto;
   font-family: "Poppins", sans-serif;
+  max-height: 350px;
 }
 .react-calendar--doubleView {
   width: 700px;
@@ -34,11 +35,13 @@
 }
 .react-calendar__navigation {
   display: flex;
-  height: 100px;
+  height: 75px;
 }
 .react-calendar__navigation button {
   min-width: 44px;
   background: none;
+  color: #04121e;
+  font-weight: 800;
 }
 .react-calendar__navigation button:enabled:hover,
 .react-calendar__navigation button:enabled:focus {
@@ -91,7 +94,7 @@
   background-color: #e6e6e6;
 }
 .react-calendar__tile--now {
-  background: #051a2c;
+  background: #ccc;
   color: white;
 }
 .react-calendar__tile--now:enabled:hover,

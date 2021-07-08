@@ -4,7 +4,7 @@ import Header from "../../components/UI/Header";
 import ImageBanner from "../../components/UI/ImageBanner";
 import Subtitle from "../../components/UI/Subtitle";
 import Content from "../../components/UI/Content";
-import AppointmentScheduler from "../../components/Dorms/AppointmentScheduler";
+import AppointmentScheduler from "../../components/Dorms/Appointments/AppointmentScheduler";
 import Footer from "../../components/UI/Footer";
 
 import BannerBackgroundImage from "../../images/appointment_banner.png";
