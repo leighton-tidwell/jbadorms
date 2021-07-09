@@ -1,0 +1,67 @@
+.calendar {
+  background: #04121e;
+  padding: 1em;
+  margin-top: 1em;
+}
+
+.month-picker {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.previous {
+  flex-basis: 5%;
+  cursor: pointer;
+}
+
+.next {
+  flex-basis: 5%;
+  text-align: right;
+  cursor: pointer;
+}
+
+.month-title {
+  flex-basis: 90%;
+  font-weight: 600;
+  text-align: center;
+  font-size: 1.1em;
+  margin-bottom: 0.5em;
+}
+
+.week-day-header {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  font-weight: 600;
+}
+
+.week-day {
+  flex-grow: 1;
+  text-align: center;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  text-align: center;
+}
+
+.calendar-day {
+  min-height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.calendar-day:hover {
+  background: #1c2a35;
+}
+
+.today {
+  background: #1c3447;
+}
+
+.selected {
+  background: #083052;
+}

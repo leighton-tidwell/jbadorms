@@ -19,7 +19,6 @@ const Select = (props) => {
   };
 
   const handleSelectItem = (item) => {
-    console.log(item);
     setOptions((prevState) => ({
       ...prevState,
       showItems: false,

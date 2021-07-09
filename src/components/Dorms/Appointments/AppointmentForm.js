@@ -2,26 +2,19 @@ import React, { useState } from "react";
 
 import classes from "./AppointmentForm.module.css";
 import Select from "../../UI/Select";
-import Calendar from "../../UI/Calendar";
-import AppointmentTimePicker from "./AppointmentTimePicker";
-import moment from "moment";
+import Calendar from "../../UI/Calendar/Calendar";
 import Button from "../../UI/Button";
 import Input from "../../UI/Input";
 
 const AppointmentForm = () => {
-  const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedTime, setSelectedTime] = useState("");
-  const [parsedSelectedTime, setParsedSelectedTime] = useState([]);
+  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedTime, setSelectedTime] = useState(null);
   const [selectedService, setSelectedService] = useState("Check In");
   const [serviceOptions, setServiceOptions] = useState([
     { value: "Check In", id: 1 },
     { value: "Check Out", id: 2 },
     { value: "Inspection", id: 3 },
   ]);
-  const [enteredFullName, setEnteredFullName] = useState("");
-  const [enteredEmail, setEnteredEmail] = useState("");
-  const [enteredPhoneNumber, setEnteredPhoneNumber] = useState("");
-
   const [selectedEmployee, setSelectedEmployee] = useState("ADL 1");
   const [employeeOptions, setEmployeeOptions] = useState([
     { value: "ADL 1", id: 1 },
@@ -29,6 +22,24 @@ const AppointmentForm = () => {
     { value: "ADL 3", id: 3 },
     { value: "ADL 4", id: 4 },
   ]);
+  const [availableTimes, setAvailableTimes] = useState([
+    "0700",
+    "0800",
+    "0900",
+    "1000",
+    "1100",
+    "1200",
+    "1300",
+    "1400",
+    "1500",
+    "1600",
+    "1700",
+  ]);
+
+  const [enteredFirstName, setEnteredFirstName] = useState("");
+  const [enteredLastName, setEnteredLastName] = useState("");
+  const [enteredPhone, setEnteredPhone] = useState("");
+  const [enteredEmail, setEnteredEmail] = useState("");
 
   const handleSelectService = (selectedValue) => {
     setSelectedService(selectedValue);
@@ -38,125 +49,148 @@ const AppointmentForm = () => {
     setSelectedEmployee(selectedValue);
   };
 
-  const handleSelectedTime = (userSelectedTime) => {
-    setSelectedTime(userSelectedTime);
-    const hourRangeOfSelectedTime = userSelectedTime.split(" - ");
-    const firstHour = hourRangeOfSelectedTime[0].split(":")[0];
-    const secondHour = hourRangeOfSelectedTime[1].split(":")[0];
-    setParsedSelectedTime([
-      `${moment(selectedDate)
-        .add(+firstHour, "hours")
-        .format("MMM Do YYYY HH:mm")}`,
-      `${moment(selectedDate)
-        .add(+secondHour, "hours")
-        .format("MMM Do YYYY HH:mm")}`,
-    ]);
+  const handleDateSelect = (dateObject) => {
+    setSelectedDate(dateObject);
   };
 
-  const handleChangeFullName = (event) => {
-    setEnteredFullName(event.target.value);
+  const handleTimeSelect = (time) => {
+    setSelectedTime(time);
+  };
+
+  const handleChangeFirstName = (event) => {
+    setEnteredFirstName(event.target.value);
+  };
+
+  const handleChangeLastName = (event) => {
+    setEnteredLastName(event.target.value);
+  };
+
+  const handleChangePhone = (event) => {
+    setEnteredPhone(event.target.value);
   };
 
   const handleChangeEmail = (event) => {
     setEnteredEmail(event.target.value);
   };
 
-  const handleChangePhoneNumber = (event) => {
-    setEnteredPhoneNumber(event.target.value);
-  };
-
-  const handleFormSubmit = (event) => {
+  const handleSubmitForm = (event) => {
     event.preventDefault();
     console.log({
-      employee: selectedEmployee,
-      appointmentTime: parsedSelectedTime[0],
-      fullName: enteredFullName,
-      email: enteredEmail,
-      phone: enteredPhoneNumber,
+      selectedDate,
+      selectedTime,
+      selectedService,
+      selectedEmployee,
+      enteredFirstName,
+      enteredLastName,
+      enteredPhone,
+      enteredEmail,
     });
   };
 
   return (
-    <div className={classes.form}>
-      <div className={classes["form-control"]}>
-        <label className={classes.label}>Select Service</label>
-        <Select
-          className={classes.select}
-          options={serviceOptions}
-          onSelect={handleSelectService}
-        />
-      </div>
-      <div className={classes["form-control"]}>
-        <label className={classes.label}>Select Employee</label>
-        <Select
-          className={classes.select}
-          options={employeeOptions}
-          onSelect={handleSelectEmployee}
-        />
-      </div>
-      <div className={classes["calendar-time-picker"]}>
-        <div className={classes["calendar-form-control"]}>
-          <label className={classes.label}>Select A Date</label>
-          <Calendar onDateChange={setSelectedDate} dateValue={selectedDate} />
-        </div>
-        <div className={classes["calendar-form-control"]}>
-          <label className={classes.label}>
-            Appointments for {selectedEmployee} on{" "}
-            {moment(selectedDate).format("MMM Do YYYY")}
-          </label>
-          <AppointmentTimePicker
-            selectedDate={selectedDate}
-            changeTime={handleSelectedTime}
+    <div className={classes.flex}>
+      <div className={classes["first-step"]}>
+        <div className={classes["form-control"]}>
+          <label className={classes.label}>Select Service:</label>
+          <Select
+            className={classes.select}
+            options={serviceOptions}
+            onSelect={handleSelectService}
           />
         </div>
+        <div className={classes["form-control"]}>
+          <label className={classes.label}>Select Employee:</label>
+          <Select
+            className={classes.select}
+            options={employeeOptions}
+            onSelect={handleSelectEmployee}
+          />
+        </div>
+        <div className={classes["form-control"]}>
+          <label className={classes.label}>Select Date:</label>
+          <Calendar onDateChange={handleDateSelect} />
+        </div>
       </div>
-      {selectedTime && (
-        <div className={classes["contact-information"]}>
-          <div className={classes["appointment-confirmation"]}>
-            <label className={classes.label}>Confirm your appointment</label>
-            <div className={classes["employee"]}>
-              <span>Employee: </span>
-              {selectedEmployee}
-            </div>
-            <div className={classes["date"]}>
-              <span>Date: </span>
-              {parsedSelectedTime[0]}
-            </div>
+      <div className={classes["second-step"]}>
+        <div className={classes["form-control"]}>
+          <div className={classes["appointments-available"]}>
+            {selectedDate
+              ? `Available times on ${selectedDate.month} ${selectedDate.day}, ${selectedDate.year}:`
+              : ""}
           </div>
-          <div className={classes["confirmation-form"]}>
-            <form onSubmit={handleFormSubmit}>
-              <div className={classes["form-control"]}>
-                <label className={classes.label}>Full Name: </label>
-                <Input
-                  type="text"
-                  className={classes.input}
-                  value={enteredFullName}
-                  onChange={handleChangeFullName}
-                />
+          <div className={classes["time-selector"]}>
+            {availableTimes.map((time, i) => (
+              <div
+                onClick={() => {
+                  handleTimeSelect(time);
+                }}
+                key={i}
+                className={`${classes["time-element"]} ${
+                  selectedTime === time ? classes["time-selected"] : ""
+                }`}
+              >
+                {time}
               </div>
-              <div className={classes["form-control"]}>
-                <label className={classes.label}>Email: </label>
-                <Input
-                  type="email"
-                  className={classes.input}
-                  value={enteredEmail}
-                  onChange={handleChangeEmail}
-                />
-              </div>
-              <div className={classes["form-control"]}>
-                <label className={classes.label}>Phone Number: </label>
-                <Input
-                  type="tel"
-                  className={classes.input}
-                  value={enteredPhoneNumber}
-                  onChange={handleChangePhoneNumber}
-                />
-              </div>
-              <Button type="button">Confirm</Button>
-            </form>
+            ))}
           </div>
         </div>
-      )}
+        <div className={classes["form-control"]}>
+          <div className={classes["appointments-available"]}>
+            Confirm your appointment:
+          </div>
+          <form onSubmit={handleSubmitForm}>
+            <div className={classes["inline-form"]}>
+              <label htmlFor="firstName" className={classes["inline-label"]}>
+                First Name:
+              </label>
+              <Input
+                onChange={handleChangeFirstName}
+                id="firstName"
+                type="text"
+                className={classes["input"]}
+                value={enteredFirstName}
+              />
+            </div>
+            <div className={classes["inline-form"]}>
+              <label htmlFor="lastName" className={classes["inline-label"]}>
+                Last Name:
+              </label>
+              <Input
+                onChange={handleChangeLastName}
+                id="lastName"
+                type="text"
+                className={classes["input"]}
+                value={enteredLastName}
+              />
+            </div>
+            <div className={classes["inline-form"]}>
+              <label htmlFor="phone" className={classes["inline-label"]}>
+                Phone:
+              </label>
+              <Input
+                onChange={handleChangePhone}
+                id="phone"
+                type="tel"
+                className={classes["input"]}
+                value={enteredPhone}
+              />
+            </div>
+            <div className={classes["inline-form"]}>
+              <label htmlFor="email" className={classes["inline-label"]}>
+                Email:
+              </label>
+              <Input
+                onChange={handleChangeEmail}
+                id="email"
+                type="email"
+                className={classes["input"]}
+                value={enteredEmail}
+              />
+            </div>
+            <Button className={classes.confirm}>Confirm</Button>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };
