@@ -21,7 +21,12 @@ const MapSection = () => {
             style={{ height: `400px`, width: `100%`, marginBottom: "2em" }}
           />
         }
-        mapElement={<div style={{ height: `100%` }} />}
+        mapElement={
+          <div
+            className={classes["map-container"]}
+            style={{ height: `100%` }}
+          />
+        }
         lat={coordinates[0]}
         lng={coordinates[1]}
       />

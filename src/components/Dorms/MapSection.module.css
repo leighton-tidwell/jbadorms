@@ -16,6 +16,11 @@
   padding-bottom: 2em;
 }
 
+.map-container {
+  width: 60%;
+  margin: 0 auto;
+}
+
 @media only screen and (min-width: 1200px) {
   .container {
     padding: 5em 0;
@@ -33,5 +38,9 @@
     width: 100%;
     padding-top: 1em;
     padding-bottom: 0.5em;
+  }
+
+  .map-container {
+    width: 100%;
   }
 }
