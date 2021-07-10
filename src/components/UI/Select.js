@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
+import { useClickAway } from "react-use";
 
 import classes from "./Select.module.css";
 import ArrowDown from "../../images/arrow-down.svg";
@@ -27,9 +28,18 @@ const Select = (props) => {
     props.onSelect(item.value);
   };
 
+  const ref = useRef(null);
+  useClickAway(ref, () => {
+    setOptions((prevState) => ({
+      ...prevState,
+      showItems: false,
+    }));
+  });
+
   return (
     <div
       className={`${classes.container} ${props.className && props.className}`}
+      ref={ref}
     >
       <div
         onClick={handleDropDown}
