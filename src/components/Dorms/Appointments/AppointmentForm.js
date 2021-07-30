@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import uuid from "react-uuid";
 
 import classes from "./AppointmentForm.module.css";
 import Select from "../../UI/Select";
@@ -10,19 +11,19 @@ const AppointmentForm = () => {
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedService, setSelectedService] = useState("Check In");
-  const [serviceOptions, setServiceOptions] = useState([
-    { value: "Check In", id: 1 },
-    { value: "Check Out", id: 2 },
-    { value: "Inspection", id: 3 },
-  ]);
+  const serviceOptions = [
+    { value: "Check In", id: uuid() },
+    { value: "Check Out", id: uuid() },
+    { value: "Inspection", id: uuid() },
+  ];
   const [selectedEmployee, setSelectedEmployee] = useState("ADL 1");
-  const [employeeOptions, setEmployeeOptions] = useState([
-    { value: "ADL 1", id: 1 },
-    { value: "ADL 2", id: 2 },
-    { value: "ADL 3", id: 3 },
-    { value: "ADL 4", id: 4 },
-  ]);
-  const [availableTimes, setAvailableTimes] = useState([
+  const employeeOptions = [
+    { value: "ADL 1", id: uuid() },
+    { value: "ADL 2", id: uuid() },
+    { value: "ADL 3", id: uuid() },
+    { value: "ADL 4", id: uuid() },
+  ];
+  const availableTimes = [
     "0700",
     "0800",
     "0900",
@@ -34,7 +35,7 @@ const AppointmentForm = () => {
     "1500",
     "1600",
     "1700",
-  ]);
+  ];
 
   const [enteredFirstName, setEnteredFirstName] = useState("");
   const [enteredLastName, setEnteredLastName] = useState("");

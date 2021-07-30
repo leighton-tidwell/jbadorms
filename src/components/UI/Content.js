@@ -8,8 +8,12 @@ const Content = (props) => {
   return (
     <ContentWrapper>
       <div
-        className={classes.container}
-        style={{ padding: `${props.padding === true ? "1em" : ""}` }}
+        className={`${classes.container} ${
+          props.className ? props.className : ""
+        }`}
+        style={{
+          padding: `${props.padding === true ? "1em" : ""}`,
+        }}
       >
         {props.children}
       </div>

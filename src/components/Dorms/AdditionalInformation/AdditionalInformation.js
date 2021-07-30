@@ -1,7 +1,7 @@
 import React from "react";
 import classes from "./AdditionalInformation.module.css";
 
-import ContentWrapper from "../UI/ContentWrapper";
+import ContentWrapper from "../../UI/ContentWrapper";
 
 const AdditionalInformation = () => {
   const events = [

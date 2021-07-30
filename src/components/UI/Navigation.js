@@ -14,10 +14,10 @@ const Navigation = (props) => {
     setNavigationStatus((previousState) => !previousState);
   };
 
-  const generateNavLinks = (link, i) => {
+  const generateNavLinks = (link) => {
     if (link.dropdown)
-      return <NavigationDropDown key={i} linkAndDropDownLinks={link} />;
-    return <NavigationLink key={i} href={link.href} text={link.text} />;
+      return <NavigationDropDown key={link.id} linkAndDropDownLinks={link} />;
+    return <NavigationLink key={link.id} href={link.href} text={link.text} />;
   };
   return (
     <>
@@ -31,9 +31,9 @@ const Navigation = (props) => {
         className={classes["mobile-navigation"]}
         style={{ display: navigationStatus ? "block" : "none" }}
       >
-        {props.links.map((link, i) => (
+        {props.links.map((link) => (
           <Link
-            key={i}
+            key={link.id}
             className={classes["mobile-navigation-link"]}
             to={link.href}
           >
@@ -42,8 +42,8 @@ const Navigation = (props) => {
         ))}
       </div>
       <div className={classes.navigation}>
-        {props.links.map((link, i) => {
-          return generateNavLinks(link, i);
+        {props.links.map((link) => {
+          return generateNavLinks(link);
         })}
       </div>
     </>

@@ -1,7 +1,7 @@
 import React from "react";
 
 import classes from "./MapSection.module.css";
-import ContentWrapper from "../UI/ContentWrapper";
+import ContentWrapper from "../../UI/ContentWrapper";
 import Map from "./Map";
 
 const MapSection = () => {

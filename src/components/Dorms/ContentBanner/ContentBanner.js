@@ -1,9 +1,9 @@
 import React from "react";
 import classes from "./ContentBanner.module.css";
 
-import ContentWrapper from "../UI/ContentWrapper";
+import ContentWrapper from "../../UI/ContentWrapper";
 
-const ContentBanner = (props) => {
+const ContentBanner = () => {
   return (
     <div className={classes.background}>
       <ContentWrapper>

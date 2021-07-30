@@ -19,8 +19,12 @@ const NavigationDropDown = (props) => {
         />
       </Link>
       <div className={classes["dropdown-content"]}>
-        {props.linkAndDropDownLinks.dropdown.map((dropdownLink, i) => (
-          <Link className={classes["dropdown-link"]} to={dropdownLink.href}>
+        {props.linkAndDropDownLinks.dropdown.map((dropdownLink) => (
+          <Link
+            key={dropdownLink.id}
+            className={classes["dropdown-link"]}
+            to={dropdownLink.href}
+          >
             {dropdownLink.text}
           </Link>
         ))}

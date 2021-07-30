@@ -1,0 +1,17 @@
+.active {
+  background: #083052;
+}
+
+li {
+  border: 1px solid white;
+  color: white;
+  text-align: center;
+  padding: 0.5em 2em;
+  margin: 1em 0;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+
+li:hover {
+  background: #083052;
+}

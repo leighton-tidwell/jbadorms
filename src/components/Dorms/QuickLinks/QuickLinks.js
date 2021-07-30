@@ -1,8 +1,8 @@
 import React from "react";
 
 import classes from "./QuickLinks.module.css";
-import ContentWrapper from "../UI/ContentWrapper";
-import LinkElement from "./LinkElement";
+import ContentWrapper from "../../UI/ContentWrapper";
+import LinkElement from "../LinkElement/LinkElement";
 
 const QuickLinks = () => {
   const links = [

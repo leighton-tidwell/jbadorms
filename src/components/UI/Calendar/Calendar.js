@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react";
+import uuid from "react-uuid";
 
 import classes from "./Calendar.module.css";
 import moment from "moment";
@@ -18,7 +19,7 @@ const Calendar = (props) => {
     return (
       <div className={classes["week-day-header"]}>
         {listOfWeekDays.map((weekDay) => (
-          <div key={weekDay} className={classes["week-day"]}>
+          <div key={uuid()} className={classes["week-day"]}>
             {weekDay}
           </div>
         ))}
@@ -55,7 +56,11 @@ const Calendar = (props) => {
   // generate blank dates
   let blanks = [];
   for (let i = 0; i < firstDayOfMonth(); i++) {
-    blanks.push(<div className={classes["calendar-day empty"]}>{""}</div>);
+    blanks.push(
+      <div key={uuid()} className={classes["calendar-day empty"]}>
+        {""}
+      </div>
+    );
   }
 
   // generate days in month
@@ -71,7 +76,7 @@ const Calendar = (props) => {
         : "";
     daysInMonthList.push(
       <div
-        key={d}
+        key={uuid()}
         onClick={(e) => {
           handleDayClick(e, d);
         }}
@@ -104,9 +109,10 @@ const Calendar = (props) => {
     });
   };
 
+  const onDateChange = props.onDateChange;
   useEffect(() => {
-    props.onDateChange(selectedDate);
-  }, [selectedDate]);
+    onDateChange(selectedDate);
+  }, [selectedDate, onDateChange]);
 
   return (
     <div className={classes.calendar}>

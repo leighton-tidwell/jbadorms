@@ -1,0 +1,18 @@
+.container {
+  background: #051a2c;
+  padding: 0 2em 2em 0;
+  margin-bottom: 2em;
+}
+
+.navigation {
+  list-style: none;
+}
+
+@media only screen and (min-width: 1200px) {
+  .container {
+    flex-basis: 30%;
+    margin-right: 2em;
+    margin-bottom: 0;
+    max-height: 23em;
+  }
+}
