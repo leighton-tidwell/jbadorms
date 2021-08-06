@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import classes from "./CarouselImage.module.css";
+import classes from './CarouselImage.module.css';
 
-const CarouselImage = (props) => {
-  return <img className={classes.image} src={props.images[0]} />;
+const CarouselImage = ({ image, images, alt }) => {
+  return <img className={image} src={images[0]} alt="A carousel image" />;
 };
 
 export default CarouselImage;

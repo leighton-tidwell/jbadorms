@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import classes from "./ImageBanner.module.css";
-import ContentWrapper from "./ContentWrapper";
+import classes from './ImageBanner.module.css';
+import ContentWrapper from './ContentWrapper';
 
-const ImageBanner = (props) => {
+const ImageBanner = props => {
   return (
     <div
       className={classes.container}

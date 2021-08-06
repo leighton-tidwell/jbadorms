@@ -1,29 +1,29 @@
-import React, { useState } from "react";
-import uuid from "react-uuid";
+import React, { useState } from 'react';
+import uuid from 'react-uuid';
 
-import Input from "../../UI/Input";
-import Select from "../../UI/Select";
-import Button from "../../UI/Button";
+import Input from '../../UI/Input';
+import Select from '../../UI/Select';
+import Button from '../../UI/Button';
 
-import classes from "./IncomingAirmenChecklist.module.css";
+import classes from './IncomingAirmenChecklist.module.css';
 
-const ProcessingForm = (props) => {
-  const [enteredFullName, setEnteredFullName] = useState("");
-  const handleChangeName = (event) => {
+const ProcessingForm = props => {
+  const [enteredFullName, setEnteredFullName] = useState('');
+  const handleChangeName = event => {
     setEnteredFullName(event.target.value);
   };
 
   const rankOptions = [
-    { value: "E1", id: uuid() },
-    { value: "E2", id: uuid() },
-    { value: "E3", id: uuid() },
-    { value: "E4", id: uuid() },
+    { value: 'E1', id: uuid() },
+    { value: 'E2', id: uuid() },
+    { value: 'E3', id: uuid() },
+    { value: 'E4', id: uuid() }
   ];
 
   return (
-    <form>
+    <form className={classes.form}>
       <div className={classes.title}>Incoming Airmen Checklist</div>
-      <div className={classes["form-control"]}>
+      <div className={classes['form-control']}>
         <label className={classes.label}>Full Name:</label>
         <Input
           className={classes.input}
@@ -33,15 +33,15 @@ const ProcessingForm = (props) => {
           value={enteredFullName}
         />
       </div>
-      <div className={classes["form-control"]}>
+      <div className={classes['form-control']}>
         <label className={classes.label}>Phone:</label>
         <Input className={classes.input} id="phone" type="tel" />
       </div>
-      <div className={classes["form-control"]}>
+      <div className={classes['form-control']}>
         <label className={classes.label}>DOD ID#:</label>
         <Input className={classes.input} id="dodId" type="text" />
       </div>
-      <div className={classes["form-control"]}>
+      <div className={classes['form-control']}>
         <label className={classes.label}>Rank</label>
         <Select className={classes.select} options={rankOptions} />
       </div>

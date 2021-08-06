@@ -1,13 +1,13 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Link from 'next/link';
 
-import classes from "./Logo.module.css";
+import classes from './Logo.module.css';
 
-const Logo = (props) => {
+const Logo = props => {
   return (
     <div className={classes.logo}>
-      <Link className={classes["logo-link"]} to={props.logoLink}>
-        {props.logo}
+      <Link href={props.logoLink}>
+        <a className={classes['logo-link']}>{props.logo}</a>
       </Link>
     </div>
   );
