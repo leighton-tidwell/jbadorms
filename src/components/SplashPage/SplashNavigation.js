@@ -1,33 +1,36 @@
 import React from "react";
-import { Link } from "react-router-dom";
-
 import classes from "./SplashNavigation.module.css";
+import Link from "next/link";
 
 const SplashNavigation = () => {
   return (
     <div className={classes["splash-navigation"]}>
       <div className={classes.row}>
-        <Link to="/community" className={classes.element}>
-          Community
-          <br />
-          Housing
+        <Link href="/community">
+          <a className={classes.element}>
+            Community <br />
+            Housing
+          </a>
         </Link>
-        <Link to="/privatized" className={classes.element}>
-          Privatized
-          <br />
-          Housing
+        <Link href="/privatized">
+          <a className={classes.element}>
+            Privatized <br />
+            Housing
+          </a>
         </Link>
       </div>
       <div className={classes.row}>
-        <Link to="/furnishings" className={classes.element}>
-          Furnishings
-          <br />
-          Management
+        <Link href="/furnishings">
+          <a className={classes.element}>
+            Furnishings <br />
+            Management
+          </a>
         </Link>
-        <Link to="/dorms" className={classes.element}>
-          Unaccompanied
-          <br />
-          Housing
+        <Link href="/dorms">
+          <a className={classes.element}>
+            Unaccompanied <br />
+            Housing
+          </a>
         </Link>
       </div>
     </div>

@@ -1,25 +1,27 @@
-import React, { useEffect, useState } from "react";
-import uuid from "react-uuid";
+import React, { useEffect, useState } from 'react';
+import uuid from 'react-uuid';
 
-import classes from "./Calendar.module.css";
-import moment from "moment";
+import classes from './Calendar.module.css';
+import moment from 'moment';
 
-import ArrowLeft from "../../../images/calendar-arrow-left.svg";
-import ArrowRight from "../../../images/calendar-arrow-right.svg";
-
-const Calendar = (props) => {
+const Calendar = props => {
   const today = moment();
 
+  const arrows = {
+    arrowLeft: '/images/calendar-arrow-left.svg',
+    arrowRight: '/images/calendar-arrow-right.svg'
+  };
+
   const [dateObject, setDateObject] = useState({
-    dateObj: moment(),
+    dateObj: moment()
   });
 
   const shortWeekDays = () => {
     const listOfWeekDays = moment.weekdaysShort();
     return (
-      <div className={classes["week-day-header"]}>
-        {listOfWeekDays.map((weekDay) => (
-          <div key={uuid()} className={classes["week-day"]}>
+      <div className={classes['week-day-header']}>
+        {listOfWeekDays.map(weekDay => (
+          <div key={uuid()} className={classes['week-day']}>
             {weekDay}
           </div>
         ))}
@@ -28,7 +30,7 @@ const Calendar = (props) => {
   };
 
   const firstDayOfMonth = () => {
-    return moment(dateObject.dateObj).startOf("month").format("d");
+    return moment(dateObject.dateObj).startOf('month').format('d');
   };
 
   const daysInMonth = () => {
@@ -36,11 +38,11 @@ const Calendar = (props) => {
   };
 
   const currentDay = () => {
-    return moment(dateObject.dateObj).format("D");
+    return moment(dateObject.dateObj).format('D');
   };
 
   const currentMonth = () => {
-    return moment(dateObject.dateObj).format("MMMM");
+    return moment(dateObject.dateObj).format('MMMM');
   };
 
   const currentYear = () => {
@@ -50,15 +52,15 @@ const Calendar = (props) => {
   const [selectedDate, setSelectedDate] = useState({
     day: currentDay(),
     month: currentMonth(),
-    year: currentYear(),
+    year: currentYear()
   });
 
   // generate blank dates
   let blanks = [];
   for (let i = 0; i < firstDayOfMonth(); i++) {
     blanks.push(
-      <div key={uuid()} className={classes["calendar-day empty"]}>
-        {""}
+      <div key={uuid()} className={classes['calendar-day empty']}>
+        {''}
       </div>
     );
   }
@@ -67,20 +69,20 @@ const Calendar = (props) => {
   let daysInMonthList = [];
   for (let d = 1; d < daysInMonth(); d++) {
     const currentDayCheck =
-      d === +currentDay() && today.format("MMMM") === currentMonth()
-        ? "today"
-        : "";
+      d === +currentDay() && today.format('MMMM') === currentMonth()
+        ? 'today'
+        : '';
     const selectedDayCheck =
       d === selectedDate.day && currentMonth() === selectedDate.month
-        ? "selected"
-        : "";
+        ? 'selected'
+        : '';
     daysInMonthList.push(
       <div
         key={uuid()}
-        onClick={(e) => {
+        onClick={e => {
           handleDayClick(e, d);
         }}
-        className={`${classes["calendar-day"]} ${classes[currentDayCheck]} ${classes[selectedDayCheck]}`}
+        className={`${classes['calendar-day']} ${classes[currentDayCheck]} ${classes[selectedDayCheck]}`}
       >
         {d}
       </div>
@@ -90,14 +92,14 @@ const Calendar = (props) => {
   const totalCalendarSlots = [...blanks, ...daysInMonthList];
 
   const handlePrevious = () => {
-    setDateObject((prevState) => ({
-      dateObj: prevState.dateObj.subtract(1, "month"),
+    setDateObject(prevState => ({
+      dateObj: prevState.dateObj.subtract(1, 'month')
     }));
   };
 
   const handleNext = () => {
-    setDateObject((prevState) => ({
-      dateObj: prevState.dateObj.add(1, "month"),
+    setDateObject(prevState => ({
+      dateObj: prevState.dateObj.add(1, 'month')
     }));
   };
 
@@ -105,7 +107,7 @@ const Calendar = (props) => {
     setSelectedDate({
       day: day,
       month: currentMonth(),
-      year: currentYear(),
+      year: currentYear()
     });
   };
 
@@ -116,17 +118,17 @@ const Calendar = (props) => {
 
   return (
     <div className={classes.calendar}>
-      <div className={classes["month-picker"]}>
+      <div className={classes['month-picker']}>
         <div onClick={handlePrevious} className={classes.previous}>
-          <img alt="change month back one" src={ArrowLeft} />
+          <img alt="change month back one" src={arrows.arrowLeft} />
         </div>
-        <div className={classes["month-title"]}>{currentMonth()}</div>
+        <div className={classes['month-title']}>{currentMonth()}</div>
         <div onClick={handleNext} className={classes.next}>
-          <img alt="change month forward one" src={ArrowRight} />
+          <img alt="change month forward one" src={arrows.arrowRight} />
         </div>
       </div>
       {shortWeekDays()}
-      <div className={classes["calendar-grid"]}>{totalCalendarSlots}</div>
+      <div className={classes['calendar-grid']}>{totalCalendarSlots}</div>
     </div>
   );
 };

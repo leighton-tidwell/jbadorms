@@ -1,5 +1,5 @@
 import React from "react";
-import classes from "./SplashPage.module.css";
+import classes from "./index.module.css";
 
 import HeroLogo from "../components/SplashPage/HeroLogo";
 import SplashNavigation from "../components/SplashPage/SplashNavigation";

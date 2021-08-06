@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react';
 
-import classes from "./ProcessingLink.module.css";
+import classes from './ProcessingLink.module.css';
 
-const ProcessingLink = (props) => {
-  const handleLinkClick = (key) => {
+const ProcessingLink = props => {
+  const handleLinkClick = key => {
     props.onLinkClick(props.option.id);
   };
 
@@ -11,7 +11,7 @@ const ProcessingLink = (props) => {
     <li
       key={props.option.id}
       onClick={handleLinkClick}
-      className={props.option.active ? classes.active : ""}
+      className={`${classes.li} ${props.option.active ? classes.active : ''}`}
     >
       {props.option.name}
     </li>

@@ -1,20 +1,20 @@
-import React, { useState } from "react";
-import classes from "./Navigation.module.css";
+import React, { useState } from 'react';
+import classes from './Navigation.module.css';
 
-import { Link } from "react-router-dom";
-import Hamburger from "../../images/hamburger_menu.svg";
+import Link from 'next/link';
 
-import NavigationLink from "./NavigationLink";
-import NavigationDropDown from "./NavigationDropDown";
+import NavigationLink from './NavigationLink';
+import NavigationDropDown from './NavigationDropDown';
 
-const Navigation = (props) => {
+const Navigation = ({ links }) => {
+  const hamburgerMenu = '/images/hamburger_menu.svg';
   const [navigationStatus, setNavigationStatus] = useState(false);
 
   const navigationHandler = () => {
-    setNavigationStatus((previousState) => !previousState);
+    setNavigationStatus(previousState => !previousState);
   };
 
-  const generateNavLinks = (link) => {
+  const generateNavLinks = link => {
     if (link.dropdown)
       return <NavigationDropDown key={link.id} linkAndDropDownLinks={link} />;
     return <NavigationLink key={link.id} href={link.href} text={link.text} />;
@@ -23,26 +23,22 @@ const Navigation = (props) => {
     <>
       <div
         onClick={navigationHandler}
-        className={classes["mobile-navigation-handler"]}
+        className={classes['mobile-navigation-handler']}
       >
-        <img alt="Hamburger menu" src={Hamburger} />
+        <img alt="Hamburger menu" src={hamburgerMenu} />
       </div>
       <div
-        className={classes["mobile-navigation"]}
-        style={{ display: navigationStatus ? "block" : "none" }}
+        className={classes['mobile-navigation']}
+        style={{ display: navigationStatus ? 'block' : 'none' }}
       >
-        {props.links.map((link) => (
-          <Link
-            key={link.id}
-            className={classes["mobile-navigation-link"]}
-            to={link.href}
-          >
-            {link.text}
+        {links.map(link => (
+          <Link key={link.id} href={link.href}>
+            <a className={classes['mobile-navigation-link']}>{link.text}</a>
           </Link>
         ))}
       </div>
       <div className={classes.navigation}>
-        {props.links.map((link) => {
+        {links.map(link => {
           return generateNavLinks(link);
         })}
       </div>

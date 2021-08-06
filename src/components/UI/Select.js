@@ -1,38 +1,38 @@
-import React, { useState, useRef } from "react";
-import { useClickAway } from "react-use";
+import React, { useState, useRef } from 'react';
+import { useClickAway } from 'react-use';
 
-import classes from "./Select.module.css";
-import ArrowDown from "../../images/arrow-down.svg";
-import ArrowUp from "../../images/arrow-up.svg";
+import classes from './Select.module.css';
 
-const Select = (props) => {
+const Select = props => {
+  const arrowDown = '/images/arrow-down.svg';
+  const arrowUp = '/images/arrow-up.svg';
   const [options, setOptions] = useState({
     items: props.options,
     showItems: false,
-    selectedItem: props.options && props.options[0],
+    selectedItem: props.options && props.options[0]
   });
 
   const handleDropDown = () => {
-    setOptions((prevState) => ({
+    setOptions(prevState => ({
       ...prevState,
-      showItems: !options.showItems,
+      showItems: !options.showItems
     }));
   };
 
-  const handleSelectItem = (item) => {
-    setOptions((prevState) => ({
+  const handleSelectItem = item => {
+    setOptions(prevState => ({
       ...prevState,
       showItems: false,
-      selectedItem: item,
+      selectedItem: item
     }));
     props.onSelect(item.value);
   };
 
   const ref = useRef(null);
   useClickAway(ref, () => {
-    setOptions((prevState) => ({
+    setOptions(prevState => ({
       ...prevState,
-      showItems: false,
+      showItems: false
     }));
   });
 
@@ -43,29 +43,29 @@ const Select = (props) => {
     >
       <div
         onClick={handleDropDown}
-        className={classes["select-visible-container"]}
+        className={classes['select-visible-container']}
       >
-        <div className={classes["selected-item"]}>
+        <div className={classes['selected-item']}>
           {options.selectedItem.value}
         </div>
-        <div className={classes["select-arrow"]}>
+        <div className={classes['select-arrow']}>
           {options.showItems ? (
-            <img alt="arrow up" src={ArrowUp} />
+            <img alt="arrow up" src={arrowUp} />
           ) : (
-            <img alt="arrow down" src={ArrowDown} />
+            <img alt="arrow down" src={arrowDown} />
           )}
         </div>
       </div>
 
       <div
-        style={{ display: options.showItems ? "block" : "none" }}
-        className={classes["select-items"]}
+        style={{ display: options.showItems ? 'block' : 'none' }}
+        className={classes['select-items']}
       >
-        {props.options.map((item) => (
+        {props.options.map(item => (
           <div
             key={item.id}
             onClick={() => handleSelectItem(item)}
-            className={options.selectedItem === item ? "selected" : ""}
+            className={options.selectedItem === item ? 'selected' : ''}
           >
             {item.value}
           </div>

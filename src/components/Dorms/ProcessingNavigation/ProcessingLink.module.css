@@ -2,7 +2,7 @@
   background: #083052;
 }
 
-li {
+.li {
   border: 1px solid white;
   color: white;
   text-align: center;
@@ -12,6 +12,6 @@ li {
   cursor: pointer;
 }
 
-li:hover {
+.li:hover {
   background: #083052;
 }

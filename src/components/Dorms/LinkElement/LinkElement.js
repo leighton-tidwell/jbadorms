@@ -1,13 +1,15 @@
-import React from "react";
-import { Link } from "react-router-dom";
+import React from 'react';
+import Link from 'next/link';
 
-import classes from "./LinkElement.module.css";
+import classes from './LinkElement.module.css';
 
-const LinkElement = (props) => {
+const LinkElement = props => {
   return (
-    <Link to={props.href} className={classes["link-element"]}>
-      <img alt="" className={classes.image} src={props.bgImage} />
-      <span className={classes.text}>{props.children}</span>
+    <Link href={props.href}>
+      <a className={classes['link-element']}>
+        <img alt="" className={classes.image} src={props.bgImage} />
+        <span className={classes.text}>{props.children}</span>
+      </a>
     </Link>
   );
 };

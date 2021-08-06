@@ -1,16 +1,12 @@
-import React from "react";
-import { NavLink } from "react-router-dom";
+import React from 'react';
 
-import classes from "./NavigationLink.module.css";
 
-const NavigationLink = (props) => {
+import classes from './NavigationLink.module.css';
+import NavLink from './NavLink';
+
+const NavigationLink = props => {
   return (
-    <NavLink
-      activeClassName={classes.active}
-      className={classes["navigation-link"]}
-      to={props.href}
-      exact
-    >
+    <NavLink href={props.href} className={classes['navigation-link']}>
       {props.text}
     </NavLink>
   );
