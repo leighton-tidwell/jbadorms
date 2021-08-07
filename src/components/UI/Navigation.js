@@ -19,6 +19,7 @@ const Navigation = ({ links }) => {
       return <NavigationDropDown key={link.id} linkAndDropDownLinks={link} />;
     return <NavigationLink key={link.id} href={link.href} text={link.text} />;
   };
+
   return (
     <>
       <div

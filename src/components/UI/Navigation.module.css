@@ -42,8 +42,8 @@
     text-align: right;
     display: flex;
     align-items: center;
+    justify-content: flex-end;
     flex-basis: 100%;
-    font-weight: 300;
   }
 
   .mobile-navigation-handler {
