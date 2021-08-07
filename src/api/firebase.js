@@ -1,4 +1,4 @@
-import Firebase from 'Firebase/app';
+import Firebase from 'firebase/app';
 import 'firebase/auth';
 
 const FirebaseCredentials = {
