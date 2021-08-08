@@ -1,14 +1,14 @@
 {
     "identityPoolName": "testAuthIdentityPool",
     "allowUnauthenticatedIdentities": false,
-    "resourceNameTruncated": "jbadorcaf13ce4",
+    "resourceNameTruncated": "jbador4ebc9b17",
     "userPoolName": "jbadorms",
     "autoVerifiedAttributes": [
         "email"
     ],
     "mfaConfiguration": "ON",
     "mfaTypes": [
-        "TOTP"
+        "SMS Text Message"
     ],
     "smsAuthenticationMessage": "Your login code is {####}",
     "smsVerificationMessage": "Your verification code is {####}",
@@ -24,6 +24,7 @@
     ],
     "requiredAttributes": [
         "email",
+        "phone_number",
         "name"
     ],
     "aliasAttributes": [],
@@ -31,9 +32,9 @@
     "userpoolClientRefreshTokenValidity": 30,
     "userpoolClientWriteAttributes": [],
     "userpoolClientReadAttributes": [],
-    "userpoolClientLambdaRole": "jbadorcaf13ce4_userpoolclient_lambda_role",
+    "userpoolClientLambdaRole": "jbador4ebc9b17_userpoolclient_lambda_role",
     "userpoolClientSetAttributes": false,
-    "sharedId": "caf13ce4",
+    "sharedId": "4ebc9b17",
     "resourceName": "jbadorms",
     "authSelections": "identityPoolAndUserPool",
     "authRoleArn": {
@@ -53,11 +54,22 @@
         "email"
     ],
     "useDefault": "manual",
-    "userPoolGroups": false,
-    "userPoolGroupList": [],
+    "userPoolGroups": true,
+    "userPoolGroupList": [
+        "admin",
+        "staff",
+        "user"
+    ],
     "adminQueries": false,
     "thirdPartyAuth": false,
     "authProviders": [],
     "usernameCaseSensitive": false,
-    "dependsOn": []
+    "dependsOn": [],
+    "hostedUI": false,
+    "triggers": "{}",
+    "parentStack": {
+        "Ref": "AWS::StackId"
+    },
+    "breakCircularDependency": true,
+    "permissions": []
 }

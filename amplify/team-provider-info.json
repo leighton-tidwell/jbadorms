@@ -13,7 +13,14 @@
     },
     "categories": {
       "auth": {
-        "jbadorms": {}
+        "jbadorms": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "addNewUser": {
+          "deploymentBucketName": "amplify-amplify5e26be0d59e94-staging-193731-deployment",
+          "s3Key": "amplify-builds/addNewUser-62565375387468447774-build.zip"
+        }
       }
     }
   }

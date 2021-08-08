@@ -5,7 +5,8 @@ import Amplify from 'aws-amplify';
 import {
   AmplifyAuthenticator,
   AmplifySignIn,
-  AmplifySignUp
+  AmplifySignUp,
+  AmplifySelectMfaType
 } from '@aws-amplify/ui-react';
 import config from '../aws-exports';
 Amplify.configure({ ...config, ssr: true });
@@ -20,7 +21,7 @@ const Login = ({ previousPage }) => {
   const router = useRouter();
   const handleAuthStateChange = state => {
     setAuthState(state);
-    console.log(state);
+    // Add user to datastore
     if (authState === 'signedin' && previousPage)
       return router.push(previousPage);
     if (authState === 'signedin') return router.push('/dorms/');
@@ -41,8 +42,14 @@ const Login = ({ previousPage }) => {
                 placeholder: 'John Doe',
                 inputProps: { required: true, autocomplete: 'username' }
               },
-              { type: 'email' },
-              { type: 'password' }
+              { type: 'email', inputProps: { required: true } },
+              {
+                type: 'phone_number',
+                label: 'Phone',
+                placeholder: '123-123-1234',
+                inputProps: { required: true }
+              },
+              { type: 'password', inputProps: { required: true } }
             ]}
           />
           <AmplifySignIn slot="sign-in" usernameAlias="email" />

@@ -138,7 +138,6 @@ Parameters:
   adminQueries:
     Type: String
             
-            
   
   thirdPartyAuth:
     Type: String
@@ -155,6 +154,27 @@ Parameters:
   dependsOn:
     Type: CommaDelimitedList
       
+  
+  hostedUI:
+    Type: String
+            
+  triggers:
+    Type: String
+  
+            
+            
+      
+  parentStack:
+    Type: String
+        
+  
+  breakCircularDependency:
+    Type: String
+            
+        
+  permissions:
+    Type: CommaDelimitedList
+      
 Conditions:
   ShouldNotCreateEnvResources: !Equals [ !Ref env, NONE ]
   
@@ -169,7 +189,7 @@ Resources:
   # Created to allow the UserPool SMS Config to publish via the Simple Notification Service during MFA Process
     Type: AWS::IAM::Role
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'jbadorcaf13ce4_sns-role', !Join ['',[ 'sns', 'caf13ce4', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'jbador4ebc9b17_sns-role', !Join ['',[ 'sns', '4ebc9b17', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: "2012-10-17"
         Statement:
@@ -181,10 +201,10 @@ Resources:
               - "sts:AssumeRole"
             Condition:
               StringEquals:
-                sts:ExternalId: jbadorcaf13ce4_role_external_id
+                sts:ExternalId: jbador4ebc9b17_role_external_id
       Policies:
         -
-          PolicyName: jbadorcaf13ce4-sns-policy
+          PolicyName: jbador4ebc9b17-sns-policy
           PolicyDocument:
             Version: "2012-10-17"
             Statement:
@@ -210,6 +230,11 @@ Resources:
         
         -
           Name: email
+          Required: true
+          Mutable: true
+        
+        -
+          Name: phone_number
           Required: true
           Mutable: true
         
@@ -246,7 +271,7 @@ Resources:
       SmsAuthenticationMessage: !Ref smsAuthenticationMessage
       SmsConfiguration:
         SnsCallerArn: !GetAtt SNSRole.Arn
-        ExternalId: jbadorcaf13ce4_role_external_id
+        ExternalId: jbador4ebc9b17_role_external_id
     
     DependsOn: SNSRole
     
@@ -256,7 +281,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: jbadorcaf13ce4_app_clientWeb
+      ClientName: jbador4ebc9b17_app_clientWeb
       
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
       UserPoolId: !Ref UserPool
@@ -266,7 +291,7 @@ Resources:
   # Depends on UserPool for ID reference
     Type: "AWS::Cognito::UserPoolClient"
     Properties:
-      ClientName: jbadorcaf13ce4_app_client
+      ClientName: jbador4ebc9b17_app_client
       
       GenerateSecret: !Ref userpoolClientGenerateSecret
       RefreshTokenValidity: !Ref userpoolClientRefreshTokenValidity
@@ -277,7 +302,7 @@ Resources:
   # Created to execute Lambda which gets userpool app client config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', 'caf13ce4', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, !Ref userpoolClientLambdaRole, !Join ['',['upClientLambdaRole', '4ebc9b17', !Select [3, !Split ['-', !Ref 'AWS::StackName']], '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -331,7 +356,7 @@ Resources:
   # Marked as depending on UserPoolClientRole for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: jbadorcaf13ce4_userpoolclient_lambda_iam_policy
+      PolicyName: jbador4ebc9b17_userpoolclient_lambda_iam_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -348,7 +373,7 @@ Resources:
   # Marked as depending on UserPoolClientLambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: jbadorcaf13ce4_userpoolclient_lambda_log_policy
+      PolicyName: jbador4ebc9b17_userpoolclient_lambda_log_policy
       Roles:
         - !Ref UserPoolClientRole
       PolicyDocument:
@@ -385,7 +410,7 @@ Resources:
   # Created to execute Lambda which sets MFA config values
     Type: 'AWS::IAM::Role'
     Properties:
-      RoleName: !If [ShouldNotCreateEnvResources, 'jbadorcaf13ce4_totp_lambda_role', !Join ['',['jbadorcaf13ce4_totp_lambda_role', '-', !Ref env]]]
+      RoleName: !If [ShouldNotCreateEnvResources, 'jbador4ebc9b17_totp_lambda_role', !Join ['',['jbador4ebc9b17_totp_lambda_role', '-', !Ref env]]]
       AssumeRolePolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -396,15 +421,15 @@ Resources:
             Action:
               - 'sts:AssumeRole'
       Policies:
-      - PolicyName: jbadorcaf13ce4_totp_pass_role_policy
+      - PolicyName: jbador4ebc9b17_totp_pass_role_policy
         PolicyDocument:
           Version: 2012-10-17
           Statement:
             - Effect: Allow
               Action:
                 - 'iam:PassRole'
-              Resource: !If [ShouldNotCreateEnvResources, 'arn:aws:iam:::role/jbadorcaf13ce4_totp_lambda_role', !Join ['',['arn:aws:iam:::role/jbadorcaf13ce4_totp_lambda_role', '-', !Ref env]]]
-      - PolicyName: jbadorcaf13ce4_sns_pass_role_policy
+              Resource: !If [ShouldNotCreateEnvResources, 'arn:aws:iam:::role/jbador4ebc9b17_totp_lambda_role', !Join ['',['arn:aws:iam:::role/jbador4ebc9b17_totp_lambda_role', '-', !Ref env]]]
+      - PolicyName: jbador4ebc9b17_sns_pass_role_policy
         PolicyDocument:
           Version: 2012-10-17
           Statement:
@@ -468,9 +493,9 @@ Resources:
   # Marked as depending on MFALambda for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: jbadorcaf13ce4_totp_lambda_iam_policy
+      PolicyName: jbador4ebc9b17_totp_lambda_iam_policy
       Roles:
-        - !If [ShouldNotCreateEnvResources, 'jbadorcaf13ce4_totp_lambda_role', !Join ['',['jbadorcaf13ce4_totp_lambda_role', '-', !Ref env]]]
+        - !If [ShouldNotCreateEnvResources, 'jbador4ebc9b17_totp_lambda_role', !Join ['',['jbador4ebc9b17_totp_lambda_role', '-', !Ref env]]]
       PolicyDocument:
         Version: '2012-10-17'
         Statement:
@@ -484,9 +509,9 @@ Resources:
   # Marked as depending on MFALambdaPolicy for easier to understand CFN sequencing
     Type: 'AWS::IAM::Policy'
     Properties:
-      PolicyName: jbadorcaf13ce4_totp_lambda_log_policy
+      PolicyName: jbador4ebc9b17_totp_lambda_log_policy
       Roles:
-        - !If [ShouldNotCreateEnvResources, 'jbadorcaf13ce4_totp_lambda_role', !Join ['',['jbadorcaf13ce4_totp_lambda_role', '-', !Ref env]]]
+        - !If [ShouldNotCreateEnvResources, 'jbador4ebc9b17_totp_lambda_role', !Join ['',['jbador4ebc9b17_totp_lambda_role', '-', !Ref env]]]
       PolicyDocument:
         Version: 2012-10-17
         Statement:
@@ -509,10 +534,10 @@ Resources:
       ServiceToken: !GetAtt MFALambda.Arn
       userPoolId: !Ref UserPool
       mfaConfiguration: !Ref mfaConfiguration
-      totpEnabled: true
+      totpEnabled: false
       smsConfigCaller: !GetAtt SNSRole.Arn
       smsAuthenticationMessage: !Ref smsAuthenticationMessage
-      smsConfigExternalId: jbadorcaf13ce4_role_external_id
+      smsConfigExternalId: jbador4ebc9b17_role_external_id
     DependsOn: MFALogPolicy
   
     

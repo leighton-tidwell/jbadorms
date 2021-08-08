@@ -1,0 +1,25 @@
+type Users @model @auth(rules: [{allow: private, operations: [create, read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  email: String!
+  name: String!
+  phone: AWSPhone!
+  rank: String
+  dormbuilding: Int
+  dormroom: Int
+  verified: Boolean!
+}
+
+type DormBuildings @model @auth(rules: [{allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  dormbuilding: Int!
+  capacity: Int!
+  DormRooms: [DormRooms] @connection(keyName: "byDormBuildings", fields: ["id"])
+}
+
+type DormRooms @model @key(name: "byDormBuildings", fields: ["dormbuildingsID"]) @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}]) {
+  id: ID!
+  dormbuildingsID: ID
+  dormroom: Int!
+  dormresident: ID
+}
+ 
