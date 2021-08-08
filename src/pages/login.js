@@ -1,85 +1,73 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/router';
-import { useAuth } from '../context/AuthUserProvider';
 import Link from 'next/link';
-import Input from '../components/UI/Input';
-import Button from '../components/UI/Button';
+import Amplify from 'aws-amplify';
+import {
+  AmplifyAuthenticator,
+  AmplifySignIn,
+  AmplifySignUp
+} from '@aws-amplify/ui-react';
+import config from '../aws-exports';
+Amplify.configure({ ...config, ssr: true });
+
 import Content from '../components/UI/Content';
 import Subtitle from '../components/UI/Subtitle';
-import ErrorText from '../components/UI/ErrorText';
-import Form from '../components/UI/Form';
-import Label from '../components/UI/Label';
 
 import classes from './login.module.css';
 
-const Login = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [error, setError] = useState(null);
+const Login = ({ previousPage }) => {
+  const [authState, setAuthState] = useState('');
   const router = useRouter();
-  const { signInWithEmailAndPassword } = useAuth();
-
-  const emailChangeHandler = event => {
-    setEmail(event.target.value);
-    setError(null);
-  };
-
-  const passwordChangeHandler = event => {
-    setPassword(event.target.value);
-    setError(null);
-  };
-
-  const formSubmitHandler = event => {
-    event.preventDefault();
-    signInWithEmailAndPassword(email, password)
-      .then(authUser => {
-        router.push('/dorms');
-      })
-      .catch(error => {
-        setError(error.message);
-      });
+  const handleAuthStateChange = state => {
+    setAuthState(state);
+    console.log(state);
+    if (authState === 'signedin' && previousPage)
+      return router.push(previousPage);
+    if (authState === 'signedin') return router.push('/dorms/');
   };
 
   return (
     <>
       <Subtitle>Login to JBA MHO</Subtitle>
       <Content className={`${classes.flex}`}>
-        <Form onSubmit={formSubmitHandler}>
-          <div className={classes['form-control']}>
-            <Label>Email:</Label>
-            <Input
-              value={email}
-              onChange={emailChangeHandler}
-              className={classes.input}
-              type="text"
-              placeholder="Email"
-            />
-          </div>
-          <div className={classes['form-control']}>
-            <Label>Password:</Label>
-            <Input
-              value={password}
-              onChange={passwordChangeHandler}
-              className={classes.input}
-              type="password"
-              placeholder="Password"
-            />
-          </div>
-          {error && <ErrorText>{error}</ErrorText>}
-          <Button className={classes.input} onClick={formSubmitHandler}>
-            Login
-          </Button>
-        </Form>
-        <span className={classes.signup}>
-          Or{' '}
-          <Link href="/signup">
-            <a className={classes.href}>sign up</a>
-          </Link>{' '}
-          for an account.
-        </span>
+        <AmplifyAuthenticator handleAuthStateChange={handleAuthStateChange}>
+          <AmplifySignUp
+            slot="sign-up"
+            usernameAlias="email"
+            formFields={[
+              {
+                type: 'name',
+                label: 'Full Name',
+                placeholder: 'John Doe',
+                inputProps: { required: true, autocomplete: 'username' }
+              },
+              { type: 'email' },
+              { type: 'password' }
+            ]}
+          />
+          <AmplifySignIn slot="sign-in" usernameAlias="email" />
+        </AmplifyAuthenticator>
+        {authState !== 'signedin' && previousPage && (
+          <Link href={previousPage}>Click to go back</Link>
+        )}
+        {authState === 'signedin' && 'Sit tight! We are logging you in...'}
       </Content>
     </>
   );
+};
+
+export const getServerSideProps = async context => {
+  if (context.req.headers.referer)
+    return {
+      props: {
+        previousPage: context.req.headers.referer
+      }
+    };
+  return {
+    props: {
+      previousPage: null
+    }
+  };
 };
 
 export default Login;

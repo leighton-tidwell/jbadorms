@@ -1,7 +1,9 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import uuid from 'react-uuid';
-import { useAuth } from '../../../context/AuthUserProvider';
-import { useRouter } from 'next/router';
+import Amplify, { withSSRContext } from 'aws-amplify';
+import getNavItems from '../../../api/getNavItems';
+import config from '../../../aws-exports';
+Amplify.configure({ ...config, ssr: true });
 
 import ImageBanner from '../../../components/UI/ImageBanner';
 import Subtitle from '../../../components/UI/Subtitle';
@@ -13,10 +15,8 @@ import IncomingAirmenChecklist from '../../../components/Dorms/ProcessingForms/I
 
 import classes from './index.module.css';
 
-const Processing = props => {
+const Processing = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
-  const { authUser, loading } = useAuth();
-  const router = useRouter();
   const [selectedForm, setSelectedForm] = useState(<IncomingAirmenChecklist />);
   const [navOptions, setNavOptions] = useState([
     {
@@ -66,12 +66,8 @@ const Processing = props => {
     });
   };
 
-  useEffect(() => {
-    if (!loading && !authUser) router.push('/dorms');
-  }, [loading, authUser, router]);
-
   return (
-    <DefaultLayout>
+    <DefaultLayout navLinks={navLinks}>
       <ImageBanner
         backgroundImage={bannerBackgroundImage}
         heroText="In-Processing Done Easy"
@@ -87,6 +83,27 @@ const Processing = props => {
       </Content>
     </DefaultLayout>
   );
+};
+
+export const getServerSideProps = async context => {
+  const { Auth } = withSSRContext(context);
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    return {
+      props: {
+        authenticated: true,
+        username: user.username,
+        navLinks: getNavItems(true)
+      }
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
 };
 
 export default Processing;
