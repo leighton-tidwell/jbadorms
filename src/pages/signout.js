@@ -10,15 +10,19 @@ const SignOut = ({ authenticated }) => {
   const [error, setError] = useState(null);
   const router = useRouter();
 
-  useEffect(async () => {
-    if (!authenticated) return router.push('/login');
-    try {
+  useEffect(() => {
+    const signOutHandler = async () => {
       await Auth.signOut();
       router.reload();
+    };
+
+    if (!authenticated) return router.push('/login');
+    try {
+      signOutHandler();
     } catch (error) {
       setError(error);
     }
-  }, [router, error]);
+  }, [router, error, authenticated]);
 
   return (
     <Content>
