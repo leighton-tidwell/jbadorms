@@ -13,6 +13,11 @@ const navigationLinksAuth = [
   },
   {
     id: uuid(),
+    text: 'rooms',
+    href: '/dorms/rooms'
+  },
+  {
+    id: uuid(),
     text: 'appointments',
     href: '/dorms/appointments'
   },
@@ -77,11 +82,6 @@ const navigationLinksUnAuth = [
     id: uuid(),
     text: 'rooms',
     href: '/dorms/rooms'
-  },
-  {
-    id: uuid(),
-    text: 'contact',
-    href: '/dorms/contact'
   },
   {
     id: uuid(),

@@ -12,15 +12,15 @@ const Footer = props => {
     },
     {
       title: 'in processing',
-      href: '/dorms'
+      href: '/dorms/processing'
     },
     {
       title: 'work orders',
-      href: '/dorms'
+      href: '/dorms/work-orders'
     },
     {
-      title: 'chaplain',
-      href: '/dorms'
+      title: 'rooms',
+      href: '/dorms/rooms'
     },
     {
       title: 'jba map',

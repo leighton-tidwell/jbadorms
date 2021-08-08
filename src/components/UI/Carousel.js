@@ -1,11 +1,13 @@
 import React, { useState } from 'react';
 import { useTransition, animated } from 'react-spring';
+import { useRouter } from 'next/router';
 
 import classes from './Carousel.module.css';
 
 import Button from './Button';
 
 const Carousel = props => {
+  const router = useRouter();
   const images = ['/images/carousel_one.png', '/images/carousel_two.png'];
   const arrows = {
     arrowLeft: '/images/arrow-left.svg',
@@ -15,12 +17,14 @@ const Carousel = props => {
     {
       hero: 'Easy first term airman processing',
       subtext: 'New to Joint Base Andrews?',
-      button: 'In-Process'
+      button: 'In-Process',
+      href: '/dorms/processing'
     },
     {
       hero: 'Hassle free work order process',
       subtext: 'Having issues with your dorm?',
-      button: 'Get it fixed'
+      button: 'Get it fixed',
+      href: '/dorms/work-orders'
     }
   ];
   const [index, setIndex] = useState(0);
@@ -51,6 +55,10 @@ const Carousel = props => {
   //   return () => clearTimeout(t);
   // }, []);
 
+  const handleClickLink = href => {
+    router.push(href);
+  };
+
   return (
     <div className={classes.carousel} id="carousel">
       {transition((style, i) => (
@@ -67,7 +75,11 @@ const Carousel = props => {
             <div className={classes['call-to-action']}>
               <h1>{callsToAction[i].hero}</h1>
               <h3>{callsToAction[i].subtext}</h3>
-              <Button className={classes.button} type="button">
+              <Button
+                className={classes.button}
+                onClick={() => handleClickLink(callsToAction[i].href)}
+                type="button"
+              >
                 {callsToAction[i].button}
               </Button>
             </div>

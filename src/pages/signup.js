@@ -7,6 +7,8 @@ import Button from '../components/UI/Button';
 import Content from '../components/UI/Content';
 import Subtitle from '../components/UI/Subtitle';
 import ErrorText from '../components/UI/ErrorText';
+import Form from '../components/UI/Form';
+import Label from '../components/UI/Label';
 
 import classes from './signup.module.css';
 
@@ -57,38 +59,42 @@ const SignUp = () => {
     <>
       <Subtitle>Sign Up To JBA MHO</Subtitle>
       <Content className={`${classes.flex}`}>
-        <div className={classes['form-control']}>
-          <label className={classes.label}>Email:</label>
-          <Input
-            value={email}
-            onChange={emailChangeHandler}
-            className={classes.input}
-            type="text"
-            placeholder="Email"
-          />
-        </div>
-        <div className={classes['form-control']}>
-          <label className={classes.label}>Password:</label>
-          <Input
-            type="password"
-            onChange={passwordChangeHandler}
-            className={classes.input}
-            value={password}
-            placeholder="Password"
-          />
-        </div>
-        <div className={classes['form-control']}>
-          <label className={classes.label}>Confirm Password:</label>
-          <Input
-            type="password"
-            onChange={passwordTwoChangeHandler}
-            className={classes.input}
-            value={passwordTwo}
-            placeholder="Confirm Password"
-          />
-        </div>
-        {error && <ErrorText>{error}</ErrorText>}
-        <Button onClick={formSubmitHandler}>Sign Up</Button>
+        <Form onSubmit={formSubmitHandler}>
+          <div className={classes['form-control']}>
+            <Label>Email:</Label>
+            <Input
+              value={email}
+              onChange={emailChangeHandler}
+              className={classes.input}
+              type="text"
+              placeholder="Email"
+            />
+          </div>
+          <div className={classes['form-control']}>
+            <Label>Password:</Label>
+            <Input
+              type="password"
+              onChange={passwordChangeHandler}
+              className={classes.input}
+              value={password}
+              placeholder="Password"
+            />
+          </div>
+          <div className={classes['form-control']}>
+            <Label>Confirm Password:</Label>
+            <Input
+              type="password"
+              onChange={passwordTwoChangeHandler}
+              className={classes.input}
+              value={passwordTwo}
+              placeholder="Confirm Password"
+            />
+          </div>
+          {error && <ErrorText>{error}</ErrorText>}
+          <Button className={classes.input} onClick={formSubmitHandler}>
+            Sign Up
+          </Button>
+        </Form>
         <span className={classes.signup}>
           Or{' '}
           <Link href="/login">

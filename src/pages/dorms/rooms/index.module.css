@@ -1,0 +1,8 @@
+.grid {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  padding: 1em;
+}

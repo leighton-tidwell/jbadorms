@@ -7,6 +7,8 @@ import Button from '../components/UI/Button';
 import Content from '../components/UI/Content';
 import Subtitle from '../components/UI/Subtitle';
 import ErrorText from '../components/UI/ErrorText';
+import Form from '../components/UI/Form';
+import Label from '../components/UI/Label';
 
 import classes from './login.module.css';
 
@@ -27,7 +29,8 @@ const Login = () => {
     setError(null);
   };
 
-  const formSubmitHandler = () => {
+  const formSubmitHandler = event => {
+    event.preventDefault();
     signInWithEmailAndPassword(email, password)
       .then(authUser => {
         router.push('/dorms');
@@ -41,28 +44,32 @@ const Login = () => {
     <>
       <Subtitle>Login to JBA MHO</Subtitle>
       <Content className={`${classes.flex}`}>
-        <div className={classes['form-control']}>
-          <label className={classes.label}>Email:</label>
-          <Input
-            value={email}
-            onChange={emailChangeHandler}
-            className={classes.input}
-            type="text"
-            placeholder="Email"
-          />
-        </div>
-        <div className={classes['form-control']}>
-          <label className={classes.label}>Password:</label>
-          <Input
-            value={password}
-            onChange={passwordChangeHandler}
-            className={classes.input}
-            type="password"
-            placeholder="Password"
-          />
-        </div>
-        {error && <ErrorText>{error}</ErrorText>}
-        <Button onClick={formSubmitHandler}>Login</Button>
+        <Form onSubmit={formSubmitHandler}>
+          <div className={classes['form-control']}>
+            <Label>Email:</Label>
+            <Input
+              value={email}
+              onChange={emailChangeHandler}
+              className={classes.input}
+              type="text"
+              placeholder="Email"
+            />
+          </div>
+          <div className={classes['form-control']}>
+            <Label>Password:</Label>
+            <Input
+              value={password}
+              onChange={passwordChangeHandler}
+              className={classes.input}
+              type="password"
+              placeholder="Password"
+            />
+          </div>
+          {error && <ErrorText>{error}</ErrorText>}
+          <Button className={classes.input} onClick={formSubmitHandler}>
+            Login
+          </Button>
+        </Form>
         <span className={classes.signup}>
           Or{' '}
           <Link href="/signup">
