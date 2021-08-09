@@ -5,8 +5,7 @@ import Amplify from 'aws-amplify';
 import {
   AmplifyAuthenticator,
   AmplifySignIn,
-  AmplifySignUp,
-  AmplifySelectMfaType
+  AmplifySignUp
 } from '@aws-amplify/ui-react';
 import config from '../aws-exports';
 Amplify.configure({ ...config, ssr: true });
@@ -22,8 +21,12 @@ const Login = ({ previousPage }) => {
   const handleAuthStateChange = state => {
     setAuthState(state);
     // Add user to datastore
+    console.log(previousPage);
+    console.log(authState);
     if (authState === 'signedin' && previousPage)
       return router.push(previousPage);
+
+    console.log('trying to push to dorms');
     if (authState === 'signedin') return router.push('/dorms/');
   };
 
