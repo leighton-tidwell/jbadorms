@@ -1,0 +1,12 @@
+.flex {
+  display: flex;
+  height: 100%;
+}
+
+.content {
+  color: white;
+  display: flex;
+  flex-basis: 100%;
+  flex-direction: column;
+  padding: 1em;
+}
