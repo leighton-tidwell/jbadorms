@@ -20,13 +20,10 @@ const Login = ({ previousPage }) => {
   const router = useRouter();
   const handleAuthStateChange = state => {
     setAuthState(state);
-    // Add user to datastore
-    console.log(previousPage);
-    console.log(authState);
+
     if (authState === 'signedin' && previousPage)
       return router.push(previousPage);
 
-    console.log('trying to push to dorms');
     if (authState === 'signedin') return router.push('/dorms/');
   };
 

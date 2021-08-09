@@ -21,13 +21,15 @@ exports.handler = async (event, context, callback) => {
   const params = {
     Item: {
       id: { S: event.request.userAttributes.sub },
+      __typename: { S: 'Users' },
       email: { S: event.request.userAttributes.email },
       name: { S: event.request.userAttributes.name },
       phone: { S: event.request.userAttributes.phone_number },
-      rank: { S: '' },
-      dormbuilding: { S: '' },
-      dormroom: { S: '' },
-      verified: { BOOL: false }
+      verified: { BOOL: false },
+      _version: { N: '1' },
+      _lastChangedAt: { N: new Date().getTime().toString() },
+      createdAt: { S: new Date().toISOString() },
+      updatedAt: { S: new Date().toISOString() }
     },
     TableName: process.env.API_JBADORMS_USERSTABLE_NAME
   };

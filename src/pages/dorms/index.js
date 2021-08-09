@@ -13,7 +13,6 @@ import ContentBanner from '../../components/Dorms/ContentBanner/ContentBanner';
 import AdditionalInformation from '../../components/Dorms/AdditionalInformation/AdditionalInformation';
 
 const HomePage = ({ navLinks, username, authenticated }) => {
-  console.log(navLinks, username, authenticated);
   return (
     <DefaultLayout navLinks={navLinks}>
       <Carousel />
