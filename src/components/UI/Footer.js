@@ -19,8 +19,8 @@ const Footer = props => {
       href: '/dorms/work-orders'
     },
     {
-      title: 'rooms',
-      href: '/dorms/rooms'
+      title: 'management portal',
+      href: '/management'
     },
     {
       title: 'jba map',

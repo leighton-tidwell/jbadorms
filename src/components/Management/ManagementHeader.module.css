@@ -11,3 +11,12 @@
   font-weight: 700;
   flex-basis: 85%;
 }
+
+.logoLink {
+  text-decoration: none;
+  color: white;
+}
+
+.logoLink:hover {
+  text-decoration: underline;
+}

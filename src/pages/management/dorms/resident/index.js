@@ -1,38 +1,19 @@
 import React, { useEffect, useState } from 'react';
-import uuid from 'react-uuid';
+import { useRouter } from 'next/router';
 import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
-import { listUsers, listDormBuildings } from '../../../graphql/queries';
-
-import config from '../../../aws-exports';
+import Link from 'next/link';
+import { listUsers } from '../../../../graphql/queries';
+import config from '../../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
-import DormCapacity from '../../../components/Management/DormCapacity';
-import ResidentsTable from '../../../components/Management/ResidentsTable';
-
-import ManagementLayout from '../../../layouts/management/default';
-
+import ResidentsTable from '../../../../components/Management/ResidentsTable';
+import ManagementLayout from '../../../../layouts/management/default';
 import classes from './index.module.css';
 
-const DormsManagementPage = ({ userName }) => {
+const ResidentPage = ({ userName }) => {
   const [usersList, setUsersList] = useState([]);
   const [verifiedUsersList, setVerifiedUsersList] = useState([]);
-  const [buildingList, setBuildingList] = useState([]);
-
-  const fetchBuildings = async () => {
-    try {
-      const buildingData = await API.graphql(
-        graphqlOperation(listDormBuildings)
-      );
-      const buildings = buildingData.data.listDormBuildings.items;
-      const newBuildingList = buildings.map(building => ({
-        building: building.dormbuilding,
-        capacity: building.capacity
-      }));
-      setBuildingList(newBuildingList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+  const router = useRouter();
 
   const fetchUsers = async () => {
     try {
@@ -75,50 +56,28 @@ const DormsManagementPage = ({ userName }) => {
 
   useEffect(() => {
     fetchUsers();
-    fetchBuildings();
   }, []);
 
   return (
     <ManagementLayout userName={userName}>
-      <div className={classes.title}>Dorms Management</div>
-      <div className={classes.occupancy}>
-        {buildingList.map(building => (
-          <DormCapacity
-            key={uuid()}
-            building={building.building}
-            total={building.capacity}
-          />
-        ))}
+      <div className={classes['flex-title']}>
+        <Link href="/management/dorms">
+          <a className={classes.title}>Dorms Management</a>
+        </Link>
+        <div className={classes.subtitle}>/ Residents</div>
       </div>
       <div className={classes.tables}>
         <ResidentsTable
-          title="Current Residents"
+          title="Residents List"
           image="/images/management/residents.svg"
           data={usersList}
           type="resident"
-          showMore
         />
         <ResidentsTable
           title="Verification Needed"
           image="/images/management/verification.svg"
           data={verifiedUsersList}
           type="resident"
-          showMore
-        />
-      </div>
-      <div className={classes.tables}>
-        <ResidentsTable
-          title="Current Buildings"
-          image="/images/management/dorms_active.svg"
-          data={buildingList}
-          type="building"
-          showMore
-        />
-        <ResidentsTable
-          title="Unnecessary Table"
-          image="/images/management/verification.svg"
-          data={[]}
-          showMore
         />
       </div>
     </ManagementLayout>
@@ -144,4 +103,4 @@ export const getServerSideProps = async context => {
   }
 };
 
-export default DormsManagementPage;
+export default ResidentPage;

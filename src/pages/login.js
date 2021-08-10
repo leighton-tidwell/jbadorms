@@ -21,7 +21,11 @@ const Login = ({ previousPage }) => {
   const handleAuthStateChange = state => {
     setAuthState(state);
 
-    if (authState === 'signedin' && previousPage)
+    if (
+      authState === 'signedin' &&
+      previousPage &&
+      previousPage.indexOf('/signout') === -1
+    )
       return router.push(previousPage);
 
     if (authState === 'signedin') return router.push('/dorms/');
@@ -54,10 +58,21 @@ const Login = ({ previousPage }) => {
           />
           <AmplifySignIn slot="sign-in" usernameAlias="email" />
         </AmplifyAuthenticator>
-        {authState !== 'signedin' && previousPage && (
-          <Link href={previousPage}>Click to go back</Link>
+        {authState !== 'signedin' &&
+          previousPage &&
+          previousPage.indexOf('/signout') === -1 && (
+            <Link href={previousPage}>
+              <a className={classes.inline}>Click to go back</a>
+            </Link>
+          )}
+        {authState === 'signedin' && (
+          <div className={classes.redirect}>
+            Sit tight! We are logging you in...&nbsp;
+            <Link href={previousPage || '/'}>
+              <a className={classes.inline}>or click here to continue.</a>
+            </Link>
+          </div>
         )}
-        {authState === 'signedin' && 'Sit tight! We are logging you in...'}
       </Content>
     </>
   );

@@ -52,6 +52,15 @@
   color: white;
 }
 
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
 .more-link:hover .more-image {
   background: url('/images/management/more_active.svg');
   background-position: center center;
