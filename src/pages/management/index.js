@@ -17,8 +17,8 @@ export const getServerSideProps = async context => {
     const user = await Auth.currentAuthenticatedUser();
     const userGroups =
       user.signInUserSession.accessToken.payload['cognito:groups'];
-    // if (!userGroups.includes('staff') && !userGroups.includes('admin'))
-    //   throw 'Invalid group';
+    if (!userGroups.includes('staff') && !userGroups.includes('admin'))
+      throw 'Invalid group';
     return {
       props: {
         userName: user.attributes.name

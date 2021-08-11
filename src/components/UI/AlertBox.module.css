@@ -1,0 +1,23 @@
+.container {
+  background-color: #083052;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  padding: 1em;
+}
+
+.title-container {
+  display: flex;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.13);
+  padding-bottom: 0.5em;
+}
+
+.title {
+  font-size: 1.2em;
+  margin-left: 5px;
+}
+
+.body {
+  width: 100%;
+  padding-top: 0.5em;
+}

@@ -1,4 +1,4 @@
-type Users @model @auth(rules: [{allow: private, operations: [create, read]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}]) {
+type Users @model @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read, update]}]) {
   id: ID!
   email: String!
   name: String!
@@ -9,14 +9,14 @@ type Users @model @auth(rules: [{allow: private, operations: [create, read]}, {a
   verified: Boolean!
 }
 
-type DormBuildings @model @auth(rules: [{allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}]) {
+type DormBuildings @model @auth(rules: [{allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read]}]) {
   id: ID!
   dormbuilding: Int!
   capacity: Int!
   DormRooms: [DormRooms] @connection(keyName: "byDormBuildings", fields: ["id"])
 }
 
-type DormRooms @model @key(name: "byDormBuildings", fields: ["dormbuildingsID"]) @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}]) {
+type DormRooms @model @key(name: "byDormBuildings", fields: ["dormbuildingsID"]) @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read]}]) {
   id: ID!
   dormbuildingsID: ID
   dormroom: Int!

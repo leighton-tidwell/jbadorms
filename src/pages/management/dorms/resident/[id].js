@@ -10,29 +10,8 @@ import classes from './[id].module.css';
 import ManagementLayout from '../../../../layouts/management/default';
 import ResidentForm from '../../../../components/Management/ResidentForm';
 
-const ResidentPage = ({ userName }) => {
-  const router = useRouter();
-  const { id } = router.query;
-  const [userData, setUserData] = useState(null);
-
-  const getUserInformation = async () => {
-    if (!id) return;
-    try {
-      const userData = await API.graphql(
-        graphqlOperation(listUsers, {
-          filter: { email: { eq: id } }
-        })
-      );
-      const selectedUser = userData.data.listUsers.items[0] || null;
-      if (selectedUser) return setUserData(selectedUser);
-    } catch (error) {
-      console.error(error, 'error from userid');
-    }
-  };
-
-  useEffect(() => {
-    getUserInformation();
-  }, []);
+const ResidentPage = ({ userName, id, selectedUserData }) => {
+  const [userData, setUserData] = useState(selectedUserData);
 
   return (
     <ManagementLayout userName={userName}>
@@ -54,14 +33,18 @@ const ResidentPage = ({ userName }) => {
 };
 
 export const getServerSideProps = async context => {
-  const { Auth } = withSSRContext(context);
+  const { Auth, API } = withSSRContext(context);
+  const id = context.query.id;
+  let props = {};
+
+  // Get Auth
   try {
     const user = await Auth.currentAuthenticatedUser();
-    return {
-      props: {
-        userName: user.attributes.name
-      }
-    };
+    const userGroups =
+      user.signInUserSession.accessToken.payload['cognito:groups'];
+    if (!userGroups.includes('staff') && !userGroups.includes('admin'))
+      throw 'Invalid group';
+    props.userName = user.attributes.name;
   } catch (error) {
     return {
       redirect: {
@@ -70,6 +53,19 @@ export const getServerSideProps = async context => {
       }
     };
   }
+
+  if (!id)
+    return { redirect: { destination: '/management/dorms', permanent: false } };
+
+  const userData = await API.graphql(
+    graphqlOperation(listUsers, {
+      filter: { email: { eq: id } }
+    })
+  );
+  props.selectedUserData = userData.data.listUsers.items[0] || null;
+  props.id = id;
+
+  return { props: props };
 };
 
 export default ResidentPage;

@@ -13,70 +13,17 @@ import ManagementLayout from '../../../layouts/management/default';
 
 import classes from './index.module.css';
 
-const DormsManagementPage = ({ userName }) => {
-  const [usersList, setUsersList] = useState([]);
-  const [verifiedUsersList, setVerifiedUsersList] = useState([]);
-  const [buildingList, setBuildingList] = useState([]);
-
-  const fetchBuildings = async () => {
-    try {
-      const buildingData = await API.graphql(
-        graphqlOperation(listDormBuildings)
-      );
-      const buildings = buildingData.data.listDormBuildings.items;
-      const newBuildingList = buildings.map(building => ({
-        building: building.dormbuilding,
-        capacity: building.capacity
-      }));
-      setBuildingList(newBuildingList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  const fetchUsers = async () => {
-    try {
-      const userData = await API.graphql(
-        graphqlOperation(listUsers, {
-          filter: { verified: { eq: true } }
-        })
-      );
-      const users = userData.data.listUsers.items;
-      const newUsersList = users.map(user => {
-        return {
-          email: user.email,
-          name: user.name,
-          phone: user.phone,
-          dormbuilding: user.dormbuilding || '',
-          dormroom: user.dormroom || ''
-        };
-      });
-
-      const unverifiedUsersData = await API.graphql(
-        graphqlOperation(listUsers, {
-          filter: { verified: { eq: false } }
-        })
-      );
-
-      const unverifiedUsers = unverifiedUsersData.data.listUsers.items;
-      const verifiedUsersList = unverifiedUsers.map(user => {
-        return {
-          name: user.name,
-          email: user.email,
-          phone: user.phone
-        };
-      });
-      setUsersList(newUsersList);
-      setVerifiedUsersList(verifiedUsersList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
-
-  useEffect(() => {
-    fetchUsers();
-    fetchBuildings();
-  }, []);
+const DormsManagementPage = ({
+  userName,
+  listOfBuildings,
+  listOfUnverifiedUsers,
+  listOfVerifiedUsers
+}) => {
+  const [verifiedUsersList, setVerifiedUsers] = useState(listOfVerifiedUsers);
+  const [unVerifiedUsersList, setunVerifiedUsersList] = useState(
+    listOfUnverifiedUsers
+  );
+  const [buildingList, setBuildingList] = useState(listOfBuildings);
 
   return (
     <ManagementLayout userName={userName}>
@@ -94,14 +41,14 @@ const DormsManagementPage = ({ userName }) => {
         <ResidentsTable
           title="Current Residents"
           image="/images/management/residents.svg"
-          data={usersList}
+          data={verifiedUsersList}
           type="resident"
           showMore
         />
         <ResidentsTable
           title="Verification Needed"
           image="/images/management/verification.svg"
-          data={verifiedUsersList}
+          data={unVerifiedUsersList}
           type="resident"
           showMore
         />
@@ -126,14 +73,17 @@ const DormsManagementPage = ({ userName }) => {
 };
 
 export const getServerSideProps = async context => {
-  const { Auth } = withSSRContext(context);
+  const { Auth, API } = withSSRContext(context);
+  let props = {};
+
+  // Check Auth
   try {
     const user = await Auth.currentAuthenticatedUser();
-    return {
-      props: {
-        userName: user.attributes.name
-      }
-    };
+    const userGroups =
+      user.signInUserSession.accessToken.payload['cognito:groups'];
+    if (!userGroups.includes('staff') && !userGroups.includes('admin'))
+      throw 'Invalid group';
+    props.userName = user.attributes.name;
   } catch (error) {
     return {
       redirect: {
@@ -142,6 +92,50 @@ export const getServerSideProps = async context => {
       }
     };
   }
+
+  // Get building Data
+  const buildingData = await API.graphql(graphqlOperation(listDormBuildings));
+  const buildings = buildingData.data.listDormBuildings.items;
+  props.listOfBuildings = buildings.map(building => ({
+    building: building.dormbuilding,
+    capacity: building.capacity
+  }));
+
+  // Get verified/ unverified users
+  const userData = await API.graphql(
+    graphqlOperation(listUsers, {
+      filter: { verified: { eq: true } }
+    })
+  );
+  const users = userData.data.listUsers.items;
+  props.listOfVerifiedUsers = users.map(user => {
+    return {
+      email: user.email,
+      name: user.name,
+      phone: user.phone,
+      dormbuilding: user.dormbuilding || '',
+      dormroom: user.dormroom || ''
+    };
+  });
+
+  const unverifiedUsersData = await API.graphql(
+    graphqlOperation(listUsers, {
+      filter: { verified: { eq: false } }
+    })
+  );
+
+  const unverifiedUsers = unverifiedUsersData.data.listUsers.items;
+  props.listOfUnverifiedUsers = unverifiedUsers.map(user => {
+    return {
+      name: user.name,
+      email: user.email,
+      phone: user.phone
+    };
+  });
+
+  return {
+    props: props
+  };
 };
 
 export default DormsManagementPage;

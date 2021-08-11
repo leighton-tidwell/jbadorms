@@ -14,24 +14,8 @@ import ManagementLayout from '../../../../layouts/management/default';
 import AddBuildingForm from '../../../../components/Management/AddBuildingForm';
 import classes from './index.module.css';
 
-const BuildingPage = ({ userName }) => {
-  const [buildingList, setBuildingList] = useState([]);
-
-  const fetchBuildings = async () => {
-    try {
-      const buildingData = await API.graphql(
-        graphqlOperation(listDormBuildings)
-      );
-      const buildings = buildingData.data.listDormBuildings.items;
-      const newBuildingList = buildings.map(building => ({
-        building: building.dormbuilding,
-        capacity: building.capacity
-      }));
-      setBuildingList(newBuildingList);
-    } catch (error) {
-      console.error(error);
-    }
-  };
+const BuildingPage = ({ userName, listOfBuildings }) => {
+  const [buildingList, setBuildingList] = useState(listOfBuildings);
 
   const addBuildingHandler = async (
     building,
@@ -69,10 +53,6 @@ const BuildingPage = ({ userName }) => {
     }
   };
 
-  useEffect(() => {
-    fetchBuildings();
-  }, []);
-
   return (
     <ManagementLayout userName={userName}>
       <div className={classes['flex-title']}>
@@ -94,14 +74,17 @@ const BuildingPage = ({ userName }) => {
 };
 
 export const getServerSideProps = async context => {
-  const { Auth } = withSSRContext(context);
+  const { Auth, API } = withSSRContext(context);
+  let props = {};
+
+  // Get Auth
   try {
     const user = await Auth.currentAuthenticatedUser();
-    return {
-      props: {
-        userName: user.attributes.name
-      }
-    };
+    const userGroups =
+      user.signInUserSession.accessToken.payload['cognito:groups'];
+    if (!userGroups.includes('staff') && !userGroups.includes('admin'))
+      throw 'Invalid group';
+    props.userName = user.attributes.name;
   } catch (error) {
     return {
       redirect: {
@@ -110,6 +93,15 @@ export const getServerSideProps = async context => {
       }
     };
   }
+
+  const buildingData = await API.graphql(graphqlOperation(listDormBuildings));
+  const buildings = buildingData.data.listDormBuildings.items;
+  props.listOfBuildings = buildings.map(building => ({
+    building: building.dormbuilding,
+    capacity: building.capacity
+  }));
+
+  return { props: props };
 };
 
 export default BuildingPage;
