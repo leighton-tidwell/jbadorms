@@ -1,6 +1,54 @@
 /* eslint-disable */
 // this is an auto generated file. This will be overwritten
 
+export const onCreateNotifications = /* GraphQL */ `
+  subscription OnCreateNotifications {
+    onCreateNotifications {
+      id
+      name
+      email
+      subject
+      message
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateNotifications = /* GraphQL */ `
+  subscription OnUpdateNotifications {
+    onUpdateNotifications {
+      id
+      name
+      email
+      subject
+      message
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteNotifications = /* GraphQL */ `
+  subscription OnDeleteNotifications {
+    onDeleteNotifications {
+      id
+      name
+      email
+      subject
+      message
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
 export const onCreateUsers = /* GraphQL */ `
   subscription OnCreateUsers {
     onCreateUsers {

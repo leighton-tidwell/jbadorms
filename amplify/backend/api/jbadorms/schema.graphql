@@ -1,3 +1,11 @@
+type Notifications @model @auth(rules: [{allow: groups, groups: ["user"], operations: [create]}]) {
+  id: ID!
+  name: String!
+  email: String!
+  subject: String!
+  message: String!
+}
+
 type Users @model @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read, update]}]) {
   id: ID!
   email: String!

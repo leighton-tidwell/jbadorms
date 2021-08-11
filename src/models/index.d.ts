@@ -4,6 +4,10 @@ import { ModelInit, MutableModel, PersistentModelConstructor } from "@aws-amplif
 
 
 
+type NotificationsMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 type UsersMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
@@ -14,6 +18,18 @@ type DormBuildingsMetaData = {
 
 type DormRoomsMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
+export declare class Notifications {
+  readonly id: string;
+  readonly name: string;
+  readonly email: string;
+  readonly subject: string;
+  readonly message: string;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Notifications, NotificationsMetaData>);
+  static copyOf(source: Notifications, mutator: (draft: MutableModel<Notifications, NotificationsMetaData>) => MutableModel<Notifications, NotificationsMetaData> | void): Notifications;
 }
 
 export declare class Users {

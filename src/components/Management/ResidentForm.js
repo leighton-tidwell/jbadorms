@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import classes from './ResidentForm.module.css';
 import { API, graphqlOperation } from 'aws-amplify';
-import { updateUsers } from '../../graphql/mutations';
+import { updateUsers, createNotifications } from '../../graphql/mutations';
 import {
   listDormBuildings,
   listDormRooms,
@@ -16,6 +16,7 @@ import SuccessText from '../UI/SuccessText';
 
 const ResidentForm = ({ data }) => {
   const [userId, setUserId] = useState(data.id);
+  const [userName, setUserName] = useState(data.name);
   const [userVersion, setUserVersion] = useState(data._version);
   const [userEmail, setUserEmail] = useState(data.email);
   const [userPhone, setUserPhone] = useState(data.phone);
@@ -126,7 +127,19 @@ const ResidentForm = ({ data }) => {
           }
         })
       );
-      console.log(verifyUser);
+
+      const sendNotification = await API.graphql(
+        graphqlOperation(createNotifications, {
+          input: {
+            name: userName,
+            email: userEmail,
+            subject: 'Account Verified',
+            message:
+              'Your account has been verified! You can now continue in-processing on the JBA MHO site.'
+          }
+        })
+      );
+
       setSuccess('User verified successfully!');
     } catch (error) {
       setError('An error occurred.');
@@ -143,7 +156,7 @@ const ResidentForm = ({ data }) => {
           alt="table icon"
         />
         Resident:&nbsp;
-        <span className={classes['resident-name']}>Leighton Tidwell</span>
+        <span className={classes['resident-name']}>{userName}</span>
       </div>
       <form onSubmit={handleSubmitForm}>
         <div className={classes.flex}>
@@ -190,7 +203,11 @@ const ResidentForm = ({ data }) => {
           Update
         </Button>
         {!userVerified && (
-          <Button className={classes.verify} onClick={handleVerifyUser}>
+          <Button
+            type="button"
+            className={classes.verify}
+            onClick={handleVerifyUser}
+          >
             Verify
           </Button>
         )}

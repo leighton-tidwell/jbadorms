@@ -20,6 +20,41 @@
         "addNewUser": {
           "deploymentBucketName": "amplify-amplify5e26be0d59e94-staging-193731-deployment",
           "s3Key": "amplify-builds/addNewUser-3750443941537a5a4d61-build.zip"
+        },
+        "notificationEmailer": {
+          "sesEmail": "no-reply@jbamho.com",
+          "deploymentBucketName": "amplify-amplify5e26be0d59e94-staging-193731-deployment",
+          "s3Key": "amplify-builds/notificationEmailer-4139506f4a316b53504d-build.zip"
+        }
+      }
+    }
+  },
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-jbadorms-dev-182932-authRole",
+      "UnauthRoleArn": "arn:aws:iam::628129398802:role/amplify-jbadorms-dev-182932-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::628129398802:role/amplify-jbadorms-dev-182932-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-jbadorms-dev-182932-deployment",
+      "UnauthRoleName": "amplify-jbadorms-dev-182932-unauthRole",
+      "StackName": "amplify-jbadorms-dev-182932",
+      "StackId": "arn:aws:cloudformation:us-east-1:628129398802:stack/amplify-jbadorms-dev-182932/9bd55b20-faf3-11eb-ba37-1277bf9feb05",
+      "AmplifyAppId": "d2b11cw3mfd5jw"
+    },
+    "categories": {
+      "auth": {
+        "jbadorms": {},
+        "userPoolGroups": {}
+      },
+      "function": {
+        "addNewUser": {
+          "deploymentBucketName": "amplify-jbadorms-dev-182932-deployment",
+          "s3Key": "amplify-builds/addNewUser-3750443941537a5a4d61-build.zip"
+        },
+        "notificationEmailer": {
+          "sesEmail": "no-reply@jbamho.com",
+          "deploymentBucketName": "amplify-jbadorms-dev-182932-deployment",
+          "s3Key": "amplify-builds/notificationEmailer-4139506f4a316b53504d-build.zip"
         }
       }
     }
