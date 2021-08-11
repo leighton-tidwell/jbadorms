@@ -1,5 +1,9 @@
 import React from 'react';
 import uuid from 'react-uuid';
+import Amplify, { withSSRContext } from 'aws-amplify';
+import getNavItems from '../../../api/getNavItems';
+import config from '../../../aws-exports';
+Amplify.configure({ ...config, ssr: true });
 
 import DefaultLayout from '../../../layouts/dorms/default';
 import ImageBanner from '../../../components/UI/ImageBanner';
@@ -9,7 +13,7 @@ import RoomGallery from '../../../components/Dorms/RoomGallery/RoomGallery';
 
 import classes from './index.module.css';
 
-const RoomsPage = () => {
+const RoomsPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/rooms_banner.png';
   const buildingOneImages = [
     {
@@ -44,7 +48,7 @@ const RoomsPage = () => {
     }
   ];
   return (
-    <DefaultLayout>
+    <DefaultLayout navLinks={navLinks}>
       <ImageBanner
         backgroundImage={bannerBackgroundImage}
         heroText="Dual Airmen dorms with kitchenette"
@@ -65,6 +69,27 @@ const RoomsPage = () => {
       </Content>
     </DefaultLayout>
   );
+};
+
+export const getServerSideProps = async context => {
+  const { Auth } = withSSRContext(context);
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    return {
+      props: {
+        authenticated: true,
+        username: user.username,
+        navLinks: getNavItems(true)
+      }
+    };
+  } catch (error) {
+    return {
+      props: {
+        authenticated: false,
+        navLinks: getNavItems(false)
+      }
+    };
+  }
 };
 
 export default RoomsPage;

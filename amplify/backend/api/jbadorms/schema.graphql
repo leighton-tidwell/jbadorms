@@ -1,0 +1,33 @@
+type Notifications @model @auth(rules: [{allow: groups, groups: ["user"], operations: [create]}]) {
+  id: ID!
+  name: String!
+  email: String!
+  subject: String!
+  message: String!
+}
+
+type Users @model @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read, update]}]) {
+  id: ID!
+  email: String!
+  name: String!
+  phone: AWSPhone!
+  rank: String
+  dormbuilding: Int
+  dormroom: Int
+  verified: Boolean!
+}
+
+type DormBuildings @model @auth(rules: [{allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read]}]) {
+  id: ID!
+  dormbuilding: Int!
+  capacity: Int!
+  DormRooms: [DormRooms] @connection(keyName: "byDormBuildings", fields: ["id"])
+}
+
+type DormRooms @model @key(name: "byDormBuildings", fields: ["dormbuildingsID"]) @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read]}]) {
+  id: ID!
+  dormbuildingsID: ID
+  dormroom: Int!
+  dormresident: ID
+}
+ 

@@ -1,8 +1,12 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import uuid from 'react-uuid';
-import { useAuth } from '../../../context/AuthUserProvider';
-import { useRouter } from 'next/router';
+import Amplify, { graphqlOperation, withSSRContext } from 'aws-amplify';
+import { listUsers } from '../../../graphql/queries';
+import getNavItems from '../../../api/getNavItems';
+import config from '../../../aws-exports';
+Amplify.configure({ ...config, ssr: true });
 
+import AlertBox from '../../../components/UI/AlertBox';
 import ImageBanner from '../../../components/UI/ImageBanner';
 import Subtitle from '../../../components/UI/Subtitle';
 import Content from '../../../components/UI/Content';
@@ -13,10 +17,9 @@ import IncomingAirmenChecklist from '../../../components/Dorms/ProcessingForms/I
 
 import classes from './index.module.css';
 
-const Processing = props => {
+const Processing = ({ navLinks, verified }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
-  const { authUser, loading } = useAuth();
-  const router = useRouter();
+  const [userIsVerified, setUserIsVerified] = useState(verified);
   const [selectedForm, setSelectedForm] = useState(<IncomingAirmenChecklist />);
   const [navOptions, setNavOptions] = useState([
     {
@@ -66,12 +69,8 @@ const Processing = props => {
     });
   };
 
-  useEffect(() => {
-    if (!loading && !authUser) router.push('/dorms');
-  }, [loading, authUser, router]);
-
   return (
-    <DefaultLayout>
+    <DefaultLayout navLinks={navLinks}>
       <ImageBanner
         backgroundImage={bannerBackgroundImage}
         heroText="In-Processing Done Easy"
@@ -79,14 +78,53 @@ const Processing = props => {
       />
       <Subtitle>Start Inprocessing</Subtitle>
       <Content className={`${classes.flex} ${classes.transparent}`}>
-        <ProcessingNavigation
-          navigationLinks={navOptions}
-          onChangeForm={handleNavigationChange}
-        />
-        {selectedForm}
+        {verified ? (
+          <>
+            <ProcessingNavigation
+              navigationLinks={navOptions}
+              onChangeForm={handleNavigationChange}
+            />
+            {selectedForm}
+          </>
+        ) : (
+          <AlertBox
+            title="We don't know you're coming yet!"
+            message="To continue in-processing you must first download this form and send it to blahblah@us.af.mil. After we have recieved your completed form, we will verify your account and you will be allowed to continue in-processing."
+          />
+        )}
       </Content>
     </DefaultLayout>
   );
+};
+
+export const getServerSideProps = async context => {
+  const { Auth, API } = withSSRContext(context);
+  try {
+    const user = await Auth.currentAuthenticatedUser();
+    let verified = false;
+    const isUserVerified = await API.graphql(
+      graphqlOperation(listUsers, {
+        filter: { id: { eq: user.username } }
+      })
+    );
+    const userData = isUserVerified.data.listUsers.items[0];
+    if (userData.verified) verified = true;
+    return {
+      props: {
+        authenticated: true,
+        username: user.username,
+        navLinks: getNavItems(true),
+        verified: verified
+      }
+    };
+  } catch (error) {
+    return {
+      redirect: {
+        destination: '/login',
+        permanent: false
+      }
+    };
+  }
 };
 
 export default Processing;

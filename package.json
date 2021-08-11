@@ -4,16 +4,18 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
+    "debug": "cross-env NODE_OPTIONS='--inspect' next dev",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
   },
   "dependencies": {
+    "@aws-amplify/ui-react": "^1.2.8",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "aws": "0.0.3-2",
-    "firebase": "^8.9.0",
+    "aws-amplify": "^4.2.2",
     "moment": "^2.29.1",
     "next": "11.0.1",
     "react": "17.0.2",
@@ -26,6 +28,8 @@
   },
   "devDependencies": {
     "eslint": "7.32.0",
-    "eslint-config-next": "11.0.1"
+    "eslint-config-next": "11.0.1",
+    "aws-sdk": "^2.963.0",
+    "cross-env": "^7.0.3"
   }
 }

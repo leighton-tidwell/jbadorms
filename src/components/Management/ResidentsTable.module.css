@@ -1,0 +1,79 @@
+.container {
+  background-color: #071d30;
+  padding: 1em;
+  margin: 1em 1em;
+  flex-basis: 50%;
+  max-height: 400px;
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+}
+
+.table {
+  border-bottom: 1px solid white;
+  width: 100%;
+  border-collapse: collapse;
+  border-spacing: 1em;
+}
+
+.head {
+  border-bottom: 1px solid white;
+}
+
+.header {
+  font-size: 1em;
+  font-weight: 600;
+  text-align: left;
+}
+
+.image {
+  margin-right: 5px;
+}
+
+.more {
+  padding: 0.5em 0;
+  display: flex;
+  justify-content: flex-end;
+  width: 100%;
+}
+
+.more-link {
+  text-decoration: none;
+  color: #99b5cd;
+  display: flex;
+  align-items: center;
+}
+
+.more-link:hover {
+  color: white;
+}
+
+.link {
+  text-decoration: none;
+  color: inherit;
+}
+
+.link:hover {
+  text-decoration: underline;
+}
+
+.more-link:hover .more-image {
+  background: url('/images/management/more_active.svg');
+  background-position: center center;
+}
+
+.more-image {
+  height: 20px;
+  width: 20px;
+  background: url('/images/management/more.svg');
+  background-position: center center;
+}
+
+.null {
+  text-align: center;
+  font-size: 1.2em;
+}

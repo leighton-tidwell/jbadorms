@@ -1,0 +1,30 @@
+.title {
+  font-size: 2em;
+  font-weight: 700;
+  color: white;
+  text-decoration: none;
+}
+
+.title:hover {
+  text-decoration: underline;
+}
+
+.flex-title {
+  display: flex;
+  align-items: center;
+}
+
+.subtitle {
+  font-size: 1.5em;
+  padding-left: 5px;
+}
+
+.subtitle-link {
+  padding-left: 5px;
+  color: white;
+  text-decoration: none;
+}
+
+.subtitle-link:hover {
+  text-decoration: underline;
+}

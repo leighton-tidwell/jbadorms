@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import classes from "./Input.module.css";
+import classes from './Input.module.css';
 
-const Input = (props) => {
+const Input = props => {
   return (
     <input
       type={props.type}
@@ -11,6 +11,7 @@ const Input = (props) => {
       value={props.value}
       placeholder={props.placeholder}
       onChange={props.onChange}
+      disabled={props.disabled ? true : false}
     />
   );
 };
