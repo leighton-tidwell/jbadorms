@@ -9,8 +9,8 @@ const getNavItems = authenticated => {
     },
     {
       id: uuid(),
-      text: 'rooms',
-      href: '/dorms/rooms'
+      text: 'work orders',
+      href: '/dorms/work-orders'
     },
     {
       id: uuid(),
@@ -78,6 +78,23 @@ const getNavItems = authenticated => {
       id: uuid(),
       text: 'rooms',
       href: '/dorms/rooms'
+    },
+    {
+      id: uuid(),
+      text: 'bay orderly',
+      href: '/dorms/bay-orderly',
+      dropdown: [
+        {
+          id: uuid(),
+          text: 'Bay Orderly Briefing',
+          href: '/dorms/bay-orderly-briefing'
+        },
+        {
+          id: uuid(),
+          text: 'Bay Orderly Daily Checklist',
+          href: '/dorms/bay-orderly-daily-checklist'
+        }
+      ]
     },
     {
       id: uuid(),
