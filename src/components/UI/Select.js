@@ -46,7 +46,7 @@ const Select = props => {
         className={classes['select-visible-container']}
       >
         <div className={classes['selected-item']}>
-          {options.selectedItem.value}
+          {options.selectedItem?.value || ''}
         </div>
         <div className={classes['select-arrow']}>
           {options.showItems ? (

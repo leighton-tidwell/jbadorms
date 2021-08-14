@@ -35,6 +35,18 @@
   padding: 2em;
   width: 50vw;
   overflow: hidden;
+  animation-name: slideIn;
+  animation-duration: 0.2s;
+  animation-timing-function: ease;
+}
+
+@keyframes slideIn {
+  0% {
+    transform: translateX(80vw);
+  }
+  100% {
+    transform: translateX(0vw);
+  }
 }
 
 .mobile-nav-header {

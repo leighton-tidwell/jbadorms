@@ -24,12 +24,12 @@ const getNavItems = authenticated => {
       dropdown: [
         {
           id: uuid(),
-          text: 'UH Assignment Data Form',
-          href: '/dorms/uh-assignment-data-form'
+          text: 'Assignment Data Form',
+          href: '/dorms/processing/uh-assignment-data-form'
         },
         {
           id: uuid(),
-          text: 'UH Conditions Checklist',
+          text: 'Conditions Checklist',
           href: '/dorms/uh-conditions-checklist'
         },
         {
@@ -51,12 +51,12 @@ const getNavItems = authenticated => {
       dropdown: [
         {
           id: uuid(),
-          text: 'Bay Orderly Briefing',
+          text: 'Briefing',
           href: '/dorms/bay-orderly-briefing'
         },
         {
           id: uuid(),
-          text: 'Bay Orderly Daily Checklist',
+          text: 'Daily Checklist',
           href: '/dorms/bay-orderly-daily-checklist'
         }
       ]
@@ -86,12 +86,12 @@ const getNavItems = authenticated => {
       dropdown: [
         {
           id: uuid(),
-          text: 'Bay Orderly Briefing',
+          text: 'Briefing',
           href: '/dorms/bay-orderly-briefing'
         },
         {
           id: uuid(),
-          text: 'Bay Orderly Daily Checklist',
+          text: 'Daily Checklist',
           href: '/dorms/bay-orderly-daily-checklist'
         }
       ]
