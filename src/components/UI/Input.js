@@ -12,6 +12,7 @@ const Input = props => {
       placeholder={props.placeholder}
       onChange={props.onChange}
       disabled={props.disabled ? true : false}
+      pattern={props.pattern && props.pattern}
     />
   );
 };

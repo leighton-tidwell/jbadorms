@@ -9,8 +9,8 @@ const getNavItems = authenticated => {
     },
     {
       id: uuid(),
-      text: 'rooms',
-      href: '/dorms/rooms'
+      text: 'work orders',
+      href: '/dorms/work-orders'
     },
     {
       id: uuid(),
@@ -24,12 +24,12 @@ const getNavItems = authenticated => {
       dropdown: [
         {
           id: uuid(),
-          text: 'UH Assignment Data Form',
-          href: '/dorms/uh-assignment-data-form'
+          text: 'Assignment Data Form',
+          href: '/dorms/processing/uh-assignment-data-form'
         },
         {
           id: uuid(),
-          text: 'UH Conditions Checklist',
+          text: 'Conditions Checklist',
           href: '/dorms/uh-conditions-checklist'
         },
         {
@@ -51,12 +51,12 @@ const getNavItems = authenticated => {
       dropdown: [
         {
           id: uuid(),
-          text: 'Bay Orderly Briefing',
+          text: 'Briefing',
           href: '/dorms/bay-orderly-briefing'
         },
         {
           id: uuid(),
-          text: 'Bay Orderly Daily Checklist',
+          text: 'Daily Checklist',
           href: '/dorms/bay-orderly-daily-checklist'
         }
       ]
@@ -78,6 +78,23 @@ const getNavItems = authenticated => {
       id: uuid(),
       text: 'rooms',
       href: '/dorms/rooms'
+    },
+    {
+      id: uuid(),
+      text: 'bay orderly',
+      href: '/dorms/bay-orderly',
+      dropdown: [
+        {
+          id: uuid(),
+          text: 'Briefing',
+          href: '/dorms/bay-orderly-briefing'
+        },
+        {
+          id: uuid(),
+          text: 'Daily Checklist',
+          href: '/dorms/bay-orderly-daily-checklist'
+        }
+      ]
     },
     {
       id: uuid(),

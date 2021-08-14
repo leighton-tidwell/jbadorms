@@ -2,41 +2,6 @@
   display: none;
 }
 
-.mobile-navigation-handler {
-  flex-basis: 100%;
-  text-align: right;
-  cursor: pointer;
-}
-
-.mobile-navigation {
-  height: 100%;
-  z-index: 100;
-  position: fixed;
-  right: 0;
-  top: 6.1em;
-  display: flex;
-  flex-direction: column;
-  background: #051a2c;
-  padding: 2em;
-}
-
-.mobile-navigation-link {
-  color: inherit;
-  text-decoration: none;
-  display: block;
-  padding: 1em;
-  text-align: center;
-  margin-bottom: 1em;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.5);
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-}
-
-.mobile-navigation-link:active {
-  background: white;
-  color: #051a2c;
-  font-weight: 600;
-}
-
 @media only screen and (min-width: 1200px) {
   .navigation {
     text-align: right;

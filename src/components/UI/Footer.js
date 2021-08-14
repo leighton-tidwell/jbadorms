@@ -29,18 +29,6 @@ const Footer = props => {
     {
       title: 'air force portal',
       href: '/dorms'
-    },
-    {
-      title: 'contact us',
-      href: '/dorms'
-    },
-    {
-      title: 'other link',
-      href: '/dorms'
-    },
-    {
-      title: 'dorm rooms',
-      href: '/dorms'
     }
   ];
   return (

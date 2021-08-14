@@ -1,8 +1,8 @@
-import React from "react";
+import React from 'react';
 
-import classes from "./MapSection.module.css";
-import ContentWrapper from "../../UI/ContentWrapper";
-import Map from "./Map";
+import classes from './MapSection.module.css';
+import ContentWrapper from '../../UI/ContentWrapper';
+import Map from './Map';
 
 const MapSection = () => {
   const coordinates = [38.81312537777073, -76.88516974829602];
@@ -14,16 +14,16 @@ const MapSection = () => {
       </div>
       <Map
         isMarkerShown
-        googleMapURL="https://maps.googleapis.com/maps/api/js?key=AIzaSyB3HvlWq71ENiR4riR5EED9LEbG8_ZzpTM&v=3.exp&libraries=geometry,drawing,places"
-        loadingElement={<div style={{ height: `100%` }} />}
+        googleMapURL={`https://maps.googleapis.com/maps/api/js?key=${process.env.NEXT_PUBLIC_MAPS_API_KEY}&v=3.exp&libraries=geometry,drawing,places`}
+        loadingElement={<div style={{ height: `100%`, width: '80%' }} />}
         containerElement={
           <div
-            style={{ height: `400px`, width: `100%`, marginBottom: "2em" }}
+            style={{ height: `400px`, width: `100%`, marginBottom: '2em' }}
           />
         }
         mapElement={
           <div
-            className={classes["map-container"]}
+            className={classes['map-container']}
             style={{ height: `100%` }}
           />
         }

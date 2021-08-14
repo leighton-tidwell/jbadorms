@@ -1,10 +1,9 @@
-import React, { useState } from 'react';
+import React, { useState, useLayoutEffect } from 'react';
 import classes from './Navigation.module.css';
-
-import Link from 'next/link';
 
 import NavigationLink from './NavigationLink';
 import NavigationDropDown from './NavigationDropDown';
+import MobileNavigation from './MobileNavigation';
 
 const Navigation = ({ links }) => {
   const hamburgerMenu = '/images/hamburger_menu.svg';
@@ -28,21 +27,18 @@ const Navigation = ({ links }) => {
       >
         <img alt="Hamburger menu" src={hamburgerMenu} />
       </div>
-      <div
-        className={classes['mobile-navigation']}
-        style={{ display: navigationStatus ? 'block' : 'none' }}
-      >
-        {links.map(link => (
-          <Link key={link.id} href={link.href}>
-            <a className={classes['mobile-navigation-link']}>{link.text}</a>
-          </Link>
-        ))}
-      </div>
       <div className={classes.navigation}>
         {links.map(link => {
           return generateNavLinks(link);
         })}
       </div>
+      {navigationStatus && (
+        <MobileNavigation
+          links={links}
+          navigationHandler={navigationHandler}
+          hamburgerMenu={hamburgerMenu}
+        />
+      )}
     </>
   );
 };

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useTransition, animated } from 'react-spring';
 import { useRouter } from 'next/router';
 
@@ -47,13 +47,13 @@ const Carousel = props => {
     setIndex(state => mod(state - 1, images.length));
   };
 
-  // useEffect(() => {
-  //   const t = setInterval(
-  //     () => setIndex((state) => (state + 1) % images.length),
-  //     10000
-  //   );
-  //   return () => clearTimeout(t);
-  // }, []);
+  useEffect(() => {
+    const t = setInterval(
+      () => setIndex(state => (state + 1) % images.length),
+      10000
+    );
+    return () => clearTimeout(t);
+  }, []);
 
   const handleClickLink = href => {
     router.push(href);
