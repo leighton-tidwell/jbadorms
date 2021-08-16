@@ -13,9 +13,11 @@ import Input from '../UI/Input';
 import Button from '../UI/Button';
 import ErrorText from '../UI/ErrorText';
 import SuccessText from '../UI/SuccessText';
+import Select from '../UI/Select';
 
 const ResidentForm = ({ data }) => {
   const [userId, setUserId] = useState(data.id);
+  const [userType, setUserType] = useState(data.userType);
   const [userName, setUserName] = useState(data.name);
   const [userVersion, setUserVersion] = useState(data._version);
   const [userEmail, setUserEmail] = useState(data.email);
@@ -25,6 +27,17 @@ const ResidentForm = ({ data }) => {
   const [userVerified, setUserVerified] = useState(data.verified);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+
+  const userTypeOptions = [
+    {
+      id: 1,
+      value: 'Dorm'
+    },
+    {
+      id: 2,
+      value: 'Dormstaff'
+    }
+  ];
 
   const handleChangeDormRoom = event => {
     setSuccess(null);
@@ -104,6 +117,7 @@ const ResidentForm = ({ data }) => {
             id: userId,
             dormroom: dormRoom,
             dormbuilding: dormBuilding,
+            userType: userType.toLowerCase(),
             _version: userVersion
           }
         })
@@ -114,6 +128,10 @@ const ResidentForm = ({ data }) => {
       setError('An error has occurred.');
       console.error(error);
     }
+  };
+
+  const handleChangeUserType = option => {
+    setUserType(option);
   };
 
   const handleVerifyUser = async () => {
@@ -128,14 +146,20 @@ const ResidentForm = ({ data }) => {
         })
       );
 
+      const message =
+        userType.toLowerCase() === 'dorm'
+          ? 'Your account has been verified! You can now continue in-processing on the JBA MHO site.'
+          : 'Your account has been verified, you must be moved into the staff group by an administrator now.';
+
+      const expiryDate = Math.round(new Date().getTime() / 1000);
       const sendNotification = await API.graphql(
         graphqlOperation(createNotifications, {
           input: {
             name: userName,
             email: userEmail,
             subject: 'Account Verified',
-            message:
-              'Your account has been verified! You can now continue in-processing on the JBA MHO site.'
+            message: message,
+            expiryTime: expiryDate
           }
         })
       );
@@ -178,22 +202,35 @@ const ResidentForm = ({ data }) => {
               disabled
             />
           </div>
+          {userType.toLowerCase() != 'dormstaff' && (
+            <>
+              <div className={classes['form-control']}>
+                <label className={classes.label}>Dorm Building: </label>
+                <Input
+                  className={classes.input}
+                  value={dormBuilding}
+                  onChange={handleChangeDormBuilding}
+                  type="text"
+                />
+              </div>
+              <div className={classes['form-control']}>
+                <label className={classes.label}>Dorm Room: </label>
+                <Input
+                  className={classes.input}
+                  value={dormRoom}
+                  onChange={handleChangeDormRoom}
+                  type="text"
+                />
+              </div>
+            </>
+          )}
           <div className={classes['form-control']}>
-            <label className={classes.label}>Dorm Building: </label>
-            <Input
+            <label className={classes.label}>User Type: </label>
+            <Select
               className={classes.input}
-              value={dormBuilding}
-              onChange={handleChangeDormBuilding}
-              type="text"
-            />
-          </div>
-          <div className={classes['form-control']}>
-            <label className={classes.label}>Dorm Room: </label>
-            <Input
-              className={classes.input}
-              value={dormRoom}
-              onChange={handleChangeDormRoom}
-              type="text"
+              options={userTypeOptions}
+              value={userType}
+              onSelect={handleChangeUserType}
             />
           </div>
         </div>

@@ -13,14 +13,12 @@
 .previous {
   flex-basis: 5%;
   cursor: pointer;
-  height: 5px;
 }
 
 .next {
   flex-basis: 5%;
   text-align: right;
   cursor: pointer;
-  height: 5px;
 }
 
 .month-title {

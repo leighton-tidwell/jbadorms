@@ -9,6 +9,7 @@ export const onCreateNotifications = /* GraphQL */ `
       email
       subject
       message
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -25,6 +26,7 @@ export const onUpdateNotifications = /* GraphQL */ `
       email
       subject
       message
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -41,6 +43,7 @@ export const onDeleteNotifications = /* GraphQL */ `
       email
       subject
       message
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -57,6 +60,7 @@ export const onCreateUsers = /* GraphQL */ `
       name
       phone
       rank
+      userType
       dormbuilding
       dormroom
       verified
@@ -76,6 +80,7 @@ export const onUpdateUsers = /* GraphQL */ `
       name
       phone
       rank
+      userType
       dormbuilding
       dormroom
       verified
@@ -95,6 +100,7 @@ export const onDeleteUsers = /* GraphQL */ `
       name
       phone
       rank
+      userType
       dormbuilding
       dormroom
       verified
@@ -319,7 +325,7 @@ export const onCreateEvents = /* GraphQL */ `
       id
       title
       date
-      _ttl
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -334,7 +340,7 @@ export const onUpdateEvents = /* GraphQL */ `
       id
       title
       date
-      _ttl
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -349,49 +355,7 @@ export const onDeleteEvents = /* GraphQL */ `
       id
       title
       date
-      _ttl
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateJBAContacts = /* GraphQL */ `
-  subscription OnCreateJBAContacts {
-    onCreateJBAContacts {
-      id
-      title
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateJBAContacts = /* GraphQL */ `
-  subscription OnUpdateJBAContacts {
-    onUpdateJBAContacts {
-      id
-      title
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteJBAContacts = /* GraphQL */ `
-  subscription OnDeleteJBAContacts {
-    onDeleteJBAContacts {
-      id
-      title
-      phone
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -434,90 +398,6 @@ export const onDeleteFAQ = /* GraphQL */ `
       id
       question
       answer
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateHoursOfBusiness = /* GraphQL */ `
-  subscription OnCreateHoursOfBusiness {
-    onCreateHoursOfBusiness {
-      id
-      dayOfWeek
-      hours
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateHoursOfBusiness = /* GraphQL */ `
-  subscription OnUpdateHoursOfBusiness {
-    onUpdateHoursOfBusiness {
-      id
-      dayOfWeek
-      hours
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteHoursOfBusiness = /* GraphQL */ `
-  subscription OnDeleteHoursOfBusiness {
-    onDeleteHoursOfBusiness {
-      id
-      dayOfWeek
-      hours
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onCreateDormContacts = /* GraphQL */ `
-  subscription OnCreateDormContacts {
-    onCreateDormContacts {
-      id
-      name
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onUpdateDormContacts = /* GraphQL */ `
-  subscription OnUpdateDormContacts {
-    onUpdateDormContacts {
-      id
-      name
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const onDeleteDormContacts = /* GraphQL */ `
-  subscription OnDeleteDormContacts {
-    onDeleteDormContacts {
-      id
-      name
-      phone
       _version
       _deleted
       _lastChangedAt
@@ -599,6 +479,69 @@ export const onDeleteUnits = /* GraphQL */ `
       id
       unit
       wing
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onCreateAppointments = /* GraphQL */ `
+  subscription OnCreateAppointments {
+    onCreateAppointments {
+      id
+      service
+      employeeName
+      employeeEmail
+      dateOfAppointment
+      timeOfAppointment
+      nameOfResident
+      emailOfResident
+      phoneOfResident
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateAppointments = /* GraphQL */ `
+  subscription OnUpdateAppointments {
+    onUpdateAppointments {
+      id
+      service
+      employeeName
+      employeeEmail
+      dateOfAppointment
+      timeOfAppointment
+      nameOfResident
+      emailOfResident
+      phoneOfResident
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteAppointments = /* GraphQL */ `
+  subscription OnDeleteAppointments {
+    onDeleteAppointments {
+      id
+      service
+      employeeName
+      employeeEmail
+      dateOfAppointment
+      timeOfAppointment
+      nameOfResident
+      emailOfResident
+      phoneOfResident
+      expiryTime
       _version
       _deleted
       _lastChangedAt

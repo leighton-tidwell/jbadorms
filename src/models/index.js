@@ -4,7 +4,7 @@ import { schema } from './schema';
 
 
 
-const { Notifications, Users, DormBuildings, DormRooms, AssignmentDataForm, Events, JBAContacts, FAQ, HoursOfBusiness, DormContacts, Wings, Units } = initSchema(schema);
+const { Notifications, Users, DormBuildings, DormRooms, AssignmentDataForm, Events, FAQ, Wings, Units, Appointments } = initSchema(schema);
 
 export {
   Notifications,
@@ -13,10 +13,8 @@ export {
   DormRooms,
   AssignmentDataForm,
   Events,
-  JBAContacts,
   FAQ,
-  HoursOfBusiness,
-  DormContacts,
   Wings,
-  Units
+  Units,
+  Appointments
 };

@@ -12,6 +12,7 @@ export const createNotifications = /* GraphQL */ `
       email
       subject
       message
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -31,6 +32,7 @@ export const updateNotifications = /* GraphQL */ `
       email
       subject
       message
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -50,6 +52,7 @@ export const deleteNotifications = /* GraphQL */ `
       email
       subject
       message
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -69,6 +72,7 @@ export const createUsers = /* GraphQL */ `
       name
       phone
       rank
+      userType
       dormbuilding
       dormroom
       verified
@@ -91,6 +95,7 @@ export const updateUsers = /* GraphQL */ `
       name
       phone
       rank
+      userType
       dormbuilding
       dormroom
       verified
@@ -113,6 +118,7 @@ export const deleteUsers = /* GraphQL */ `
       name
       phone
       rank
+      userType
       dormbuilding
       dormroom
       verified
@@ -367,7 +373,7 @@ export const createEvents = /* GraphQL */ `
       id
       title
       date
-      _ttl
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -385,7 +391,7 @@ export const updateEvents = /* GraphQL */ `
       id
       title
       date
-      _ttl
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -403,58 +409,7 @@ export const deleteEvents = /* GraphQL */ `
       id
       title
       date
-      _ttl
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createJBAContacts = /* GraphQL */ `
-  mutation CreateJBAContacts(
-    $input: CreateJBAContactsInput!
-    $condition: ModelJBAContactsConditionInput
-  ) {
-    createJBAContacts(input: $input, condition: $condition) {
-      id
-      title
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateJBAContacts = /* GraphQL */ `
-  mutation UpdateJBAContacts(
-    $input: UpdateJBAContactsInput!
-    $condition: ModelJBAContactsConditionInput
-  ) {
-    updateJBAContacts(input: $input, condition: $condition) {
-      id
-      title
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteJBAContacts = /* GraphQL */ `
-  mutation DeleteJBAContacts(
-    $input: DeleteJBAContactsInput!
-    $condition: ModelJBAContactsConditionInput
-  ) {
-    deleteJBAContacts(input: $input, condition: $condition) {
-      id
-      title
-      phone
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -506,108 +461,6 @@ export const deleteFAQ = /* GraphQL */ `
       id
       question
       answer
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createHoursOfBusiness = /* GraphQL */ `
-  mutation CreateHoursOfBusiness(
-    $input: CreateHoursOfBusinessInput!
-    $condition: ModelHoursOfBusinessConditionInput
-  ) {
-    createHoursOfBusiness(input: $input, condition: $condition) {
-      id
-      dayOfWeek
-      hours
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateHoursOfBusiness = /* GraphQL */ `
-  mutation UpdateHoursOfBusiness(
-    $input: UpdateHoursOfBusinessInput!
-    $condition: ModelHoursOfBusinessConditionInput
-  ) {
-    updateHoursOfBusiness(input: $input, condition: $condition) {
-      id
-      dayOfWeek
-      hours
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteHoursOfBusiness = /* GraphQL */ `
-  mutation DeleteHoursOfBusiness(
-    $input: DeleteHoursOfBusinessInput!
-    $condition: ModelHoursOfBusinessConditionInput
-  ) {
-    deleteHoursOfBusiness(input: $input, condition: $condition) {
-      id
-      dayOfWeek
-      hours
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const createDormContacts = /* GraphQL */ `
-  mutation CreateDormContacts(
-    $input: CreateDormContactsInput!
-    $condition: ModelDormContactsConditionInput
-  ) {
-    createDormContacts(input: $input, condition: $condition) {
-      id
-      name
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const updateDormContacts = /* GraphQL */ `
-  mutation UpdateDormContacts(
-    $input: UpdateDormContactsInput!
-    $condition: ModelDormContactsConditionInput
-  ) {
-    updateDormContacts(input: $input, condition: $condition) {
-      id
-      name
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const deleteDormContacts = /* GraphQL */ `
-  mutation DeleteDormContacts(
-    $input: DeleteDormContactsInput!
-    $condition: ModelDormContactsConditionInput
-  ) {
-    deleteDormContacts(input: $input, condition: $condition) {
-      id
-      name
-      phone
       _version
       _deleted
       _lastChangedAt
@@ -707,6 +560,78 @@ export const deleteUnits = /* GraphQL */ `
       id
       unit
       wing
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const createAppointments = /* GraphQL */ `
+  mutation CreateAppointments(
+    $input: CreateAppointmentsInput!
+    $condition: ModelAppointmentsConditionInput
+  ) {
+    createAppointments(input: $input, condition: $condition) {
+      id
+      service
+      employeeName
+      employeeEmail
+      dateOfAppointment
+      timeOfAppointment
+      nameOfResident
+      emailOfResident
+      phoneOfResident
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateAppointments = /* GraphQL */ `
+  mutation UpdateAppointments(
+    $input: UpdateAppointmentsInput!
+    $condition: ModelAppointmentsConditionInput
+  ) {
+    updateAppointments(input: $input, condition: $condition) {
+      id
+      service
+      employeeName
+      employeeEmail
+      dateOfAppointment
+      timeOfAppointment
+      nameOfResident
+      emailOfResident
+      phoneOfResident
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteAppointments = /* GraphQL */ `
+  mutation DeleteAppointments(
+    $input: DeleteAppointmentsInput!
+    $condition: ModelAppointmentsConditionInput
+  ) {
+    deleteAppointments(input: $input, condition: $condition) {
+      id
+      service
+      employeeName
+      employeeEmail
+      dateOfAppointment
+      timeOfAppointment
+      nameOfResident
+      emailOfResident
+      phoneOfResident
+      expiryTime
       _version
       _deleted
       _lastChangedAt

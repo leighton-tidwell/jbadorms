@@ -8,6 +8,7 @@
   border-bottom: 1px solid white;
   font-weight: 400;
   display: flex;
+  align-items: center;
 }
 
 .selected-item {
@@ -20,7 +21,8 @@
   text-align: right;
 }
 .select-arrow img {
-  height: 100%;
+  height: 41px;
+  width: 41px;
 }
 
 .select-arrow.up {
@@ -37,7 +39,14 @@
   padding: 0.5em;
   position: absolute;
   z-index: 1;
-  min-width: 300px;
+  min-width: 100px;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.select-items::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
 }
 
 .select-items div {
@@ -46,4 +55,9 @@
 
 .select-items div:hover {
   background: #051a2c;
+}
+@media only screen and (min-width: 1200px) {
+  .select-items {
+    min-width: 300px;
+  }
 }

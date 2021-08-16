@@ -109,12 +109,19 @@ export const getServerSideProps = async context => {
     );
     const userData = isUserVerified.data.listUsers.items[0];
     if (userData.verified) verified = true;
+    if (userData.userType)
+      return {
+        props: {
+          authenticated: true,
+          username: user.username,
+          navLinks: getNavItems(true),
+          verified: verified
+        }
+      };
     return {
-      props: {
-        authenticated: true,
-        username: user.username,
-        navLinks: getNavItems(true),
-        verified: verified
+      redirect: {
+        destination: '/nextsteps',
+        permanent: false
       }
     };
   } catch (error) {

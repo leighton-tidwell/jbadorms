@@ -17,7 +17,8 @@ const DormsManagementPage = ({
   userName,
   listOfBuildings,
   listOfUnverifiedUsers,
-  listOfVerifiedUsers
+  listOfVerifiedUsers,
+  listOfStaff
 }) => {
   const [verifiedUsersList, setVerifiedUsers] = useState(listOfVerifiedUsers);
   const [unVerifiedUsersList, setunVerifiedUsersList] = useState(
@@ -62,9 +63,9 @@ const DormsManagementPage = ({
           showMore
         />
         <ResidentsTable
-          title="Unnecessary Table"
+          title="Current Staff"
           image="/images/management/verification.svg"
-          data={[]}
+          data={listOfStaff}
           showMore
         />
       </div>
@@ -104,14 +105,16 @@ export const getServerSideProps = async context => {
   // Get verified/ unverified users
   const userData = await API.graphql(
     graphqlOperation(listUsers, {
-      filter: { verified: { eq: true } }
+      filter: {
+        and: [{ verified: { eq: true } }, { userType: { eq: 'dorm' } }]
+      }
     })
   );
   const users = userData.data.listUsers.items;
   props.listOfVerifiedUsers = users.map(user => {
     return {
-      email: user.email,
       name: user.name,
+      email: user.email,
       phone: user.phone,
       dormbuilding: user.dormbuilding || '',
       dormroom: user.dormroom || ''
@@ -130,6 +133,24 @@ export const getServerSideProps = async context => {
       name: user.name,
       email: user.email,
       phone: user.phone
+    };
+  });
+
+  // Get Staff
+
+  const staffData = await API.graphql(
+    graphqlOperation(listUsers, {
+      filter: {
+        and: [{ userType: { eq: 'dormstaff' } }, { verified: { eq: true } }]
+      }
+    })
+  );
+  const listOfStaff = staffData.data.listUsers.items;
+  props.listOfStaff = listOfStaff.map(staff => {
+    return {
+      name: staff.name,
+      email: staff.email,
+      phone: staff.phone
     };
   });
 

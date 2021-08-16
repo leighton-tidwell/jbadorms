@@ -15,8 +15,8 @@ const Footer = props => {
       href: '/dorms/processing'
     },
     {
-      title: 'work orders',
-      href: '/dorms/work-orders'
+      title: 'FAQs',
+      href: '/dorms/faq'
     },
     {
       title: 'management portal',
@@ -24,7 +24,7 @@ const Footer = props => {
     },
     {
       title: 'jba map',
-      href: '/dorms'
+      href: '/images/jbamap.jpg'
     },
     {
       title: 'air force portal',

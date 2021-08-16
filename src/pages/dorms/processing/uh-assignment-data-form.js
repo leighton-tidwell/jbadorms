@@ -1,6 +1,6 @@
 import React from 'react';
 import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
-import { listUsers } from '../../../graphql/queries';
+import { listUsers, listWings, listUnits } from '../../../graphql/queries';
 import { createAssignmentDataForm } from '../../../graphql/mutations';
 import getNavItems from '../../../api/getNavItems';
 import config from '../../../aws-exports';
@@ -18,7 +18,9 @@ const UhAssignmentDataFormPage = ({
   phone,
   email,
   navLinks,
-  verified
+  verified,
+  wings,
+  units
 }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
 
@@ -53,6 +55,8 @@ const UhAssignmentDataFormPage = ({
           userName={name}
           userPhone={phone}
           userEmail={email}
+          wings={wings}
+          units={units}
         />
       </Content>
     </DefaultLayout>
@@ -69,16 +73,30 @@ export const getServerSideProps = async context => {
         filter: { id: { eq: user.username } }
       })
     );
+    const getWingData = await API.graphql(graphqlOperation(listWings));
+    const wingData = getWingData.data.listWings.items;
+    const getUnitData = await API.graphql(graphqlOperation(listUnits));
+    const unitData = getUnitData.data.listUnits.items;
+
     const userData = isUserVerified.data.listUsers.items[0];
     if (userData.verified) verified = true;
+    if (userData.userType)
+      return {
+        props: {
+          authenticated: true,
+          name: user.attributes.name,
+          phone: user.attributes.phone_number,
+          email: user.attributes.email,
+          navLinks: getNavItems(true),
+          verified: verified,
+          wings: wingData,
+          units: unitData
+        }
+      };
     return {
-      props: {
-        authenticated: true,
-        name: user.attributes.name,
-        phone: user.attributes.phone_number,
-        email: user.attributes.email,
-        navLinks: getNavItems(true),
-        verified: verified
+      redirect: {
+        destination: '/nextsteps',
+        permanent: false
       }
     };
   } catch (error) {

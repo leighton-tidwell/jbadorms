@@ -28,19 +28,7 @@ type EventsMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
-type JBAContactsMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
 type FAQMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type HoursOfBusinessMetaData = {
-  readOnlyFields: 'createdAt' | 'updatedAt';
-}
-
-type DormContactsMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
@@ -52,12 +40,17 @@ type UnitsMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type AppointmentsMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 export declare class Notifications {
   readonly id: string;
   readonly name: string;
   readonly email: string;
   readonly subject: string;
   readonly message: string;
+  readonly expiryTime: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Notifications, NotificationsMetaData>);
@@ -70,6 +63,7 @@ export declare class Users {
   readonly name: string;
   readonly phone: string;
   readonly rank?: string;
+  readonly userType?: string;
   readonly dormbuilding?: number;
   readonly dormroom?: number;
   readonly verified: boolean;
@@ -126,7 +120,7 @@ export declare class AssignmentDataForm {
   readonly carYear: string;
   readonly licensePlateNumber: string;
   readonly expectedArrivalDate: string;
-  readonly _ttl: number;
+  readonly expiryTime: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<AssignmentDataForm, AssignmentDataFormMetaData>);
@@ -137,21 +131,11 @@ export declare class Events {
   readonly id: string;
   readonly title: string;
   readonly date: string;
-  readonly _ttl: number;
+  readonly expiryTime: number;
   readonly createdAt?: string;
   readonly updatedAt?: string;
   constructor(init: ModelInit<Events, EventsMetaData>);
   static copyOf(source: Events, mutator: (draft: MutableModel<Events, EventsMetaData>) => MutableModel<Events, EventsMetaData> | void): Events;
-}
-
-export declare class JBAContacts {
-  readonly id: string;
-  readonly title: string;
-  readonly phone: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<JBAContacts, JBAContactsMetaData>);
-  static copyOf(source: JBAContacts, mutator: (draft: MutableModel<JBAContacts, JBAContactsMetaData>) => MutableModel<JBAContacts, JBAContactsMetaData> | void): JBAContacts;
 }
 
 export declare class FAQ {
@@ -162,26 +146,6 @@ export declare class FAQ {
   readonly updatedAt?: string;
   constructor(init: ModelInit<FAQ, FAQMetaData>);
   static copyOf(source: FAQ, mutator: (draft: MutableModel<FAQ, FAQMetaData>) => MutableModel<FAQ, FAQMetaData> | void): FAQ;
-}
-
-export declare class HoursOfBusiness {
-  readonly id: string;
-  readonly dayOfWeek: string;
-  readonly hours: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<HoursOfBusiness, HoursOfBusinessMetaData>);
-  static copyOf(source: HoursOfBusiness, mutator: (draft: MutableModel<HoursOfBusiness, HoursOfBusinessMetaData>) => MutableModel<HoursOfBusiness, HoursOfBusinessMetaData> | void): HoursOfBusiness;
-}
-
-export declare class DormContacts {
-  readonly id: string;
-  readonly name: string;
-  readonly phone: string;
-  readonly createdAt?: string;
-  readonly updatedAt?: string;
-  constructor(init: ModelInit<DormContacts, DormContactsMetaData>);
-  static copyOf(source: DormContacts, mutator: (draft: MutableModel<DormContacts, DormContactsMetaData>) => MutableModel<DormContacts, DormContactsMetaData> | void): DormContacts;
 }
 
 export declare class Wings {
@@ -201,4 +165,21 @@ export declare class Units {
   readonly updatedAt?: string;
   constructor(init: ModelInit<Units, UnitsMetaData>);
   static copyOf(source: Units, mutator: (draft: MutableModel<Units, UnitsMetaData>) => MutableModel<Units, UnitsMetaData> | void): Units;
+}
+
+export declare class Appointments {
+  readonly id: string;
+  readonly service: string;
+  readonly employeeName: string;
+  readonly employeeEmail: string;
+  readonly dateOfAppointment: string;
+  readonly timeOfAppointment: string;
+  readonly nameOfResident: string;
+  readonly emailOfResident: string;
+  readonly phoneOfResident: string;
+  readonly expiryTime: number;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<Appointments, AppointmentsMetaData>);
+  static copyOf(source: Appointments, mutator: (draft: MutableModel<Appointments, AppointmentsMetaData>) => MutableModel<Appointments, AppointmentsMetaData> | void): Appointments;
 }

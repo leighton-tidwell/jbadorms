@@ -1,10 +1,9 @@
 import React from 'react';
-
-import Link from 'next/link';
+import uuid from 'react-uuid';
 import { useRouter } from 'next/router';
-import ManagementNavLink from './ManagementNavLink';
 
 import classes from './ManagementNavigation.module.css';
+import ManagementDropDown from './ManagementDropDown';
 
 const ManagementNavigation = () => {
   const router = useRouter();
@@ -12,43 +11,44 @@ const ManagementNavigation = () => {
     return router.pathname === href;
   };
 
+  const managementNav = [
+    {
+      id: uuid(),
+      href: '/management/dorms',
+      title: 'Dorms',
+      img: '/images/management/dorms_active.svg',
+      dropdown: [
+        {
+          id: uuid(),
+          href: '/management/dorms/buildings',
+          title: 'Buildings'
+        },
+        {
+          id: uuid(),
+          href: '/management/dorms/resident',
+          title: 'Residents'
+        },
+        {
+          id: uuid(),
+          href: '/management/dorms/site-settings',
+          title: 'Site Settings'
+        }
+      ]
+    },
+    {
+      id: uuid(),
+      href: '/management/housing',
+      title: 'Housing',
+      img: '/images/management/housing_active.svg'
+    }
+  ];
+
   return (
     <div className={classes.nav}>
       <ul className={classes.ul}>
-        <li className={classes.li}>
-          <ManagementNavLink className={classes.link} href="/management/dorms">
-            <div
-              className={
-                !isActive('/management/dorms')
-                  ? `${classes['dorm-link']}`
-                  : `${classes['active-dorm']}`
-              }
-            ></div>
-            Dorms
-          </ManagementNavLink>
-        </li>
-        <li className={classes.li}>
-          <Link href="/management/housing">
-            <a className={classes.link}>
-              <div
-                className={
-                  !isActive('/management/housing')
-                    ? `${classes['housing-link']}`
-                    : `${classes['active-house']}`
-                }
-              ></div>
-              Housing
-            </a>
-          </Link>
-        </li>
-        <li className={classes.li}>
-          <Link href="/">
-            <a className={classes.link}>
-              <div className={classes['back-link']}></div>
-              Back to home
-            </a>
-          </Link>
-        </li>
+        {managementNav.map(menuLink => (
+          <ManagementDropDown key={menuLink.id} mainLink={menuLink} />
+        ))}
       </ul>
     </div>
   );

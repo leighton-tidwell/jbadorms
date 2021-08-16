@@ -6,6 +6,7 @@ type Notifications
   email: String!
   subject: String!
   message: String!
+  expiryTime: AWSTimestamp! @ttl
 }
 
 type Users
@@ -30,6 +31,7 @@ type Users
   name: String!
   phone: AWSPhone!
   rank: String
+  userType: String
   dormbuilding: Int
   dormroom: Int
   verified: Boolean!
@@ -114,11 +116,11 @@ type AssignmentDataForm
 
 type Events
   @model
-  @aws_iam
+  @aws_api_key
   @aws_cognito_user_pools
   @auth(
     rules: [
-      { allow: public, provider: iam, operations: [read] }
+      { allow: public, provider: apiKey, operations: [read] }
       {
         allow: groups
         groups: ["staff"]
@@ -138,38 +140,13 @@ type Events
   expiryTime: AWSTimestamp! @ttl
 }
 
-type JBAContacts
-  @model
-  @aws_iam
-  @aws_cognito_user_pools
-  @auth(
-    rules: [
-      { allow: public, provider: iam, operations: [read] }
-      {
-        allow: groups
-        groups: ["staff"]
-        operations: [read, create, update, delete]
-      }
-      {
-        allow: groups
-        groups: ["admin"]
-        operations: [read, create, update, delete]
-      }
-      { allow: groups, groups: ["user"], operations: [read] }
-    ]
-  ) {
-  id: ID!
-  title: String!
-  phone: AWSPhone!
-}
-
 type FAQ
   @model
-  @aws_iam
+  @aws_api_key
   @aws_cognito_user_pools
   @auth(
     rules: [
-      { allow: public, provider: iam, operations: [read] }
+      { allow: public, provider: apiKey, operations: [read] }
       {
         allow: groups
         groups: ["staff"]
@@ -186,56 +163,6 @@ type FAQ
   id: ID!
   question: String!
   answer: String!
-}
-
-type HoursOfBusiness
-  @model
-  @aws_iam
-  @aws_cognito_user_pools
-  @auth(
-    rules: [
-      { allow: public, provider: iam, operations: [read] }
-      {
-        allow: groups
-        groups: ["staff"]
-        operations: [read, create, update, delete]
-      }
-      {
-        allow: groups
-        groups: ["admin"]
-        operations: [read, create, update, delete]
-      }
-      { allow: groups, groups: ["user"], operations: [read] }
-    ]
-  ) {
-  id: ID!
-  dayOfWeek: String!
-  hours: String!
-}
-
-type DormContacts
-  @model
-  @aws_iam
-  @aws_cognito_user_pools
-  @auth(
-    rules: [
-      { allow: public, provider: iam, operations: [read] }
-      {
-        allow: groups
-        groups: ["staff"]
-        operations: [read, create, update, delete]
-      }
-      {
-        allow: groups
-        groups: ["admin"]
-        operations: [read, create, update, delete]
-      }
-      { allow: groups, groups: ["user"], operations: [read] }
-    ]
-  ) {
-  id: ID!
-  name: String!
-  phone: AWSPhone!
 }
 
 type Wings
@@ -279,4 +206,33 @@ type Units
   id: ID!
   unit: String!
   wing: String!
+}
+
+type Appointments
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read, create] }
+    ]
+  ) {
+  id: ID!
+  service: String!
+  employeeName: String!
+  employeeEmail: AWSEmail!
+  dateOfAppointment: AWSDate!
+  timeOfAppointment: String!
+  nameOfResident: String!
+  emailOfResident: String!
+  phoneOfResident: String!
+  expiryTime: AWSTimestamp! @ttl
 }

@@ -67,7 +67,6 @@
 
   .left-information {
     flex-basis: 25%;
-    transform: translateY(-3em);
     margin-bottom: 0;
   }
   .right-information {

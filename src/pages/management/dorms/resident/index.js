@@ -79,8 +79,9 @@ export const getServerSideProps = async context => {
   const users = userData.data.listUsers.items;
   props.listOfVerifiedUsers = users.map(user => {
     return {
-      email: user.email,
       name: user.name,
+      email: user.email,
+
       phone: user.phone,
       dormbuilding: user.dormbuilding || '',
       dormroom: user.dormroom || ''

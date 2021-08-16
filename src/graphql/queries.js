@@ -9,6 +9,7 @@ export const getNotifications = /* GraphQL */ `
       email
       subject
       message
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -30,6 +31,7 @@ export const listNotifications = /* GraphQL */ `
         email
         subject
         message
+        expiryTime
         _version
         _deleted
         _lastChangedAt
@@ -60,6 +62,7 @@ export const syncNotifications = /* GraphQL */ `
         email
         subject
         message
+        expiryTime
         _version
         _deleted
         _lastChangedAt
@@ -79,6 +82,7 @@ export const getUsers = /* GraphQL */ `
       name
       phone
       rank
+      userType
       dormbuilding
       dormroom
       verified
@@ -103,6 +107,7 @@ export const listUsers = /* GraphQL */ `
         name
         phone
         rank
+        userType
         dormbuilding
         dormroom
         verified
@@ -136,6 +141,7 @@ export const syncUsers = /* GraphQL */ `
         name
         phone
         rank
+        userType
         dormbuilding
         dormroom
         verified
@@ -425,7 +431,7 @@ export const getEvents = /* GraphQL */ `
       id
       title
       date
-      _ttl
+      expiryTime
       _version
       _deleted
       _lastChangedAt
@@ -445,7 +451,7 @@ export const listEvents = /* GraphQL */ `
         id
         title
         date
-        _ttl
+        expiryTime
         _version
         _deleted
         _lastChangedAt
@@ -474,71 +480,7 @@ export const syncEvents = /* GraphQL */ `
         id
         title
         date
-        _ttl
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getJBAContacts = /* GraphQL */ `
-  query GetJBAContacts($id: ID!) {
-    getJBAContacts(id: $id) {
-      id
-      title
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listJBAContacts = /* GraphQL */ `
-  query ListJBAContacts(
-    $filter: ModelJBAContactsFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listJBAContacts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        title
-        phone
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncJBAContacts = /* GraphQL */ `
-  query SyncJBAContacts(
-    $filter: ModelJBAContactsFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncJBAContacts(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        title
-        phone
+        expiryTime
         _version
         _deleted
         _lastChangedAt
@@ -603,138 +545,6 @@ export const syncFAQS = /* GraphQL */ `
         id
         question
         answer
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getHoursOfBusiness = /* GraphQL */ `
-  query GetHoursOfBusiness($id: ID!) {
-    getHoursOfBusiness(id: $id) {
-      id
-      dayOfWeek
-      hours
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listHoursOfBusinesses = /* GraphQL */ `
-  query ListHoursOfBusinesses(
-    $filter: ModelHoursOfBusinessFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listHoursOfBusinesses(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-    ) {
-      items {
-        id
-        dayOfWeek
-        hours
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncHoursOfBusinesses = /* GraphQL */ `
-  query SyncHoursOfBusinesses(
-    $filter: ModelHoursOfBusinessFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncHoursOfBusinesses(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        dayOfWeek
-        hours
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const getDormContacts = /* GraphQL */ `
-  query GetDormContacts($id: ID!) {
-    getDormContacts(id: $id) {
-      id
-      name
-      phone
-      _version
-      _deleted
-      _lastChangedAt
-      createdAt
-      updatedAt
-    }
-  }
-`;
-export const listDormContacts = /* GraphQL */ `
-  query ListDormContacts(
-    $filter: ModelDormContactsFilterInput
-    $limit: Int
-    $nextToken: String
-  ) {
-    listDormContacts(filter: $filter, limit: $limit, nextToken: $nextToken) {
-      items {
-        id
-        name
-        phone
-        _version
-        _deleted
-        _lastChangedAt
-        createdAt
-        updatedAt
-      }
-      nextToken
-      startedAt
-    }
-  }
-`;
-export const syncDormContacts = /* GraphQL */ `
-  query SyncDormContacts(
-    $filter: ModelDormContactsFilterInput
-    $limit: Int
-    $nextToken: String
-    $lastSync: AWSTimestamp
-  ) {
-    syncDormContacts(
-      filter: $filter
-      limit: $limit
-      nextToken: $nextToken
-      lastSync: $lastSync
-    ) {
-      items {
-        id
-        name
-        phone
         _version
         _deleted
         _lastChangedAt
@@ -860,6 +670,91 @@ export const syncUnits = /* GraphQL */ `
         id
         unit
         wing
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const getAppointments = /* GraphQL */ `
+  query GetAppointments($id: ID!) {
+    getAppointments(id: $id) {
+      id
+      service
+      employeeName
+      employeeEmail
+      dateOfAppointment
+      timeOfAppointment
+      nameOfResident
+      emailOfResident
+      phoneOfResident
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listAppointments = /* GraphQL */ `
+  query ListAppointments(
+    $filter: ModelAppointmentsFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listAppointments(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        service
+        employeeName
+        employeeEmail
+        dateOfAppointment
+        timeOfAppointment
+        nameOfResident
+        emailOfResident
+        phoneOfResident
+        expiryTime
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncAppointments = /* GraphQL */ `
+  query SyncAppointments(
+    $filter: ModelAppointmentsFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncAppointments(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        service
+        employeeName
+        employeeEmail
+        dateOfAppointment
+        timeOfAppointment
+        nameOfResident
+        emailOfResident
+        phoneOfResident
+        expiryTime
         _version
         _deleted
         _lastChangedAt

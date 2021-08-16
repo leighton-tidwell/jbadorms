@@ -16,6 +16,22 @@ const Calendar = props => {
     dateObj: moment()
   });
 
+  moment.addRealMonth = d => {
+    let fm = moment(d).add(1, 'M');
+    let fmEnd = moment(fm).endOf('month');
+    return d.date() != fm.date() && fm.isSame(fmEnd.format('YYYY-MM-DD'))
+      ? fm.add(1, 'd')
+      : fm;
+  };
+
+  moment.subtractRealMonth = d => {
+    let fm = moment(d).subtract(1, 'M');
+    let fmEnd = moment(fm).endOf('month');
+    return d.date() != fm.date() && fm.isSame(fmEnd.format('YYYY-MM-DD'))
+      ? fm.subtract(1, 'd')
+      : fm;
+  };
+
   const shortWeekDays = () => {
     const listOfWeekDays = moment.weekdaysShort();
     return (
@@ -93,13 +109,13 @@ const Calendar = props => {
 
   const handlePrevious = () => {
     setDateObject(prevState => ({
-      dateObj: prevState.dateObj.subtract(1, 'month')
+      dateObj: moment.subtractRealMonth(prevState.dateObj)
     }));
   };
 
   const handleNext = () => {
     setDateObject(prevState => ({
-      dateObj: prevState.dateObj.add(1, 'month')
+      dateObj: moment.addRealMonth(prevState.dateObj)
     }));
   };
 
@@ -109,12 +125,16 @@ const Calendar = props => {
       month: currentMonth(),
       year: currentYear()
     });
+    props.onDateChange({
+      day: day,
+      month: currentMonth(),
+      year: currentYear()
+    });
   };
 
-  const onDateChange = props.onDateChange;
   useEffect(() => {
-    onDateChange(selectedDate);
-  }, [selectedDate, onDateChange]);
+    props.onDateChange(selectedDate);
+  }, []);
 
   return (
     <div className={classes.calendar}>

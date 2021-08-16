@@ -3,7 +3,6 @@
   color: #99b5cd;
   font-size: 1.2em;
   background-color: #143552;
-  min-height: 50vw;
 }
 .ul {
   list-style: none;
@@ -14,72 +13,8 @@
   margin: 1em 0;
 }
 
-.link {
-  text-decoration: none;
-  color: inherit;
-  display: flex;
-  align-items: center;
-}
-
-.dorm-link {
-  height: 20px;
-  width: 20px;
-  margin-right: 5px;
-  background: url('/images/management/dorms.svg');
-  background-position: center center;
-}
-
-.housing-link {
-  height: 20px;
-  width: 20px;
-  margin-right: 5px;
-  background: url('/images/management/housing.svg');
-  background-position: center center;
-}
-
-.back-link {
-  height: 20px;
-  width: 20px;
-  margin-right: 5px;
-  background: url('/images/management/back.svg');
-  background-position: center center;
-}
-
-.active {
-  color: white;
-}
-
-.link:hover {
-  color: white;
-}
-
-.link:hover .dorm-link {
-  background: url('/images/management/dorms_active.svg');
-  background-position: center center;
-}
-
-.active-dorm {
-  background: url('/images/management/dorms_active.svg');
-  height: 20px;
-  width: 20px;
-  margin-right: 5px;
-  background-position: center center;
-}
-
-.link:hover .housing-link {
-  background: url('/images/management/housing_active.svg');
-  background-position: center center;
-}
-
-.active-house {
-  height: 20px;
-  width: 20px;
-  margin-right: 5px;
-  background: url('/images/management/housing_active.svg');
-  background-position: center center;
-}
-
-.link:hover .back-link {
-  background: url('/images/management/back_active.svg');
-  background-position: center center;
+@media only screen and (min-width: 1200px) {
+  .nav {
+    min-height: calc(100vh - 3em);
+  }
 }

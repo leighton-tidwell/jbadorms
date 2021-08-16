@@ -9,7 +9,12 @@
 .logo {
   font-size: 1.8em;
   font-weight: 700;
-  flex-basis: 85%;
+  flex-basis: 100%;
+}
+
+.profile {
+  text-align: right;
+  flex-basis: 100%;
 }
 
 .logoLink {
@@ -19,4 +24,10 @@
 
 .logoLink:hover {
   text-decoration: underline;
+}
+
+@media only screen and (min-width: 1200px) {
+  .logo {
+    flex-basis: 85%;
+  }
 }

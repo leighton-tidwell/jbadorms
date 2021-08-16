@@ -12,7 +12,7 @@ import AppointmentScheduler from '../../../components/Dorms/Appointments/Appoint
 import DefaultLayout from '../../../layouts/dorms/default';
 import AlertBox from '../../../components/UI/AlertBox';
 
-const Appointments = ({ navLinks, verified }) => {
+const Appointments = ({ navLinks, verified, name, phone, email }) => {
   const [userIsVerified, setUserIsVerified] = useState(verified);
   const bannerBackgroundImage = '/images/appointment_banner.png';
 
@@ -26,7 +26,7 @@ const Appointments = ({ navLinks, verified }) => {
       <Subtitle>Talk to an ADL</Subtitle>
       <Content>
         {verified ? (
-          <AppointmentScheduler />
+          <AppointmentScheduler name={name} phone={phone} email={email} />
         ) : (
           <AlertBox
             title="We don't know you're coming yet!"
@@ -50,12 +50,21 @@ export const getServerSideProps = async context => {
     );
     const userData = isUserVerified.data.listUsers.items[0];
     if (userData.verified) verified = true;
+    if (userData.userType)
+      return {
+        props: {
+          authenticated: true,
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          navLinks: getNavItems(true),
+          verified: verified
+        }
+      };
     return {
-      props: {
-        authenticated: true,
-        username: user.username,
-        navLinks: getNavItems(true),
-        verified: verified
+      redirect: {
+        destination: '/nextsteps',
+        permanent: false
       }
     };
   } catch (error) {
