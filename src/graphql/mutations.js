@@ -640,3 +640,84 @@ export const deleteAppointments = /* GraphQL */ `
     }
   }
 `;
+export const createWorkOrders = /* GraphQL */ `
+  mutation CreateWorkOrders(
+    $input: CreateWorkOrdersInput!
+    $condition: ModelWorkOrdersConditionInput
+  ) {
+    createWorkOrders(input: $input, condition: $condition) {
+      id
+      phone
+      name
+      rank
+      building
+      roomNumber
+      urgency
+      requestType
+      description
+      permission
+      escort
+      securingYourItems
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const updateWorkOrders = /* GraphQL */ `
+  mutation UpdateWorkOrders(
+    $input: UpdateWorkOrdersInput!
+    $condition: ModelWorkOrdersConditionInput
+  ) {
+    updateWorkOrders(input: $input, condition: $condition) {
+      id
+      phone
+      name
+      rank
+      building
+      roomNumber
+      urgency
+      requestType
+      description
+      permission
+      escort
+      securingYourItems
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const deleteWorkOrders = /* GraphQL */ `
+  mutation DeleteWorkOrders(
+    $input: DeleteWorkOrdersInput!
+    $condition: ModelWorkOrdersConditionInput
+  ) {
+    deleteWorkOrders(input: $input, condition: $condition) {
+      id
+      phone
+      name
+      rank
+      building
+      roomNumber
+      urgency
+      requestType
+      description
+      permission
+      escort
+      securingYourItems
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;

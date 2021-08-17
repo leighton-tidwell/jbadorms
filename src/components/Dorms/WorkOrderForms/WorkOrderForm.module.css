@@ -1,0 +1,35 @@
+.container {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.form-control {
+  display: flex;
+  flex: 1 0 100%;
+  flex-direction: column;
+  margin: 1.5em 0;
+}
+
+.form-control-check {
+  display: flex;
+  flex: 1 0 100%;
+  flex-direction: row;
+  align-items: center;
+  margin: 1.5em 0;
+}
+
+.checkbox {
+  margin-right: 1em;
+}
+
+.button {
+  width: 100%;
+}
+
+@media only screen and (min-width: 1200px) {
+  .button {
+    width: 30%;
+  }
+}

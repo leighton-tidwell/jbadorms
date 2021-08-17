@@ -550,3 +550,75 @@ export const onDeleteAppointments = /* GraphQL */ `
     }
   }
 `;
+export const onCreateWorkOrders = /* GraphQL */ `
+  subscription OnCreateWorkOrders {
+    onCreateWorkOrders {
+      id
+      phone
+      name
+      rank
+      building
+      roomNumber
+      urgency
+      requestType
+      description
+      permission
+      escort
+      securingYourItems
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onUpdateWorkOrders = /* GraphQL */ `
+  subscription OnUpdateWorkOrders {
+    onUpdateWorkOrders {
+      id
+      phone
+      name
+      rank
+      building
+      roomNumber
+      urgency
+      requestType
+      description
+      permission
+      escort
+      securingYourItems
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const onDeleteWorkOrders = /* GraphQL */ `
+  subscription OnDeleteWorkOrders {
+    onDeleteWorkOrders {
+      id
+      phone
+      name
+      rank
+      building
+      roomNumber
+      urgency
+      requestType
+      description
+      permission
+      escort
+      securingYourItems
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;

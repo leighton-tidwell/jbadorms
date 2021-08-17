@@ -1,0 +1,10 @@
+.textarea {
+  outline: none;
+  border: 1px solid rgba(255, 255, 255, 0.486);
+  color: white;
+  background-color: #122536;
+  resize: none;
+  min-height: 200px;
+  font-family: inherit;
+  padding: 0.5em;
+}

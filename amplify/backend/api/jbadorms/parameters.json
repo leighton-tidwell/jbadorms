@@ -7,5 +7,6 @@
       "authjbadorms",
       "Outputs.UserPoolId"
     ]
-  }
+  },
+  "APIKeyExpirationEpoch": 1660681212
 }

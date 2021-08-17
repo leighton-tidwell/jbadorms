@@ -8,7 +8,12 @@ import Button from './Button';
 
 const Carousel = props => {
   const router = useRouter();
-  const images = ['/images/carousel_one.png', '/images/carousel_two.png'];
+  const images = [
+    '/images/carousel_one.png',
+    '/images/carousel_two.png',
+    '/images/carousel_three.png',
+    '/images/carousel_four.png'
+  ];
   const arrows = {
     arrowLeft: '/images/arrow-left.svg',
     arrowRight: '/images/arrow-right.svg'
@@ -25,6 +30,18 @@ const Carousel = props => {
       subtext: 'Having issues with your dorm?',
       button: 'Get it fixed',
       href: '/dorms/work-orders'
+    },
+    {
+      hero: 'Dual airmen dorms with kitchnette',
+      subtext: 'Want to see your future home?',
+      button: 'See Rooms',
+      href: '/dorms/rooms'
+    },
+    {
+      hero: 'Have a question?',
+      subtext: 'We have answers.',
+      button: 'View our FAQ',
+      href: '/dorms/faq'
     }
   ];
   const [index, setIndex] = useState(0);

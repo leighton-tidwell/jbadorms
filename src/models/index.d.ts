@@ -44,6 +44,10 @@ type AppointmentsMetaData = {
   readOnlyFields: 'createdAt' | 'updatedAt';
 }
 
+type WorkOrdersMetaData = {
+  readOnlyFields: 'createdAt' | 'updatedAt';
+}
+
 export declare class Notifications {
   readonly id: string;
   readonly name: string;
@@ -182,4 +186,24 @@ export declare class Appointments {
   readonly updatedAt?: string;
   constructor(init: ModelInit<Appointments, AppointmentsMetaData>);
   static copyOf(source: Appointments, mutator: (draft: MutableModel<Appointments, AppointmentsMetaData>) => MutableModel<Appointments, AppointmentsMetaData> | void): Appointments;
+}
+
+export declare class WorkOrders {
+  readonly id: string;
+  readonly phone: string;
+  readonly name: string;
+  readonly rank: string;
+  readonly building: string;
+  readonly roomNumber: string;
+  readonly urgency: string;
+  readonly requestType: string;
+  readonly description: string;
+  readonly permission: boolean;
+  readonly escort: boolean;
+  readonly securingYourItems: boolean;
+  readonly expiryTime: number;
+  readonly createdAt?: string;
+  readonly updatedAt?: string;
+  constructor(init: ModelInit<WorkOrders, WorkOrdersMetaData>);
+  static copyOf(source: WorkOrders, mutator: (draft: MutableModel<WorkOrders, WorkOrdersMetaData>) => MutableModel<WorkOrders, WorkOrdersMetaData> | void): WorkOrders;
 }

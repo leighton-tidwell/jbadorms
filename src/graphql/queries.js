@@ -766,3 +766,97 @@ export const syncAppointments = /* GraphQL */ `
     }
   }
 `;
+export const getWorkOrders = /* GraphQL */ `
+  query GetWorkOrders($id: ID!) {
+    getWorkOrders(id: $id) {
+      id
+      phone
+      name
+      rank
+      building
+      roomNumber
+      urgency
+      requestType
+      description
+      permission
+      escort
+      securingYourItems
+      expiryTime
+      _version
+      _deleted
+      _lastChangedAt
+      createdAt
+      updatedAt
+    }
+  }
+`;
+export const listWorkOrders = /* GraphQL */ `
+  query ListWorkOrders(
+    $filter: ModelWorkOrdersFilterInput
+    $limit: Int
+    $nextToken: String
+  ) {
+    listWorkOrders(filter: $filter, limit: $limit, nextToken: $nextToken) {
+      items {
+        id
+        phone
+        name
+        rank
+        building
+        roomNumber
+        urgency
+        requestType
+        description
+        permission
+        escort
+        securingYourItems
+        expiryTime
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;
+export const syncWorkOrders = /* GraphQL */ `
+  query SyncWorkOrders(
+    $filter: ModelWorkOrdersFilterInput
+    $limit: Int
+    $nextToken: String
+    $lastSync: AWSTimestamp
+  ) {
+    syncWorkOrders(
+      filter: $filter
+      limit: $limit
+      nextToken: $nextToken
+      lastSync: $lastSync
+    ) {
+      items {
+        id
+        phone
+        name
+        rank
+        building
+        roomNumber
+        urgency
+        requestType
+        description
+        permission
+        escort
+        securingYourItems
+        expiryTime
+        _version
+        _deleted
+        _lastChangedAt
+        createdAt
+        updatedAt
+      }
+      nextToken
+      startedAt
+    }
+  }
+`;

@@ -236,3 +236,35 @@ type Appointments
   phoneOfResident: String!
   expiryTime: AWSTimestamp! @ttl
 }
+
+type WorkOrders
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [create] }
+    ]
+  ) {
+  id: ID!
+  phone: AWSPhone!
+  name: String!
+  rank: String!
+  building: String!
+  roomNumber: String!
+  urgency: String!
+  requestType: String!
+  description: String!
+  permission: Boolean!
+  escort: Boolean!
+  securingYourItems: Boolean!
+  expiryTime: AWSTimestamp! @ttl
+}
