@@ -118,7 +118,7 @@ const ResidentResponsibilitiesPage = ({
               dormitories, quiet hours are 24 hours a day and will be followed.
               Excessive noise, from any source, such as stereos, musical
               instruments, televisions, guests, etc. that can be heard beyond
-              the limits of the occupant's room at any time is strictly
+              the limits of the occupant&apos;s room at any time is strictly
               prohibited. This policy extends to parking lots, outside
               pavillions, designated smoking areas, and dayrooms/lounges.
               Shift-Worker signs are available for use from the UH Office and
@@ -190,8 +190,8 @@ const ResidentResponsibilitiesPage = ({
             <ResidentResponsibilitiesText title="Mold">
               Due to the local climate, Mold is not uncommon (particularly worse
               during the summer months). Our Mold policy and mold information is
-              located under "Documents" under "Mold" on the JBA Dorm App. YOU
-              MUST review the policy and ensure compliance.
+              located under &quot;Documents&quot; under &quot;Mold&quot; on the
+              JBA Dorm App. YOU MUST review the policy and ensure compliance.
             </ResidentResponsibilitiesText>
             <span className={classes.subtitle}>TERMINATING RESIDENCY</span>
             <ResidentResponsibilitiesText title="Terminating Residency">
@@ -289,7 +289,9 @@ const ResidentResponsibilitiesPage = ({
               </form>
             )}
             {residentresponsibilities && (
-              <SuccessText>You've already filled this form out!</SuccessText>
+              <SuccessText>
+                You&apos;ve already filled this form out!
+              </SuccessText>
             )}
           </>
         ) : (
