@@ -148,6 +148,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "residentresponsibilities": {
+                    "name": "residentresponsibilities",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "verified": {
                     "name": "verified",
                     "isArray": false,
@@ -1401,5 +1408,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "198a41216da7b59dd1db8c10d5c29868"
+    "version": "d3b5b0e9329f6f2356091afcd23818dd"
 };

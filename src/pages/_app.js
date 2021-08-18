@@ -9,6 +9,10 @@ const MyApp = ({ Component, pageProps }) => {
     <>
       <Head>
         <title>JBA MHO</title>
+        <meta
+          name="description"
+          content="The official website of Joint Base Andrews Military Housing Office."
+        />
         <meta property="og:title" content="JBA MHO" />
         <meta property="og:site_name" content="JBA MHO" />
         <meta property="og:type" content="website" />

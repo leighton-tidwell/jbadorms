@@ -66,7 +66,7 @@ const DormsManagementPage = ({
           title="Current Staff"
           image="/images/management/verification.svg"
           data={listOfStaff}
-          showMore
+          type="dormstaff"
         />
       </div>
     </ManagementLayout>

@@ -25,6 +25,9 @@ const ResidentForm = ({ data }) => {
   const [dormBuilding, setDormBuilding] = useState(data.dormbuilding || '');
   const [dormRoom, setDormRoom] = useState(data.dormroom || '');
   const [userVerified, setUserVerified] = useState(data.verified);
+  const [residentResponsibilities, setResidentResponsibilities] = useState(
+    data.residentresponsibilities || false
+  );
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -220,6 +223,17 @@ const ResidentForm = ({ data }) => {
                   value={dormRoom}
                   onChange={handleChangeDormRoom}
                   type="text"
+                />
+              </div>
+              <div className={classes['form-control']}>
+                <label className={classes.label}>
+                  User Signed Resident Responsibilities:{' '}
+                </label>
+                <Input
+                  className={classes.input}
+                  value={residentResponsibilities}
+                  type="text"
+                  disabled
                 />
               </div>
             </>

@@ -21,7 +21,8 @@ const ResidentsTable = ({ image, title, data, type, showMore }) => {
   const getTypeLink = item => {
     if (type === 'building')
       return `/management/dorms/buildings/${item.building}`;
-    if (type === 'resident') return `/management/dorms/resident/${item.email}`;
+    if (type === 'resident' || type === 'dormstaff')
+      return `/management/dorms/resident/${item.email}`;
   };
 
   const getViewAllLink = () => {

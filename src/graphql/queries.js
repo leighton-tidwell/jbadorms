@@ -85,6 +85,7 @@ export const getUsers = /* GraphQL */ `
       userType
       dormbuilding
       dormroom
+      residentresponsibilities
       verified
       _version
       _deleted
@@ -110,6 +111,7 @@ export const listUsers = /* GraphQL */ `
         userType
         dormbuilding
         dormroom
+        residentresponsibilities
         verified
         _version
         _deleted
@@ -144,6 +146,7 @@ export const syncUsers = /* GraphQL */ `
         userType
         dormbuilding
         dormroom
+        residentresponsibilities
         verified
         _version
         _deleted

@@ -63,6 +63,7 @@ export const onCreateUsers = /* GraphQL */ `
       userType
       dormbuilding
       dormroom
+      residentresponsibilities
       verified
       _version
       _deleted
@@ -83,6 +84,7 @@ export const onUpdateUsers = /* GraphQL */ `
       userType
       dormbuilding
       dormroom
+      residentresponsibilities
       verified
       _version
       _deleted
@@ -103,6 +105,7 @@ export const onDeleteUsers = /* GraphQL */ `
       userType
       dormbuilding
       dormroom
+      residentresponsibilities
       verified
       _version
       _deleted

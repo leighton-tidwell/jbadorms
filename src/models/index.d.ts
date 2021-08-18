@@ -70,6 +70,7 @@ export declare class Users {
   readonly userType?: string;
   readonly dormbuilding?: number;
   readonly dormroom?: number;
+  readonly residentresponsibilities?: boolean;
   readonly verified: boolean;
   readonly createdAt?: string;
   readonly updatedAt?: string;

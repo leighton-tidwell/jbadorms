@@ -35,7 +35,7 @@ const getNavItems = authenticated => {
         {
           id: uuid(),
           text: 'Resident Responsibilities',
-          href: '/dorms/resident-responsibilities'
+          href: '/dorms/processing/resident-responsibilities'
         },
         {
           id: uuid(),

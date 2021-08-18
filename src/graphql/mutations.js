@@ -75,6 +75,7 @@ export const createUsers = /* GraphQL */ `
       userType
       dormbuilding
       dormroom
+      residentresponsibilities
       verified
       _version
       _deleted
@@ -98,6 +99,7 @@ export const updateUsers = /* GraphQL */ `
       userType
       dormbuilding
       dormroom
+      residentresponsibilities
       verified
       _version
       _deleted
@@ -121,6 +123,7 @@ export const deleteUsers = /* GraphQL */ `
       userType
       dormbuilding
       dormroom
+      residentresponsibilities
       verified
       _version
       _deleted
