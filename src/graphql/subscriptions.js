@@ -64,6 +64,7 @@ export const onCreateUsers = /* GraphQL */ `
       dormbuilding
       dormroom
       residentresponsibilities
+      mattressagreement
       verified
       _version
       _deleted
@@ -85,6 +86,7 @@ export const onUpdateUsers = /* GraphQL */ `
       dormbuilding
       dormroom
       residentresponsibilities
+      mattressagreement
       verified
       _version
       _deleted
@@ -106,6 +108,7 @@ export const onDeleteUsers = /* GraphQL */ `
       dormbuilding
       dormroom
       residentresponsibilities
+      mattressagreement
       verified
       _version
       _deleted

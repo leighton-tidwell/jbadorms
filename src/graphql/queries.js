@@ -86,6 +86,7 @@ export const getUsers = /* GraphQL */ `
       dormbuilding
       dormroom
       residentresponsibilities
+      mattressagreement
       verified
       _version
       _deleted
@@ -112,6 +113,7 @@ export const listUsers = /* GraphQL */ `
         dormbuilding
         dormroom
         residentresponsibilities
+        mattressagreement
         verified
         _version
         _deleted
@@ -147,6 +149,7 @@ export const syncUsers = /* GraphQL */ `
         dormbuilding
         dormroom
         residentresponsibilities
+        mattressagreement
         verified
         _version
         _deleted

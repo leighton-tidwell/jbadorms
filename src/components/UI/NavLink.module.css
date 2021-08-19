@@ -1,6 +1,6 @@
 @media only screen and (min-width: 1200px) {
   .active {
-    font-weight: 600;
+    font-weight: 600 !important;
     background: #143552;
   }
 }

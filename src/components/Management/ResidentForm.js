@@ -28,6 +28,9 @@ const ResidentForm = ({ data }) => {
   const [residentResponsibilities, setResidentResponsibilities] = useState(
     data.residentresponsibilities || false
   );
+  const [mattressAgreement, setMattressAgreement] = useState(
+    data.mattressagreement || false
+  );
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
 
@@ -232,6 +235,17 @@ const ResidentForm = ({ data }) => {
                 <Input
                   className={classes.input}
                   value={residentResponsibilities}
+                  type="text"
+                  disabled
+                />
+              </div>
+              <div className={classes['form-control']}>
+                <label className={classes.label}>
+                  User Signed Mattress Protector Agreement:{' '}
+                </label>
+                <Input
+                  className={classes.input}
+                  value={mattressAgreement}
                   type="text"
                   disabled
                 />

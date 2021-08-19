@@ -155,6 +155,13 @@ export const schema = {
                     "isRequired": false,
                     "attributes": []
                 },
+                "mattressagreement": {
+                    "name": "mattressagreement",
+                    "isArray": false,
+                    "type": "Boolean",
+                    "isRequired": false,
+                    "attributes": []
+                },
                 "verified": {
                     "name": "verified",
                     "isArray": false,
@@ -1408,5 +1415,5 @@ export const schema = {
     },
     "enums": {},
     "nonModels": {},
-    "version": "d3b5b0e9329f6f2356091afcd23818dd"
+    "version": "b3d8952eda33000b101a69e76ede1001"
 };

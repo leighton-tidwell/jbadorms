@@ -40,7 +40,7 @@ const getNavItems = authenticated => {
         {
           id: uuid(),
           text: 'Mandatory Use of Mattress Protectors',
-          href: '/dorms/mandatory-use-of-mattress-protectors'
+          href: '/dorms/processing/mandatory-use-of-mattress-protectors'
         }
       ]
     },
