@@ -190,7 +190,7 @@ const AppointmentForm = ({ name, phone, email }) => {
 
   useEffect(() => {
     if (selectedEmployee) findAvailableAppointmentsForEmployee();
-  }, [selectedEmployee, selectedDate]);
+  }, [selectedEmployee, selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={classes.flex}>

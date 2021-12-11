@@ -52,12 +52,12 @@ const getNavItems = authenticated => {
         {
           id: uuid(),
           text: 'Briefing',
-          href: '/dorms/bay-orderly-briefing'
+          href: '/dorms/bay-orderly/briefing'
         },
         {
           id: uuid(),
           text: 'Daily Checklist',
-          href: '/dorms/bay-orderly-daily-checklist'
+          href: '/dorms/bay-orderly/daily-checklist'
         }
       ]
     },
@@ -87,12 +87,12 @@ const getNavItems = authenticated => {
         {
           id: uuid(),
           text: 'Briefing',
-          href: '/dorms/bay-orderly-briefing'
+          href: '/dorms/bay-orderly/briefing'
         },
         {
           id: uuid(),
           text: 'Daily Checklist',
-          href: '/dorms/bay-orderly-daily-checklist'
+          href: '/dorms/bay-orderly/daily-checklist'
         }
       ]
     },

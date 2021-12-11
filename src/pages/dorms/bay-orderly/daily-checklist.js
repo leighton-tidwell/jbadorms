@@ -1,6 +1,5 @@
-import React, { useState } from 'react';
-import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
-import { listUsers } from '../../../graphql/queries';
+import React from 'react';
+import Amplify, { withSSRContext } from 'aws-amplify';
 import getNavItems from '../../../api/getNavItems';
 import config from '../../../aws-exports';
 import DocViewer, { DocViewerRenderers } from 'react-doc-viewer';
@@ -12,19 +11,11 @@ import Content from '../../../components/UI/Content';
 import Subtitle from '../../../components/UI/Subtitle';
 import AlertBox from '../../../components/UI/AlertBox';
 
-import classes from './uh-conditions-checklist.module.css';
+import classes from './daily-checklist.module.css';
 
-const ConditionsChecklistPage = ({
-  verified,
-  navLinks,
-  name,
-  id,
-  userVersion
-}) => {
+const DailyChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
-  const doc = [
-    { uri: 'https://dev.jbamho.com/files/conditions-checklist.docx' }
-  ];
+  const doc = [{ uri: 'https://dev.jbamho.com/files/bay-o-checklist.docx' }];
 
   return (
     <DefaultLayout navLinks={navLinks}>
@@ -33,7 +24,7 @@ const ConditionsChecklistPage = ({
         heroText="In-Processing"
         heroSubText="Fill out the forms so we know you're coming."
       />
-      <Subtitle>Conditions Checklist</Subtitle>
+      <Subtitle>Bay Orderly Checklist</Subtitle>
       <Content>
         <AlertBox
           title="Notice"
@@ -52,44 +43,25 @@ const ConditionsChecklistPage = ({
 };
 
 export const getServerSideProps = async context => {
-  const { Auth, API } = withSSRContext(context);
+  const { Auth } = withSSRContext(context);
+
   try {
     const user = await Auth.currentAuthenticatedUser();
-    let verified = false;
-    const isUserVerified = await API.graphql(
-      graphqlOperation(listUsers, {
-        filter: { id: { eq: user.username } }
-      })
-    );
-
-    const userData = isUserVerified.data.listUsers.items[0];
-    if (userData.verified) verified = true;
-    if (userData.userType)
-      return {
-        props: {
-          authenticated: true,
-          id: userData.id,
-          name: user.attributes.name,
-          userVersion: userData._version,
-          navLinks: getNavItems(true),
-          verified: verified
-        }
-      };
     return {
-      redirect: {
-        destination: '/nextsteps',
-        permanent: false
+      props: {
+        authenticated: true,
+        username: user.username,
+        navLinks: getNavItems(true)
       }
     };
   } catch (error) {
-    console.log(error);
     return {
-      redirect: {
-        destination: '/login',
-        permanent: false
+      props: {
+        authenticated: false,
+        navLinks: getNavItems(false)
       }
     };
   }
 };
 
-export default ConditionsChecklistPage;
+export default DailyChecklistPage;
