@@ -64,15 +64,32 @@ const AppointmentForm = ({ name, phone, email }) => {
     );
     const selectedDateInPast =
       currentDate.getTime() > appointmentDateObject.getTime();
-    const month = ('0' + (appointmentDateObject.getMonth() + 1)).slice(-2);
-    const day = ('0' + dateObject.day).slice(-2);
 
     if (selectedDateInPast) return setAvailableTimes(null);
+
+    setSelectedDate(dateObject);
+  };
+
+  const findAvailableAppointmentsForEmployee = async () => {
+    const employeeEmail = employeeOpts.find(
+      employee => employee.value === selectedEmployee
+    ).email;
+
+    const appointmentDateObject = new Date(
+      `${selectedDate.month} ${selectedDate.day}, ${selectedDate.year}`
+    );
+    const month = ('0' + (appointmentDateObject.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.day).slice(-2);
 
     const existingAppointments = await API.graphql(
       graphqlOperation(listAppointments, {
         filter: {
-          dateOfAppointment: { eq: `${dateObject.year}-${month}-${day}` }
+          and: [
+            {
+              dateOfAppointment: { eq: `${selectedDate.year}-${month}-${day}` }
+            },
+            { employeeEmail: { eq: employeeEmail } }
+          ]
         }
       })
     );
@@ -87,7 +104,6 @@ const AppointmentForm = ({ name, phone, email }) => {
         appointmentTime => !takenAppointmentTimes.includes(appointmentTime)
       )
     );
-    setSelectedDate(dateObject);
   };
 
   const handleTimeSelect = time => {
@@ -171,6 +187,10 @@ const AppointmentForm = ({ name, phone, email }) => {
   useEffect(() => {
     getStaffList();
   }, []);
+
+  useEffect(() => {
+    if (selectedEmployee) findAvailableAppointmentsForEmployee();
+  }, [selectedEmployee, selectedDate]);
 
   return (
     <div className={classes.flex}>

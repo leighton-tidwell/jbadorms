@@ -30,7 +30,7 @@ const getNavItems = authenticated => {
         {
           id: uuid(),
           text: 'Conditions Checklist',
-          href: '/dorms/uh-conditions-checklist'
+          href: '/dorms/processing/uh-conditions-checklist'
         },
         {
           id: uuid(),

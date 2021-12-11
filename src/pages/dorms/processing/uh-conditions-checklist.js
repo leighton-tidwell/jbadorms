@@ -1,38 +1,45 @@
 import React, { useState } from 'react';
-import Amplify, { graphqlOperation, withSSRContext } from 'aws-amplify';
+import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers } from '../../../graphql/queries';
 import getNavItems from '../../../api/getNavItems';
 import config from '../../../aws-exports';
+import DocViewer, { DocViewerRenderers } from 'react-doc-viewer';
 Amplify.configure({ ...config, ssr: true });
 
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Subtitle from '../../../components/UI/Subtitle';
-import Content from '../../../components/UI/Content';
-import AppointmentScheduler from '../../../components/Dorms/Appointments/AppointmentScheduler';
 import DefaultLayout from '../../../layouts/dorms/default';
+import ImageBanner from '../../../components/UI/ImageBanner';
+import Content from '../../../components/UI/Content';
+import Subtitle from '../../../components/UI/Subtitle';
 import AlertBox from '../../../components/UI/AlertBox';
 
-const Appointments = ({ navLinks, verified, name, phone, email }) => {
-  const [userIsVerified, setUserIsVerified] = useState(verified);
-  const bannerBackgroundImage = '/images/appointment_banner.png';
+import classes from './uh-conditions-checklist.module.css';
+
+const ConditionsChecklistPage = ({
+  verified,
+  navLinks,
+  name,
+  id,
+  userVersion
+}) => {
+  const bannerBackgroundImage = '/images/processing_banner.png';
+  const doc = [{ uri: '/files/conditions-checklist.docx' }];
 
   return (
     <DefaultLayout navLinks={navLinks}>
       <ImageBanner
         backgroundImage={bannerBackgroundImage}
-        heroText="Make an Appointment"
-        heroSubText="Get the help you need, soon."
+        heroText="In-Processing"
+        heroSubText="Fill out the forms so we know you're coming."
       />
-      <Subtitle>Talk to an ADL</Subtitle>
+      <Subtitle>Mandatory Use of Mattress Protectors</Subtitle>
       <Content>
-        {verified ? (
-          <AppointmentScheduler name={name} phone={phone} email={email} />
-        ) : (
-          <AlertBox
-            title="We don't know you're coming yet!"
-            message="To make an appointment you must first fill in the Assignment Data Form under the Processing link. After we have recieved your form, we will verify your account. After verification, you will be able to make an appointment."
-          />
-        )}
+        <AlertBox
+          title="Notice"
+          message="Download this form, fill it out and return it to the Dorm Office for processing."
+        />
+      </Content>
+      <Content className={classes.flex}>
+        <DocViewer pluginRenderers={DocViewerRenderers} documents={doc} />
       </Content>
     </DefaultLayout>
   );
@@ -48,15 +55,16 @@ export const getServerSideProps = async context => {
         filter: { id: { eq: user.username } }
       })
     );
+
     const userData = isUserVerified.data.listUsers.items[0];
     if (userData.verified) verified = true;
     if (userData.userType)
       return {
         props: {
           authenticated: true,
-          name: userData.name,
-          email: userData.email,
-          phone: userData.phone,
+          id: userData.id,
+          name: user.attributes.name,
+          userVersion: userData._version,
           navLinks: getNavItems(true),
           verified: verified
         }
@@ -68,6 +76,7 @@ export const getServerSideProps = async context => {
       }
     };
   } catch (error) {
+    console.log(error);
     return {
       redirect: {
         destination: '/login',
@@ -77,4 +86,4 @@ export const getServerSideProps = async context => {
   }
 };
 
-export default Appointments;
+export default ConditionsChecklistPage;
