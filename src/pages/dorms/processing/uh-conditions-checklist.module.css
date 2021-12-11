@@ -1,6 +1,5 @@
 .flex {
   flex-direction: column;
-  height: 500px;
 }
 
 .form {
@@ -40,6 +39,10 @@
   padding: 1em;
   font-size: 1.2em;
   font-weight: 600;
+}
+
+.reactDocViewer {
+  min-height: 750px;
 }
 
 @media only screen and (min-width: 1200px) {

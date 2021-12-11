@@ -39,7 +39,11 @@ const ConditionsChecklistPage = ({
         />
       </Content>
       <Content className={classes.flex}>
-        <DocViewer pluginRenderers={DocViewerRenderers} documents={doc} />
+        <DocViewer
+          className={classes.reactDocViewer}
+          pluginRenderers={DocViewerRenderers}
+          documents={doc}
+        />
       </Content>
     </DefaultLayout>
   );
