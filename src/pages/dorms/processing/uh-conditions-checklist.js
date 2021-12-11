@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers } from '../../../graphql/queries';
 import getNavItems from '../../../api/getNavItems';
@@ -14,13 +14,7 @@ import AlertBox from '../../../components/UI/AlertBox';
 
 import classes from './uh-conditions-checklist.module.css';
 
-const ConditionsChecklistPage = ({
-  verified,
-  navLinks,
-  name,
-  id,
-  userVersion
-}) => {
+const ConditionsChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
   const doc = [
     { uri: 'https://dev.jbamho.com/files/conditions-checklist.docx' }
@@ -41,11 +35,13 @@ const ConditionsChecklistPage = ({
         />
       </Content>
       <Content className={classes.flex}>
-        <DocViewer
-          className={classes.reactDocViewer}
-          pluginRenderers={DocViewerRenderers}
-          documents={doc}
-        />
+        {typeof window !== 'undefined' && (
+          <DocViewer
+            className={classes.reactDocViewer}
+            pluginRenderers={DocViewerRenderers}
+            documents={doc}
+          />
+        )}
       </Content>
     </DefaultLayout>
   );
