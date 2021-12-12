@@ -1,14 +1,17 @@
 import React from 'react';
-import DocViewer, { DocViewerRenderers } from 'react-doc-viewer';
+import dynamic from 'next/dynamic';
 import classes from './DocViewer.module.css';
+import DocViewer, { MSDocRenderer } from 'react-doc-viewer';
 
 const CustomDocViewer = ({ doc }) => {
   return (
-    <DocViewer
-      className={classes.reactDocViewer}
-      pluginRenderers={DocViewerRenderers}
-      documents={doc}
-    />
+    typeof window !== 'undefined' && (
+      <DocViewer
+        className={classes.reactDocViewer}
+        pluginRenderers={[MSDocRenderer]}
+        documents={doc}
+      />
+    )
   );
 };
 

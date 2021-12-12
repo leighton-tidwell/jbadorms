@@ -2,7 +2,7 @@ import React from 'react';
 import Amplify, { withSSRContext } from 'aws-amplify';
 import getNavItems from '../../../api/getNavItems';
 import config from '../../../aws-exports';
-import DocViewer, { DocViewerRenderers } from 'react-doc-viewer';
+import dynamic from 'next/dynamic';
 Amplify.configure({ ...config, ssr: true });
 
 import DefaultLayout from '../../../layouts/dorms/default';
@@ -16,6 +16,11 @@ import classes from './briefing.module.css';
 const BriefingPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
   const doc = [{ uri: 'https://dev.jbamho.com/files/bay-o-briefing.docx' }];
+
+  const CustomDocViewer = dynamic(
+    () => import('../../../components/Dorms/DocumentViewer/DocViewer'),
+    { ssr: false }
+  );
 
   return (
     <DefaultLayout navLinks={navLinks}>
@@ -32,11 +37,7 @@ const BriefingPage = ({ navLinks }) => {
         />
       </Content>
       <Content className={classes.flex}>
-        <DocViewer
-          className={classes.reactDocViewer}
-          pluginRenderers={DocViewerRenderers}
-          documents={doc}
-        />
+        <CustomDocViewer doc={doc} />
       </Content>
     </DefaultLayout>
   );

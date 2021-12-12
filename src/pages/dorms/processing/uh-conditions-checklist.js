@@ -5,12 +5,13 @@ import getNavItems from '../../../api/getNavItems';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
+import dynamic from 'next/dynamic';
+
 import DefaultLayout from '../../../layouts/dorms/default';
 import ImageBanner from '../../../components/UI/ImageBanner';
 import Content from '../../../components/UI/Content';
 import Subtitle from '../../../components/UI/Subtitle';
 import AlertBox from '../../../components/UI/AlertBox';
-import CustomDocViewer from '../../../components/Dorms/DocumentViewer/DocViewer';
 
 import classes from './uh-conditions-checklist.module.css';
 
@@ -18,7 +19,10 @@ const ConditionsChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
   const doc = [{ uri: '/files/conditions-checklist.docx' }];
 
-  console.log('Hello page');
+  const CustomDocViewer = dynamic(
+    () => import('../../../components/Dorms/DocumentViewer/DocViewer'),
+    { ssr: false }
+  );
 
   return (
     <DefaultLayout navLinks={navLinks}>
