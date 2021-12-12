@@ -15,7 +15,7 @@ import classes from './daily-checklist.module.css';
 
 const DailyChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
-  const doc = [{ uri: 'https://dev.jbamho.com/files/bay-o-checklist.docx' }];
+  const doc = [{ uri: '/files/bay-o-checklist.docx' }];
 
   const CustomDocViewer = dynamic(
     () => import('../../../components/Dorms/DocumentViewer/DocViewer'),
