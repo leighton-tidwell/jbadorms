@@ -17,7 +17,7 @@ import classes from './uh-conditions-checklist.module.css';
 
 const ConditionsChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
-  const doc = [{ uri: '/files/conditions-checklist.docx' }];
+  const doc = [{ uri: `${location.hostname}/files/bay-o-checklist.docx` }];
 
   const CustomDocViewer = dynamic(
     () => import('../../../components/Dorms/DocumentViewer/DocViewer'),
