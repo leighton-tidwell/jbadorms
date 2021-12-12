@@ -15,7 +15,7 @@ import classes from './briefing.module.css';
 
 const BriefingPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
-  const doc = [{ uri: `${location.hostname}/files/bay-o-checklist.docx` }];
+  const doc = [{ uri: 'https://dev.jbamho.com/files/bay-o-checklist.docx' }];
 
   const CustomDocViewer = dynamic(
     () => import('../../../components/Dorms/DocumentViewer/DocViewer'),
