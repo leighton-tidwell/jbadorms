@@ -3,7 +3,6 @@ import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers } from '../../../graphql/queries';
 import getNavItems from '../../../api/getNavItems';
 import config from '../../../aws-exports';
-import DocViewer, { DocViewerRenderers } from 'react-doc-viewer';
 Amplify.configure({ ...config, ssr: true });
 
 import DefaultLayout from '../../../layouts/dorms/default';
@@ -11,14 +10,15 @@ import ImageBanner from '../../../components/UI/ImageBanner';
 import Content from '../../../components/UI/Content';
 import Subtitle from '../../../components/UI/Subtitle';
 import AlertBox from '../../../components/UI/AlertBox';
+import CustomDocViewer from '../../../components/Dorms/DocumentViewer/DocViewer';
 
 import classes from './uh-conditions-checklist.module.css';
 
 const ConditionsChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
-  const doc = [
-    { uri: 'https://dev.jbamho.com/files/conditions-checklist.docx' }
-  ];
+  const doc = [{ uri: '/files/conditions-checklist.docx' }];
+
+  console.log('Hello page');
 
   return (
     <DefaultLayout navLinks={navLinks}>
@@ -35,13 +35,7 @@ const ConditionsChecklistPage = ({ navLinks }) => {
         />
       </Content>
       <Content className={classes.flex}>
-        {typeof window !== 'undefined' && (
-          <DocViewer
-            className={classes.reactDocViewer}
-            pluginRenderers={DocViewerRenderers}
-            documents={doc}
-          />
-        )}
+        <CustomDocViewer doc={doc} />
       </Content>
     </DefaultLayout>
   );
