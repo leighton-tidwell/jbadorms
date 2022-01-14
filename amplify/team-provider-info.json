@@ -70,5 +70,47 @@
         }
       }
     }
+  },
+  "main": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-jbadorms-main-152145-authRole",
+      "UnauthRoleArn": "arn:aws:iam::628129398802:role/amplify-jbadorms-main-152145-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::628129398802:role/amplify-jbadorms-main-152145-authRole",
+      "Region": "us-east-1",
+      "DeploymentBucketName": "amplify-jbadorms-main-152145-deployment",
+      "UnauthRoleName": "amplify-jbadorms-main-152145-unauthRole",
+      "StackName": "amplify-jbadorms-main-152145",
+      "StackId": "arn:aws:cloudformation:us-east-1:628129398802:stack/amplify-jbadorms-main-152145/9980dd00-7577-11ec-ba83-12529c451aef",
+      "AmplifyAppId": "d2b11cw3mfd5jw"
+    },
+    "categories": {
+      "function": {
+        "addNewUser": {
+          "deploymentBucketName": "amplify-jbadorms-main-152145-deployment",
+          "s3Key": "amplify-builds/addNewUser-6f585872494b6a704761-build.zip"
+        },
+        "notificationEmailer": {
+          "sesEmail": "no-reply@jbamho.com",
+          "deploymentBucketName": "amplify-jbadorms-main-152145-deployment",
+          "s3Key": "amplify-builds/notificationEmailer-733957382f615a424f44-build.zip"
+        },
+        "dataFormEmailer": {
+          "sesEmail": "no-reply@jbamho.com",
+          "destEmail": "leighton.tidwell57@gmail.com",
+          "deploymentBucketName": "amplify-jbadorms-main-152145-deployment",
+          "s3Key": "amplify-builds/dataFormEmailer-6b355664414f65497a55-build.zip"
+        },
+        "workOrderEmailer": {
+          "deploymentBucketName": "amplify-jbadorms-main-152145-deployment",
+          "s3Key": "amplify-builds/workOrderEmailer-316e316b31674f504978-build.zip",
+          "destEmail": "leighton.tidwell58@gmail.com",
+          "sesEmail": "no-reply@jbamho.com"
+        }
+      },
+      "auth": {
+        "jbadorms": {},
+        "userPoolGroups": {}
+      }
+    }
   }
 }
