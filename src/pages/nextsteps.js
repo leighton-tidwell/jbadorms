@@ -35,7 +35,7 @@ const NextStepsPage = ({ userData }) => {
   const [userType, setUserType] = useState(userTypes[0].type);
 
   const typeChangeHandler = option => {
-    const userTypeSearch = userTypes.filter(type => type.value === option);
+    const userTypeSearch = userTypes.find(type => type.value === option);
     setUserType(userTypeSearch.type);
   };
 
