@@ -1,0 +1,16 @@
+.flex {
+  flex-direction: column;
+  flex-basis: 90%;
+  padding: 1em;
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+@media only screen and (min-width: 1200px) {
+  .flex {
+    flex-basis: 40% !important;
+  }
+}

@@ -55,6 +55,18 @@
           "sesEmail": "no-reply@jbamho.com",
           "deploymentBucketName": "amplify-jbadorms-dev-182932-deployment",
           "s3Key": "amplify-builds/notificationEmailer-4139506f4a316b53504d-build.zip"
+        },
+        "dataFormEmailer": {
+          "sesEmail": "no-reply@jbamho.com",
+          "destEmail": "leighton.tidwell57@gmail.com",
+          "deploymentBucketName": "amplify-jbadorms-dev-182932-deployment",
+          "s3Key": "amplify-builds/dataFormEmailer-547a4c6e4e7356486c73-build.zip"
+        },
+        "workOrderEmailer": {
+          "deploymentBucketName": "amplify-jbadorms-dev-182932-deployment",
+          "s3Key": "amplify-builds/workOrderEmailer-4f343043312f6a64766e-build.zip",
+          "destEmail": "leighton.tidwell58@gmail.com",
+          "sesEmail": "no-reply@jbamho.com"
         }
       }
     }

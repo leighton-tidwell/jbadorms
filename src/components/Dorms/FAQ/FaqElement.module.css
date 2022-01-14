@@ -1,0 +1,10 @@
+.container {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: 700;
+}

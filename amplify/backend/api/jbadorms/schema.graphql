@@ -1,33 +1,272 @@
-type Notifications @model @auth(rules: [{allow: groups, groups: ["user"], operations: [create]}]) {
+type Notifications
+  @model
+  @auth(rules: [{ allow: groups, groups: ["user"], operations: [create] }]) {
   id: ID!
   name: String!
   email: String!
   subject: String!
   message: String!
+  expiryTime: AWSTimestamp! @ttl
 }
 
-type Users @model @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read, update]}]) {
+type Users
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read, update] }
+    ]
+  ) {
   id: ID!
   email: String!
   name: String!
   phone: AWSPhone!
   rank: String
+  userType: String
   dormbuilding: Int
   dormroom: Int
+  residentresponsibilities: Boolean
+  mattressagreement: Boolean
   verified: Boolean!
 }
 
-type DormBuildings @model @auth(rules: [{allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read]}]) {
+type DormBuildings
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read] }
+    ]
+  ) {
   id: ID!
   dormbuilding: Int!
   capacity: Int!
   DormRooms: [DormRooms] @connection(keyName: "byDormBuildings", fields: ["id"])
 }
 
-type DormRooms @model @key(name: "byDormBuildings", fields: ["dormbuildingsID"]) @auth(rules: [{allow: groups, groups: ["admin"], operations: [read, create, update, delete]}, {allow: groups, groups: ["staff"], operations: [read, create, update, delete]}, {allow: groups, groups: ["user"], operations: [read]}]) {
+type DormRooms
+  @model
+  @key(name: "byDormBuildings", fields: ["dormbuildingsID"])
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read] }
+    ]
+  ) {
   id: ID!
   dormbuildingsID: ID
   dormroom: Int!
   dormresident: ID
 }
- 
+
+type AssignmentDataForm
+  @model
+  @auth(rules: [{ allow: groups, groups: ["user"], operations: [create] }]) {
+  id: ID!
+  name: String!
+  email: AWSEmail!
+  phone: AWSPhone!
+  dodId: Int!
+  dob: AWSDate!
+  sex: String!
+  rank: String!
+  dateOfRank: AWSDate!
+  dateEnteredMilitary: AWSDate!
+  wing: String!
+  unit: String!
+  officeSymbol: String!
+  flight: String!
+  dutyPhone: AWSPhone!
+  supervisorName: String!
+  supervisorPhone: AWSPhone!
+  sponsorName: String!
+  sponsorPhone: AWSPhone!
+  carMake: String!
+  carModel: String!
+  carYear: String!
+  licensePlateNumber: String!
+  expectedArrivalDate: AWSDate!
+  expiryTime: AWSTimestamp! @ttl
+}
+
+type Events
+  @model
+  @aws_api_key
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [read] }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  title: String!
+  date: AWSDate!
+  expiryTime: AWSTimestamp! @ttl
+}
+
+type FAQ
+  @model
+  @aws_api_key
+  @aws_cognito_user_pools
+  @auth(
+    rules: [
+      { allow: public, provider: apiKey, operations: [read] }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  question: String!
+  answer: String!
+}
+
+type Wings
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  wing: String!
+}
+
+type Units
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read] }
+    ]
+  ) {
+  id: ID!
+  unit: String!
+  wing: String!
+}
+
+type Appointments
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [read, create] }
+    ]
+  ) {
+  id: ID!
+  service: String!
+  employeeName: String!
+  employeeEmail: AWSEmail!
+  dateOfAppointment: AWSDate!
+  timeOfAppointment: String!
+  nameOfResident: String!
+  emailOfResident: String!
+  phoneOfResident: String!
+  expiryTime: AWSTimestamp! @ttl
+}
+
+type WorkOrders
+  @model
+  @auth(
+    rules: [
+      {
+        allow: groups
+        groups: ["admin"]
+        operations: [read, create, update, delete]
+      }
+      {
+        allow: groups
+        groups: ["staff"]
+        operations: [read, create, update, delete]
+      }
+      { allow: groups, groups: ["user"], operations: [create] }
+    ]
+  ) {
+  id: ID!
+  phone: AWSPhone!
+  name: String!
+  rank: String!
+  building: String!
+  roomNumber: String!
+  urgency: String!
+  requestType: String!
+  description: String!
+  permission: Boolean!
+  escort: Boolean!
+  securingYourItems: Boolean!
+  expiryTime: AWSTimestamp! @ttl
+}

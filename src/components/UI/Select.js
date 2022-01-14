@@ -9,7 +9,11 @@ const Select = props => {
   const [options, setOptions] = useState({
     items: props.options,
     showItems: false,
-    selectedItem: props.options && props.options[0]
+    selectedItem: props.value
+      ? props.options.find(
+          option => option.value.toLowerCase() === props.value.toLowerCase()
+        )
+      : props.options[0]
   });
 
   const handleDropDown = () => {
@@ -46,7 +50,7 @@ const Select = props => {
         className={classes['select-visible-container']}
       >
         <div className={classes['selected-item']}>
-          {options.selectedItem.value}
+          {options.selectedItem?.value || ''}
         </div>
         <div className={classes['select-arrow']}>
           {options.showItems ? (

@@ -4,11 +4,18 @@ import { schema } from './schema';
 
 
 
-const { Notifications, Users, DormBuildings, DormRooms } = initSchema(schema);
+const { Notifications, Users, DormBuildings, DormRooms, AssignmentDataForm, Events, FAQ, Wings, Units, Appointments, WorkOrders } = initSchema(schema);
 
 export {
   Notifications,
   Users,
   DormBuildings,
-  DormRooms
+  DormRooms,
+  AssignmentDataForm,
+  Events,
+  FAQ,
+  Wings,
+  Units,
+  Appointments,
+  WorkOrders
 };

@@ -12,7 +12,7 @@ import AppointmentScheduler from '../../../components/Dorms/Appointments/Appoint
 import DefaultLayout from '../../../layouts/dorms/default';
 import AlertBox from '../../../components/UI/AlertBox';
 
-const Appointments = ({ navLinks, verified }) => {
+const Appointments = ({ navLinks, verified, name, phone, email }) => {
   const [userIsVerified, setUserIsVerified] = useState(verified);
   const bannerBackgroundImage = '/images/appointment_banner.png';
 
@@ -26,11 +26,11 @@ const Appointments = ({ navLinks, verified }) => {
       <Subtitle>Talk to an ADL</Subtitle>
       <Content>
         {verified ? (
-          <AppointmentScheduler />
+          <AppointmentScheduler name={name} phone={phone} email={email} />
         ) : (
           <AlertBox
             title="We don't know you're coming yet!"
-            message="To make an appointment you must first download this form and send it to blahblah@us.af.mil. After we have recieved your completed form, we will verify your account and you will be allowed to make an appointment."
+            message="To make an appointment you must first fill in the Assignment Data Form under the Processing link. After we have recieved your form, we will verify your account. After verification, you will be able to make an appointment."
           />
         )}
       </Content>
@@ -50,12 +50,21 @@ export const getServerSideProps = async context => {
     );
     const userData = isUserVerified.data.listUsers.items[0];
     if (userData.verified) verified = true;
+    if (userData.userType)
+      return {
+        props: {
+          authenticated: true,
+          name: userData.name,
+          email: userData.email,
+          phone: userData.phone,
+          navLinks: getNavItems(true),
+          verified: verified
+        }
+      };
     return {
-      props: {
-        authenticated: true,
-        username: user.username,
-        navLinks: getNavItems(true),
-        verified: verified
+      redirect: {
+        destination: '/nextsteps',
+        permanent: false
       }
     };
   } catch (error) {

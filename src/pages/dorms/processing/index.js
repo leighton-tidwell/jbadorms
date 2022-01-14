@@ -89,7 +89,7 @@ const Processing = ({ navLinks, verified }) => {
         ) : (
           <AlertBox
             title="We don't know you're coming yet!"
-            message="To continue in-processing you must first download this form and send it to blahblah@us.af.mil. After we have recieved your completed form, we will verify your account and you will be allowed to continue in-processing."
+            message="To submit a work order you must first fill in the Assignment Data Form under the Processing link. After we have recieved your form, we will verify your account."
           />
         )}
       </Content>
@@ -109,12 +109,19 @@ export const getServerSideProps = async context => {
     );
     const userData = isUserVerified.data.listUsers.items[0];
     if (userData.verified) verified = true;
+    if (userData.userType)
+      return {
+        props: {
+          authenticated: true,
+          username: user.username,
+          navLinks: getNavItems(true),
+          verified: verified
+        }
+      };
     return {
-      props: {
-        authenticated: true,
-        username: user.username,
-        navLinks: getNavItems(true),
-        verified: verified
+      redirect: {
+        destination: '/nextsteps',
+        permanent: false
       }
     };
   } catch (error) {

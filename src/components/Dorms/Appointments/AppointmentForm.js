@@ -1,5 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
+
+import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import {
+  createAppointments,
+  createNotifications
+} from '../../../graphql/mutations';
+import { listAppointments, listUsers } from '../../../graphql/queries';
+import config from '../../../aws-exports';
+Amplify.configure({ ...config, ssr: true });
 
 import classes from './AppointmentForm.module.css';
 import Select from '../../UI/Select';
@@ -8,64 +17,107 @@ import Button from '../../UI/Button';
 import Input from '../../UI/Input';
 import Label from '../../UI/Label';
 import Form from '../../UI/Form';
+import SuccessText from '../../UI/SuccessText';
+import ErrorText from '../../UI/ErrorText';
 
-const AppointmentForm = () => {
+const AppointmentForm = ({ name, phone, email }) => {
+  const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
   const [selectedDate, setSelectedDate] = useState(null);
   const [selectedTime, setSelectedTime] = useState(null);
   const [selectedService, setSelectedService] = useState('Check In');
+  const [employeeOpts, setEmployeeOpts] = useState([]);
   const serviceOptions = [
     { value: 'Check In', id: uuid() },
     { value: 'Check Out', id: uuid() },
     { value: 'Inspection', id: uuid() }
   ];
-  const [selectedEmployee, setSelectedEmployee] = useState('ADL 1');
-  const employeeOptions = [
-    { value: 'ADL 1', id: uuid() },
-    { value: 'ADL 2', id: uuid() },
-    { value: 'ADL 3', id: uuid() },
-    { value: 'ADL 4', id: uuid() }
+  const [selectedEmployee, setSelectedEmployee] = useState(null);
+  const availableTimesDefault = [
+    '08:00',
+    '09:00',
+    '10:00',
+    '11:00',
+    '12:00',
+    '13:00',
+    '14:00',
+    '15:00',
+    '16:00'
   ];
-  const availableTimes = [
-    '0700',
-    '0800',
-    '0900',
-    '1000',
-    '1100',
-    '1200',
-    '1300',
-    '1400',
-    '1500',
-    '1600',
-    '1700'
-  ];
+  const [availableTimes, setAvailableTimes] = useState(availableTimesDefault);
 
-  const [enteredFirstName, setEnteredFirstName] = useState('');
-  const [enteredLastName, setEnteredLastName] = useState('');
-  const [enteredPhone, setEnteredPhone] = useState('');
-  const [enteredEmail, setEnteredEmail] = useState('');
+  const [enteredName, setEnteredName] = useState(name);
+  const [enteredPhone, setEnteredPhone] = useState(phone);
+  const [enteredEmail, setEnteredEmail] = useState(email);
 
   const handleSelectService = selectedValue => {
+    setSuccess(null);
     setSelectedService(selectedValue);
   };
 
   const handleSelectEmployee = selectedValue => {
+    setSuccess(null);
     setSelectedEmployee(selectedValue);
   };
 
-  const handleDateSelect = dateObject => {
+  const handleDateSelect = async dateObject => {
+    const currentDate = new Date();
+    currentDate.setHours(0, 0, 0, 0);
+
+    const appointmentDateObject = new Date(
+      `${dateObject.month} ${dateObject.day}, ${dateObject.year}`
+    );
+    const selectedDateInPast =
+      currentDate.getTime() > appointmentDateObject.getTime();
+
+    if (selectedDateInPast) return setAvailableTimes(null);
+
     setSelectedDate(dateObject);
   };
 
+  const findAvailableAppointmentsForEmployee = async () => {
+    const employeeEmail = employeeOpts.find(
+      employee => employee.value === selectedEmployee
+    ).email;
+
+    const appointmentDateObject = new Date(
+      `${selectedDate.month} ${selectedDate.day}, ${selectedDate.year}`
+    );
+    const month = ('0' + (appointmentDateObject.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.day).slice(-2);
+
+    const existingAppointments = await API.graphql(
+      graphqlOperation(listAppointments, {
+        filter: {
+          and: [
+            {
+              dateOfAppointment: { eq: `${selectedDate.year}-${month}-${day}` }
+            },
+            { employeeEmail: { eq: employeeEmail } }
+          ]
+        }
+      })
+    );
+    const existingAppointmentsArray =
+      existingAppointments.data.listAppointments.items;
+
+    const takenAppointmentTimes = existingAppointmentsArray.map(
+      appointment => appointment.timeOfAppointment
+    );
+    setAvailableTimes(
+      availableTimesDefault.filter(
+        appointmentTime => !takenAppointmentTimes.includes(appointmentTime)
+      )
+    );
+  };
+
   const handleTimeSelect = time => {
+    setSuccess(null);
     setSelectedTime(time);
   };
 
-  const handleChangeFirstName = event => {
-    setEnteredFirstName(event.target.value);
-  };
-
-  const handleChangeLastName = event => {
-    setEnteredLastName(event.target.value);
+  const handleChangeName = event => {
+    setEnteredName(event.target.value);
   };
 
   const handleChangePhone = event => {
@@ -76,19 +128,92 @@ const AppointmentForm = () => {
     setEnteredEmail(event.target.value);
   };
 
-  const handleSubmitForm = event => {
+  const handleSubmitForm = async event => {
     event.preventDefault();
-    console.log({
-      selectedDate,
-      selectedTime,
-      selectedService,
-      selectedEmployee,
-      enteredFirstName,
-      enteredLastName,
-      enteredPhone,
-      enteredEmail
-    });
+    setError(null);
+    if (!selectedEmployee) return setError('You must pick an employee!');
+    if (!selectedService) return setError('You must pick a service!');
+    if (!enteredEmail) return setError('You must provide your email.');
+    if (!enteredPhone) return setError('You must provide your phone number.');
+    if (!enteredName) return setError('You must provide your name!');
+
+    const appointmentDateObject = new Date(
+      `${selectedDate.month} ${selectedDate.day}, ${selectedDate.year}`
+    );
+
+    const month = ('0' + (appointmentDateObject.getMonth() + 1)).slice(-2);
+    const day = ('0' + selectedDate.day).slice(-2);
+
+    const employeeEmail = employeeOpts.find(
+      employee => employee.value === selectedEmployee
+    ).email;
+
+    const expiryDate = Math.round(new Date().getTime() / 1000);
+
+    const newAppointment = {
+      service: selectedService,
+      employeeName: selectedEmployee,
+      employeeEmail: employeeEmail,
+      dateOfAppointment: `${selectedDate.year}-${month}-${day}`,
+      timeOfAppointment: selectedTime,
+      nameOfResident: enteredName,
+      emailOfResident: enteredEmail,
+      phoneOfResident: enteredPhone,
+      expiryTime: expiryDate
+    };
+    try {
+      const newAppointmentQuery = await API.graphql(
+        graphqlOperation(createAppointments, { input: newAppointment })
+      );
+      const message = `An appointment with you for ${selectedService} has been scheduled for ${month}/${day}/${selectedDate.year} at ${selectedTime} with ${enteredName}.`;
+
+      const expiryDate = Math.round(new Date().getTime() / 1000);
+      const sendNotification = await API.graphql(
+        graphqlOperation(createNotifications, {
+          input: {
+            name: enteredName,
+            email: employeeEmail,
+            subject: 'An Appointment Has Been Scheduled!',
+            message: message,
+            expiryTime: expiryDate
+          }
+        })
+      );
+
+      setSuccess('Your appointment was scheduled successfully!');
+      setSelectedTime(null);
+      findAvailableAppointmentsForEmployee();
+    } catch (error) {
+      setError('An error has occured.');
+      console.log(error);
+    }
   };
+
+  const getStaffList = async () => {
+    const staffList = await API.graphql(
+      graphqlOperation(listUsers, {
+        filter: {
+          and: [{ userType: { eq: 'dormstaff' } }, { verified: { eq: true } }]
+        }
+      })
+    );
+
+    const filteredStaffList = staffList.data.listUsers.items.map(staff => ({
+      id: staff.id,
+      value: staff.name,
+      email: staff.email
+    }));
+
+    setEmployeeOpts(filteredStaffList);
+  };
+
+  useEffect(() => {
+    getStaffList();
+  }, []);
+
+  useEffect(() => {
+    if (selectedEmployee) findAvailableAppointmentsForEmployee();
+  }, [selectedEmployee, selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={classes.flex}>
@@ -106,8 +231,9 @@ const AppointmentForm = () => {
             <Label className={classes.label}>Select Employee:</Label>
             <Select
               className={classes.select}
-              options={employeeOptions}
+              options={employeeOpts}
               onSelect={handleSelectEmployee}
+              value={selectedEmployee}
             />
           </div>
           <div className={classes['form-control']}>
@@ -123,19 +249,25 @@ const AppointmentForm = () => {
                 : ''}
             </div>
             <div className={classes['time-selector']}>
-              {availableTimes.map((time, i) => (
-                <div
-                  onClick={() => {
-                    handleTimeSelect(time);
-                  }}
-                  key={i}
-                  className={`${classes['time-element']} ${
-                    selectedTime === time ? classes['time-selected'] : ''
-                  }`}
-                >
-                  {time}
+              {!availableTimes && (
+                <div className={classes['no-time-available']}>
+                  No available times
                 </div>
-              ))}
+              )}
+              {availableTimes &&
+                availableTimes.map((time, i) => (
+                  <div
+                    onClick={() => {
+                      handleTimeSelect(time);
+                    }}
+                    key={i}
+                    className={`${classes['time-element']} ${
+                      selectedTime === time ? classes['time-selected'] : ''
+                    }`}
+                  >
+                    {time}
+                  </div>
+                ))}
             </div>
           </div>
           <div className={classes['form-control']}>
@@ -144,27 +276,15 @@ const AppointmentForm = () => {
             </div>
             <form onSubmit={handleSubmitForm}>
               <div className={classes['inline-form']}>
-                <Label htmlFor="firstName" className={classes['inline-label']}>
-                  First Name:
+                <Label htmlFor="fullName" className={classes['inline-label']}>
+                  Full Name:
                 </Label>
                 <Input
-                  onChange={handleChangeFirstName}
-                  id="firstName"
+                  onChange={handleChangeName}
+                  id="fullName"
                   type="text"
                   className={classes['input']}
-                  value={enteredFirstName}
-                />
-              </div>
-              <div className={classes['inline-form']}>
-                <Label htmlFor="lastName" className={classes['inline-label']}>
-                  Last Name:
-                </Label>
-                <Input
-                  onChange={handleChangeLastName}
-                  id="lastName"
-                  type="text"
-                  className={classes['input']}
-                  value={enteredLastName}
+                  value={enteredName}
                 />
               </div>
               <div className={classes['inline-form']}>
@@ -191,9 +311,13 @@ const AppointmentForm = () => {
                   value={enteredEmail}
                 />
               </div>
-              <Button onClick={handleSubmitForm} className={classes.confirm}>
-                Confirm
-              </Button>
+              {error && <ErrorText>{error}</ErrorText>}
+              {success && <SuccessText>{success}</SuccessText>}
+              {selectedTime && (
+                <Button onClick={handleSubmitForm} className={classes.confirm}>
+                  Confirm
+                </Button>
+              )}
             </form>
           </div>
         </div>

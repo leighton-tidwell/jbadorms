@@ -1,3 +1,7 @@
+.header-background {
+  background-color: #051a2c;
+}
+
 .header {
   color: white;
   display: flex;

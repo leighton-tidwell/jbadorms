@@ -1,0 +1,25 @@
+.form {
+  padding: 1em;
+  width: 100%;
+}
+
+.title {
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.form-control {
+  display: flex;
+  flex-direction: column;
+  margin: 1.5em 0;
+}
+
+.button {
+  width: 100%;
+}
+
+@media only screen and (min-width: 1200px) {
+  .button {
+    width: 20%;
+  }
+}

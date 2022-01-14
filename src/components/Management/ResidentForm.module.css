@@ -2,8 +2,6 @@
   background-color: #071d30;
   padding: 1em;
   margin: 1em 1em;
-  flex-basis: 100%;
-  max-height: 400px;
 }
 
 .name {
@@ -46,13 +44,19 @@
   width: 100%;
 }
 
-.button {
-  width: 15%;
-  font-size: 1em;
-}
-
 .verify {
   background-color: rgb(11, 112, 33) !important;
   margin-left: 1em;
   font-size: 1em;
+}
+
+.button {
+  width: 100%;
+  font-size: 1em;
+}
+
+@media only screen and (min-width: 1200px) {
+  .button {
+    width: 15%;
+  }
 }

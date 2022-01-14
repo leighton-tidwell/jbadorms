@@ -9,8 +9,8 @@ const getNavItems = authenticated => {
     },
     {
       id: uuid(),
-      text: 'rooms',
-      href: '/dorms/rooms'
+      text: 'work orders',
+      href: '/dorms/work-orders'
     },
     {
       id: uuid(),
@@ -24,23 +24,23 @@ const getNavItems = authenticated => {
       dropdown: [
         {
           id: uuid(),
-          text: 'UH Assignment Data Form',
-          href: '/dorms/uh-assignment-data-form'
+          text: 'Assignment Data Form',
+          href: '/dorms/processing/uh-assignment-data-form'
         },
         {
           id: uuid(),
-          text: 'UH Conditions Checklist',
-          href: '/dorms/uh-conditions-checklist'
+          text: 'Conditions Checklist',
+          href: '/dorms/processing/uh-conditions-checklist'
         },
         {
           id: uuid(),
           text: 'Resident Responsibilities',
-          href: '/dorms/resident-responsibilities'
+          href: '/dorms/processing/resident-responsibilities'
         },
         {
           id: uuid(),
           text: 'Mandatory Use of Mattress Protectors',
-          href: '/dorms/mandatory-use-of-mattress-protectors'
+          href: '/dorms/processing/mandatory-use-of-mattress-protectors'
         }
       ]
     },
@@ -51,13 +51,13 @@ const getNavItems = authenticated => {
       dropdown: [
         {
           id: uuid(),
-          text: 'Bay Orderly Briefing',
-          href: '/dorms/bay-orderly-briefing'
+          text: 'Briefing',
+          href: '/dorms/bay-orderly/briefing'
         },
         {
           id: uuid(),
-          text: 'Bay Orderly Daily Checklist',
-          href: '/dorms/bay-orderly-daily-checklist'
+          text: 'Daily Checklist',
+          href: '/dorms/bay-orderly/daily-checklist'
         }
       ]
     },
@@ -78,6 +78,23 @@ const getNavItems = authenticated => {
       id: uuid(),
       text: 'rooms',
       href: '/dorms/rooms'
+    },
+    {
+      id: uuid(),
+      text: 'bay orderly',
+      href: '/dorms/bay-orderly',
+      dropdown: [
+        {
+          id: uuid(),
+          text: 'Briefing',
+          href: '/dorms/bay-orderly/briefing'
+        },
+        {
+          id: uuid(),
+          text: 'Daily Checklist',
+          href: '/dorms/bay-orderly/daily-checklist'
+        }
+      ]
     },
     {
       id: uuid(),

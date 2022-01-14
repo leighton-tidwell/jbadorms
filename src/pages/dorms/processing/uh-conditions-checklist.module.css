@@ -1,0 +1,48 @@
+.flex {
+  flex-direction: column;
+}
+
+.form {
+  padding: 1em;
+}
+
+.form-control {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+.button {
+  width: 100%;
+}
+
+.title {
+  padding: 1em;
+  font-weight: 600;
+}
+
+.title:last-child {
+  padding-bottom: 0;
+}
+
+.list {
+  padding: 1em;
+  margin: 0 1em;
+}
+
+.list-item {
+  margin-bottom: 1em;
+}
+
+.agreement {
+  padding: 1em;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+@media only screen and (min-width: 1200px) {
+  .button {
+    width: 30%;
+  }
+}

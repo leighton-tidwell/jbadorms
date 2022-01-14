@@ -34,7 +34,7 @@ const Login = ({ previousPage }) => {
   return (
     <>
       <Subtitle>Login to JBA MHO</Subtitle>
-      <Content className={`${classes.flex}`}>
+      <Content className={classes.flex}>
         <AmplifyAuthenticator handleAuthStateChange={handleAuthStateChange}>
           <AmplifySignUp
             slot="sign-up"

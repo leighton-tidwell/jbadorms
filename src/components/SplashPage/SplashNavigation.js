@@ -1,18 +1,18 @@
-import React from "react";
-import classes from "./SplashNavigation.module.css";
-import Link from "next/link";
+import React from 'react';
+import classes from './SplashNavigation.module.css';
+import Link from 'next/link';
 
 const SplashNavigation = () => {
   return (
-    <div className={classes["splash-navigation"]}>
+    <div className={classes['splash-navigation']}>
       <div className={classes.row}>
-        <Link href="/community">
+        <Link href="/under-construction">
           <a className={classes.element}>
             Community <br />
             Housing
           </a>
         </Link>
-        <Link href="/privatized">
+        <Link href="/under-construction">
           <a className={classes.element}>
             Privatized <br />
             Housing
@@ -20,7 +20,7 @@ const SplashNavigation = () => {
         </Link>
       </div>
       <div className={classes.row}>
-        <Link href="/furnishings">
+        <Link href="/under-construction">
           <a className={classes.element}>
             Furnishings <br />
             Management

@@ -16,12 +16,13 @@
 
 .text {
   width: 15ch;
+  z-index: 1;
 }
 
 .image {
   height: 150px;
   position: absolute;
-  z-index: -1;
+  z-index: 0;
 }
 
 @media only screen and (min-width: 1200px) {
@@ -34,7 +35,6 @@
   .image {
     height: auto;
     position: absolute;
-    z-index: -1;
     transition: 0.2s ease-in-out;
   }
 

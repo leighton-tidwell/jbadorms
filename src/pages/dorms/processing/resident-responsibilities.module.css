@@ -1,0 +1,30 @@
+.flex {
+  flex-direction: column;
+}
+
+.subtitle {
+  padding: 1em;
+  font-size: 1.2em;
+  font-weight: 600;
+}
+
+.form {
+  padding: 1em;
+}
+
+.form-control {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  margin: 1em 0;
+}
+
+.button {
+  width: 100%;
+}
+
+@media only screen and (min-width: 1200px) {
+  .button {
+    width: 30%;
+  }
+}
