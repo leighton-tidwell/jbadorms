@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import uuid from 'react-uuid';
 
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
-import { createAppointments } from '../../../graphql/mutations';
+import {
+  createAppointments,
+  createNotifications
+} from '../../../graphql/mutations';
 import { listAppointments, listUsers } from '../../../graphql/queries';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
@@ -48,10 +51,12 @@ const AppointmentForm = ({ name, phone, email }) => {
   const [enteredEmail, setEnteredEmail] = useState(email);
 
   const handleSelectService = selectedValue => {
+    setSuccess(null);
     setSelectedService(selectedValue);
   };
 
   const handleSelectEmployee = selectedValue => {
+    setSuccess(null);
     setSelectedEmployee(selectedValue);
   };
 
@@ -107,6 +112,7 @@ const AppointmentForm = ({ name, phone, email }) => {
   };
 
   const handleTimeSelect = time => {
+    setSuccess(null);
     setSelectedTime(time);
   };
 
@@ -156,10 +162,27 @@ const AppointmentForm = ({ name, phone, email }) => {
       expiryTime: expiryDate
     };
     try {
-      const newAppointmentQuery = API.graphql(
+      const newAppointmentQuery = await API.graphql(
         graphqlOperation(createAppointments, { input: newAppointment })
       );
+      const message = `An appointment with you for ${selectedService} has been scheduled for ${month}/${day}/${selectedDate.year} at ${selectedTime} with ${enteredName}.`;
+
+      const expiryDate = Math.round(new Date().getTime() / 1000);
+      const sendNotification = await API.graphql(
+        graphqlOperation(createNotifications, {
+          input: {
+            name: enteredName,
+            email: employeeEmail,
+            subject: 'An Appointment Has Been Scheduled!',
+            message: message,
+            expiryTime: expiryDate
+          }
+        })
+      );
+
       setSuccess('Your appointment was scheduled successfully!');
+      setSelectedTime(null);
+      findAvailableAppointmentsForEmployee();
     } catch (error) {
       setError('An error has occured.');
       console.log(error);
