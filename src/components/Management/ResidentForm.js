@@ -123,7 +123,7 @@ const ResidentForm = ({ data }) => {
             id: userId,
             dormroom: dormRoom,
             dormbuilding: dormBuilding,
-            userType: userType.toLowerCase(),
+            userType: userType?.toLowerCase(),
             _version: userVersion
           }
         })
@@ -153,7 +153,7 @@ const ResidentForm = ({ data }) => {
       );
 
       const message =
-        userType.toLowerCase() === 'dorm'
+        userType?.toLowerCase() === 'dorm'
           ? 'Your account has been verified! You can now continue in-processing on the JBA MHO site.'
           : 'Your account has been verified, you must be moved into the staff group by an administrator now.';
 
@@ -208,7 +208,7 @@ const ResidentForm = ({ data }) => {
               disabled
             />
           </div>
-          {userType.toLowerCase() != 'dormstaff' && (
+          {userType?.toLowerCase() != 'dormstaff' && (
             <>
               <div className={classes['form-control']}>
                 <label className={classes.label}>Dorm Building: </label>
