@@ -12,7 +12,7 @@ const Footer = props => {
     },
     {
       title: 'in processing',
-      href: '/dorms/processing'
+      href: '/dorms/processing/uh-assignment-data-form'
     },
     {
       title: 'FAQs',
@@ -20,7 +20,7 @@ const Footer = props => {
     },
     {
       title: 'management portal',
-      href: '/management'
+      href: '/management/dorms'
     },
     {
       title: 'jba map',

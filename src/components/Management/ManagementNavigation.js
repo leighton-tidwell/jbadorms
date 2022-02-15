@@ -7,6 +7,7 @@ import ManagementDropDown from './ManagementDropDown';
 
 const ManagementNavigation = () => {
   const router = useRouter();
+
   const isActive = href => {
     return router.pathname === href;
   };
@@ -20,18 +21,27 @@ const ManagementNavigation = () => {
       dropdown: [
         {
           id: uuid(),
+          href: '/management/dorms',
+          title: 'Overview',
+          active: isActive('/management/dorms')
+        },
+        {
+          id: uuid(),
           href: '/management/dorms/buildings',
-          title: 'Buildings'
+          title: 'Buildings',
+          active: isActive('/management/dorms/buildings')
         },
         {
           id: uuid(),
           href: '/management/dorms/resident',
-          title: 'Residents'
+          title: 'Residents',
+          active: isActive('/management/dorms/resident')
         },
         {
           id: uuid(),
           href: '/management/dorms/site-settings',
-          title: 'Site Settings'
+          title: 'Site Settings',
+          active: isActive('/management/dorms/site-settings')
         }
       ]
     },

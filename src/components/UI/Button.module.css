@@ -19,6 +19,6 @@
   }
 
   .button:hover {
-    transform: translateY(-0.5em);
+    transform: translateY(-0.1em);
   }
 }

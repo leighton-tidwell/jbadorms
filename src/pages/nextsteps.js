@@ -32,6 +32,13 @@ const NextStepsPage = ({ userData }) => {
       type: 'mhostaff'
     }
   ];
+
+  const baseOptions = [
+    {
+      id: 1,
+      value: 'JB Andrews'
+    }
+  ];
   const [userType, setUserType] = useState(userTypes[0].type);
 
   const typeChangeHandler = option => {
@@ -56,7 +63,11 @@ const NextStepsPage = ({ userData }) => {
     <>
       <Subtitle>Next Steps</Subtitle>
       <Content className={classes.flex}>
-        <div className={classes.title}>Tell us why you&#39;re here:</div>
+        <div className={classes.title}>What installation are you at:</div>
+        <Select options={baseOptions} />
+        <div className={classes.title} style={{ marginTop: '1em' }}>
+          Tell us why you&#39;re here:
+        </div>
         <Select options={userTypes} onSelect={typeChangeHandler} />
         <Button onClick={submitChoiceHandler}>Confirm Selection</Button>
       </Content>

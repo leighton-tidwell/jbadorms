@@ -10,8 +10,11 @@ const ManagementHeader = ({ userName }) => {
         <Link href="/">
           <a className={classes.logoLink}>JBA MHO</a>
         </Link>
+        <span className={classes.subhead}>Management Portal</span>
       </div>
-      <div className={classes.profile}>Logged in as {userName}</div>
+      <div className={classes.profile}>
+        Logged in as <span className={classes.user}>{userName}</span>
+      </div>
     </div>
   );
 };

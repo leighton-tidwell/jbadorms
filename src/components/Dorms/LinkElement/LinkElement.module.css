@@ -34,6 +34,7 @@
 
   .image {
     height: auto;
+    max-height: 225px;
     position: absolute;
     transition: 0.2s ease-in-out;
   }
@@ -42,5 +43,17 @@
     opacity: 0.2;
     -webkit-box-shadow: 1px 1px 15px 2px rgba(0, 0, 0, 0.42);
     box-shadow: 1px 1px 15px 2px rgba(0, 0, 0, 0.42);
+  }
+}
+
+@media only screen and (min-width: 1550px) {
+  .image {
+    max-height: 275px;
+  }
+}
+
+@media only screen and (min-width: 1700px) {
+  .image {
+    max-height: 300px;
   }
 }

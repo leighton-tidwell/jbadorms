@@ -274,51 +274,49 @@ const AppointmentForm = ({ name, phone, email }) => {
             <div className={classes['appointments-available']}>
               Confirm your appointment:
             </div>
-            <form onSubmit={handleSubmitForm}>
-              <div className={classes['inline-form']}>
-                <Label htmlFor="fullName" className={classes['inline-label']}>
-                  Full Name:
-                </Label>
-                <Input
-                  onChange={handleChangeName}
-                  id="fullName"
-                  type="text"
-                  className={classes['input']}
-                  value={enteredName}
-                />
-              </div>
-              <div className={classes['inline-form']}>
-                <Label htmlFor="phone" className={classes['inline-label']}>
-                  Phone:
-                </Label>
-                <Input
-                  onChange={handleChangePhone}
-                  id="phone"
-                  type="tel"
-                  className={classes['input']}
-                  value={enteredPhone}
-                />
-              </div>
-              <div className={classes['inline-form']}>
-                <Label htmlFor="email" className={classes['inline-label']}>
-                  Email:
-                </Label>
-                <Input
-                  onChange={handleChangeEmail}
-                  id="email"
-                  type="email"
-                  className={classes['input']}
-                  value={enteredEmail}
-                />
-              </div>
-              {error && <ErrorText>{error}</ErrorText>}
-              {success && <SuccessText>{success}</SuccessText>}
-              {selectedTime && (
-                <Button onClick={handleSubmitForm} className={classes.confirm}>
-                  Confirm
-                </Button>
-              )}
-            </form>
+            <div className={classes['inline-form']}>
+              <Label htmlFor="fullName" className={classes['inline-label']}>
+                Full Name:
+              </Label>
+              <Input
+                onChange={handleChangeName}
+                id="fullName"
+                type="text"
+                className={classes['input']}
+                value={enteredName}
+              />
+            </div>
+            <div className={classes['inline-form']}>
+              <Label htmlFor="phone" className={classes['inline-label']}>
+                Phone:
+              </Label>
+              <Input
+                onChange={handleChangePhone}
+                id="phone"
+                type="tel"
+                className={classes['input']}
+                value={enteredPhone}
+              />
+            </div>
+            <div className={classes['inline-form']}>
+              <Label htmlFor="email" className={classes['inline-label']}>
+                Email:
+              </Label>
+              <Input
+                onChange={handleChangeEmail}
+                id="email"
+                type="email"
+                className={classes['input']}
+                value={enteredEmail}
+              />
+            </div>
+            {error && <ErrorText>{error}</ErrorText>}
+            {success && <SuccessText>{success}</SuccessText>}
+            {selectedTime && (
+              <Button onClick={handleSubmitForm} className={classes.confirm}>
+                Confirm
+              </Button>
+            )}
           </div>
         </div>
       </Form>

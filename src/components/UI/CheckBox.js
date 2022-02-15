@@ -17,7 +17,12 @@ const CheckBox = ({ className, onCheck }) => {
         style={{ background: checked ? '#1d7dcf' : '#122536' }}
         onClick={handleCheck}
       ></div>
-      <input type="checkbox" checked={checked} className={classes.checkbox} />
+      <input
+        type="checkbox"
+        checked={checked}
+        onChange={() => {}}
+        className={classes.checkbox}
+      />
     </div>
   );
 };

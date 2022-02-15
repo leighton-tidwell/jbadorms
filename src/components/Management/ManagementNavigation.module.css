@@ -3,14 +3,17 @@
   color: #99b5cd;
   font-size: 1.2em;
   background-color: #143552;
+  min-width: 200px;
 }
 .ul {
   list-style: none;
-  padding: 0 2em;
+  margin: 0;
+  padding: 0;
 }
 
 .li {
-  margin: 1em 0;
+  margin: 0;
+  padding: 0;
 }
 
 @media only screen and (min-width: 1200px) {

@@ -2,45 +2,49 @@
   color: white;
   display: flex;
   align-items: center;
+  padding: 0 1em;
 }
 
-.icon {
-  flex-basis: 10%;
-}
 .title-link {
   color: inherit;
-  flex-basis: 70%;
+  flex-grow: 1;
   text-decoration: none;
-  font-weight: 600;
-  font-size: 1.2em;
+  font-weight: 500;
+  font-size: 1em;
   margin: 0.5em 0;
-}
-
-.title-link:hover {
-  text-decoration: underline;
+  cursor: pointer;
 }
 
 .arrow {
-  flex-basis: 20%;
   cursor: pointer;
+  width: 25px;
+  height: 25px;
 }
 
 .dropdown-content {
   color: white;
   background-color: #071d30;
-  padding: 1em;
+  height: 0px;
+  transition: height 0.3s ease;
+  overflow: hidden;
 }
 
 .link {
-  margin: 1em 0;
+  margin: 0;
+  padding: 0.5em 1em;
+  cursor: pointer;
+}
+
+.link:hover {
+  background-color: #0c3e693d;
+}
+
+.active {
+  background-color: #0c3e693d;
 }
 
 .dropdown-link {
   text-decoration: none;
   color: inherit;
-  font-size: 1em;
-}
-
-.dropdown-link:hover {
-  text-decoration: underline;
+  font-size: 0.8em;
 }

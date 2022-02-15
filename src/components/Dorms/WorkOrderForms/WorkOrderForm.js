@@ -30,7 +30,7 @@ const WorkOrderForm = ({
   const [escort, setEscort] = useState(false);
   const [personalBelongings, setPersonalBelongings] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSucces] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   const rankOptions = [
     {
@@ -221,7 +221,7 @@ const WorkOrderForm = ({
     };
     onSubmit(newWorkOrder);
     setError(null);
-    setSucces('Successfully submitted work order!');
+    setSuccess('Successfully submitted work order!');
   };
 
   return (
@@ -293,9 +293,8 @@ const WorkOrderForm = ({
             onChange={handleChangeProblemDescription}
             className={classes.input}
             type="text"
-          >
-            {problemDescription}
-          </TextArea>
+            value={problemDescription}
+          />
         </div>
         <div className={classes['form-control-check']}>
           <CheckBox
