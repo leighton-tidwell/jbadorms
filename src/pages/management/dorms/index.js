@@ -110,7 +110,9 @@ const DormsManagementPage = ({
   const staffList = listOfStaff.map(staff => ({
     ...staff,
     name: (
-      <Link href={`/management/dorms/staff/${staff.email}`}>{staff.name}</Link>
+      <Link href={`/management/dorms/resident/${staff.email}`}>
+        {staff.name}
+      </Link>
     )
   }));
 
