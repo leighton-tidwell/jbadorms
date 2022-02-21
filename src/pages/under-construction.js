@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import classes from './under-construction.module.css';
-import Button from '../components/UI/Button';
+import { Button } from '../components/UI/';
 
 const UnderConstructionPage = () => {
   return (
