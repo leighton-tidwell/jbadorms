@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 import classes from './AddBuildingForm.module.css';
 import { Input, Button, AlertBox, Spinner } from '../../components/UI/';
+import { listDormBuildings } from '../../graphql/queries';
+import { API, graphqlOperation } from 'aws-amplify';
 
 const AddBuildingForm = ({ onSubmit }) => {
   const [formData, setFormData] = useState({
@@ -28,22 +30,38 @@ const AddBuildingForm = ({ onSubmit }) => {
         'Room numbers must be entered in a comma seperated format (ex. 1,2,3,4,5)'
       );
 
-    onSubmit(formData.dormbuilding, buildingCapacity, sanitizedRooms)
-      .then(() => {
-        setLoading(false);
-        setFormData({
-          dormbuilding: '',
-          capacity: '',
-          roomNumbers: ''
-        });
-        setSuccess('Building added successfully!');
-        setTimeout(() => setSuccess(''), 3000);
+    API.graphql(
+      graphqlOperation(listDormBuildings, {
+        filter: { dormbuilding: { eq: formData.dormbuilding } }
       })
-      .catch(error => {
-        setLoading(false);
-        setError('Something went wrong, please try again!');
-        console.log(error);
-      });
+    ).then(data => {
+      if (data.data.listDormBuildings.items.length !== 0) {
+        if (
+          data.data.listDormBuildings.items.find(
+            item => item._deleted === false
+          )
+        ) {
+          setLoading(false);
+          return setError('That building already exists!');
+        }
+      }
+      onSubmit(formData.dormbuilding, buildingCapacity, sanitizedRooms)
+        .then(() => {
+          setLoading(false);
+          setFormData({
+            dormbuilding: '',
+            capacity: '',
+            roomNumbers: ''
+          });
+          setSuccess('Building added successfully!');
+          setTimeout(() => setSuccess(''), 3000);
+        })
+        .catch(error => {
+          setLoading(false);
+          setError('Something went wrong, please try again!');
+          console.log(error);
+        });
+    });
   };
 
   const handleDataChange = event => {

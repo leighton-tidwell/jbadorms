@@ -66,7 +66,8 @@ const BuildingPage = ({
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [currentDeleteObject, setCurrentDeleteObject] = useState({});
-  console.log(listOfRooms);
+
+  console.log(_version);
 
   const [roomList, setRoomList] = useState(
     listOfRooms.map(r => ({
@@ -110,7 +111,9 @@ const BuildingPage = ({
     toggleShowModal();
     Promise.all([
       API.graphql(
-        graphqlOperation(deleteDormBuildings, { input: { id, _version } })
+        graphqlOperation(deleteDormBuildings, {
+          input: { id, _version: _version + 1 }
+        })
       ),
       ...listOfRooms.map(room =>
         API.graphql(
@@ -326,8 +329,12 @@ export const getServerSideProps = async context => {
       redirect: { destination: '/management/buildings', permanent: false }
     };
 
-  const { id: buildingId } =
-    buildingIdFromNumber.data.listDormBuildings.items[0];
+  const findUndeletedBuilding =
+    buildingIdFromNumber.data.listDormBuildings.items.find(
+      building => building._deleted !== true
+    );
+
+  const { id: buildingId } = findUndeletedBuilding;
 
   const buildingData = await API.graphql(
     graphqlOperation(getDormBuildings, {
