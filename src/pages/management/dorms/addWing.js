@@ -4,7 +4,7 @@ import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 import { createWings, createUnits } from '../../../graphql/mutations';
 
-import Content from '../../../components/UI/Content';
+import { Content } from '../../../components/UI/';
 
 const AddWingPage = () => {
   const [wing, setWing] = useState('');

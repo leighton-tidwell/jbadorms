@@ -8,47 +8,38 @@ Amplify.configure({ ...config, ssr: true });
 
 import classes from './nextsteps.module.css';
 
-import Content from '../components/UI/Content';
-import Subtitle from '../components/UI/Subtitle';
-import Select from '../components/UI/Select';
-import Button from '../components/UI/Button';
+import { Content, Subtitle, Select, Button, Spinner } from '../components/UI/';
 
 const NextStepsPage = ({ userData }) => {
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
   const userTypes = [
     {
-      id: 1,
-      value: 'I am looking to in-process a dorm.',
-      type: 'dorm'
+      label: 'I am looking to in-process a dorm.',
+      value: 'dorm'
     },
     {
-      id: 2,
-      value: 'I am a staff member of JBA Dorms.',
-      type: 'dormstaff'
-    },
-    {
-      id: 3,
-      value: 'I am a staff member of JBA MHO.',
-      type: 'mhostaff'
+      label: 'I am a staff member of JBA Dorms.',
+      value: 'dormstaff'
     }
   ];
 
   const baseOptions = [
     {
-      id: 1,
+      label: 'JB Andrews',
       value: 'JB Andrews'
     }
   ];
-  const [userType, setUserType] = useState(userTypes[0].type);
+  const [userType, setUserType] = useState(null);
 
-  const typeChangeHandler = option => {
-    const userTypeSearch = userTypes.find(type => type.value === option);
-    setUserType(userTypeSearch.type);
+  const handleChangeUserType = e => {
+    setUserType(e.target.value);
   };
 
-  const submitChoiceHandler = async () => {
+  const submitChoiceHandler = () => {
     if (!userType) return;
-    const updateUserType = await API.graphql(
+    setLoading(true);
+    API.graphql(
       graphqlOperation(updateUsers, {
         input: {
           id: userData.id,
@@ -56,20 +47,31 @@ const NextStepsPage = ({ userData }) => {
           _version: userData._version
         }
       })
-    );
-    router.push('/dorms/');
+    )
+      .then(() => {
+        setLoading(false);
+        router.push('/dorms/');
+      })
+      .catch(error => console.log(error));
   };
   return (
     <>
       <Subtitle>Next Steps</Subtitle>
       <Content className={classes.flex}>
         <div className={classes.title}>What installation are you at:</div>
-        <Select options={baseOptions} />
+        <Select options={baseOptions} value="JB Andrews" />
         <div className={classes.title} style={{ marginTop: '1em' }}>
           Tell us why you&#39;re here:
         </div>
-        <Select options={userTypes} onSelect={typeChangeHandler} />
-        <Button onClick={submitChoiceHandler}>Confirm Selection</Button>
+        <Select
+          options={userTypes}
+          onSelect={handleChangeUserType}
+          value={userType}
+          name="userType"
+        />
+        <Button disabled={loading} onClick={submitChoiceHandler}>
+          {loading ? <Spinner /> : 'Confirm Selection'}
+        </Button>
       </Content>
     </>
   );
