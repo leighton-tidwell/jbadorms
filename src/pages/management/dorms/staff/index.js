@@ -115,7 +115,11 @@ export const getServerSideProps = async context => {
     })
   );
   const users = userData.data.listUsers.items;
-  props.listOfVerifiedUsers = users;
+  props.listOfVerifiedUsers = users.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
 
   const unverifiedUsersData = await API.graphql(
     graphqlOperation(listUsers, {
@@ -126,7 +130,11 @@ export const getServerSideProps = async context => {
   );
 
   const unverifiedUsers = unverifiedUsersData.data.listUsers.items;
-  props.listOfUnverifiedUsers = unverifiedUsers;
+  props.listOfUnverifiedUsers = unverifiedUsers.sort((a, b) => {
+    if (a.name < b.name) return -1;
+    if (a.name > b.name) return 1;
+    return 0;
+  });
 
   return {
     props: props

@@ -129,30 +129,44 @@ export const getServerSideProps = async context => {
     })
   );
   const users = userData.data.listUsers.items;
-  props.listOfVerifiedUsers = users.map(user => {
-    return {
-      name: user.name,
-      email: user.email,
-      phone: user.phone,
-      dormbuilding: user.dormbuilding,
-      dormroom: user.dormroom
-    };
-  });
+  props.listOfVerifiedUsers = users
+    .map(user => {
+      return {
+        name: user.name,
+        email: user.email,
+        phone: user.phone,
+        dormbuilding: user.dormbuilding,
+        dormroom: user.dormroom
+      };
+    })
+    .sort((a, b) => {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    });
 
   const unverifiedUsersData = await API.graphql(
     graphqlOperation(listUsers, {
-      and: [{ verified: { eq: false } }, { userType: { eq: 'dorm' } }]
+      filter: {
+        and: [{ verified: { eq: false } }, { userType: { eq: 'dorm' } }]
+      }
     })
   );
 
   const unverifiedUsers = unverifiedUsersData.data.listUsers.items;
-  props.listOfUnverifiedUsers = unverifiedUsers.map(user => {
-    return {
-      name: user.name,
-      email: user.email,
-      phone: user.phone
-    };
-  });
+  props.listOfUnverifiedUsers = unverifiedUsers
+    .map(user => {
+      return {
+        name: user.name,
+        email: user.email,
+        phone: user.phone
+      };
+    })
+    .sort((a, b) => {
+      if (a.name < b.name) return -1;
+      if (a.name > b.name) return 1;
+      return 0;
+    });
 
   return {
     props: props

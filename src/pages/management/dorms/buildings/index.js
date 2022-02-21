@@ -133,7 +133,12 @@ export const getServerSideProps = async context => {
       id: building.id,
       dormbuilding: building.dormbuilding,
       capacity: building.capacity
-    }));
+    }))
+    .sort((a, b) => {
+      if (a.dormbuilding < b.dormbuilding) return -1;
+      if (a.dormbuilding > b.dormbuilding) return 1;
+      return 0;
+    });
 
   return { props: props };
 };

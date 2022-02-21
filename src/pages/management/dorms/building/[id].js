@@ -8,7 +8,8 @@ import {
 import {
   deleteDormBuildings,
   deleteDormRooms,
-  createDormRooms
+  createDormRooms,
+  updateDormBuildings
 } from '../../../../graphql/mutations';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
@@ -59,11 +60,13 @@ const BuildingPage = ({
   _version
 }) => {
   const router = useRouter();
+  const [accurateCapacity, setAccurateCapacity] = useState(capacity);
   const [showConfirmModal, setShowConfirmModal] = useState(false);
   const [showSuccessModal, setShowSuccessModal] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showAddModal, setShowAddModal] = useState(false);
   const [currentDeleteObject, setCurrentDeleteObject] = useState({});
+  console.log(listOfRooms);
 
   const [roomList, setRoomList] = useState(
     listOfRooms.map(r => ({
@@ -136,9 +139,20 @@ const BuildingPage = ({
       })
     )
       .then(() => {
-        setRoomList(prevList =>
-          prevList.filter(r => r.id !== currentDeleteObject.id)
-        );
+        API.graphql(
+          graphqlOperation(updateDormBuildings, {
+            input: {
+              id: id,
+              capacity: accurateCapacity - 1,
+              _version: _version
+            }
+          })
+        ).then(() => {
+          setAccurateCapacity(accurateCapacity - 1);
+          setRoomList(prevList =>
+            prevList.filter(r => r.id !== currentDeleteObject.id)
+          );
+        });
       })
       .catch(error => {
         console.log(error);
@@ -154,25 +168,36 @@ const BuildingPage = ({
       )
         .then(data => {
           const { createDormRooms } = data.data;
-          setRoomList(prevList => [
-            ...prevList,
-            {
-              ...createDormRooms,
-              delete: (
-                <span
-                  style={{ cursor: 'pointer' }}
-                  onClick={() => {
-                    setCurrentDeleteObject(createDormRooms);
-                    toggleShowDeleteModal();
-                  }}
-                >
-                  <Icon name="deleteForeverSharp" />
-                </span>
-              )
-            }
-          ]);
-          setShowAddModal(false);
-          resolve();
+          API.graphql(
+            graphqlOperation(updateDormBuildings, {
+              input: {
+                id: id,
+                capacity: accurateCapacity + 1,
+                _version: _version
+              }
+            })
+          ).then(() => {
+            setAccurateCapacity(prevCapacity => prevCapacity + 1);
+            setRoomList(prevList => [
+              ...prevList,
+              {
+                ...createDormRooms,
+                delete: (
+                  <span
+                    style={{ cursor: 'pointer' }}
+                    onClick={() => {
+                      setCurrentDeleteObject(createDormRooms);
+                      toggleShowDeleteModal();
+                    }}
+                  >
+                    <Icon name="deleteForeverSharp" />
+                  </span>
+                )
+              }
+            ]);
+            setShowAddModal(false);
+            resolve();
+          });
         })
         .catch(error => {
           reject(error);
@@ -231,7 +256,9 @@ const BuildingPage = ({
               </div>
               <div className={classes.info_item}>
                 <div className={classes.info_item_title}>Capacity</div>
-                <div className={classes.info_item_value}>{capacity}</div>
+                <div className={classes.info_item_value}>
+                  {accurateCapacity}
+                </div>
               </div>
             </div>
           </Card>
@@ -329,10 +356,19 @@ export const getServerSideProps = async context => {
         id: room.id,
         dormroom: room.dormroom,
         dormresident: resident,
-        _version: room._version
+        _version: room._version,
+        _deleted: room._deleted
       };
     })
   );
+
+  props.listOfRooms = props.listOfRooms
+    .filter(b => !b._deleted)
+    .sort((a, b) => {
+      if (a.dormroom < b.dormroom) return -1;
+      if (a.dormroom > b.dormroom) return 1;
+      return 0;
+    });
 
   return { props: props };
 };

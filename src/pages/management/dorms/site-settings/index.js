@@ -18,6 +18,7 @@ import ManagementLayout from '../../../../layouts/management/default';
 import AddFAQForm from '../../../../components/Management/AddFAQForm';
 import AddEventsForm from '../../../../components/Management/AddEventsForm';
 import DataTable from '../../../../components/Management/DataTable';
+import dayjs from 'dayjs';
 
 const eventHeaders = [
   {
@@ -224,7 +225,13 @@ export const getServerSideProps = async context => {
   props.faqsList = getFaqs.data.listFAQS.items.filter(b => !b._deleted);
 
   const getEvents = await API.graphql(graphqlOperation(listEvents));
-  props.eventsList = getEvents.data.listEvents.items.filter(b => !b._deleted);
+  props.eventsList = getEvents.data.listEvents.items
+    .filter(b => !b._deleted)
+    .sort((a, b) => {
+      if (dayjs(a.date).isAfter(dayjs(b.date))) return 1;
+      if (dayjs(a.date).isBefore(dayjs(b.date))) return -1;
+      return 0;
+    });
 
   return {
     props: props

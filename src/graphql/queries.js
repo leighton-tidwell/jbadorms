@@ -179,6 +179,7 @@ export const getDormBuildings = /* GraphQL */ `
           dormroom
           dormresident
           _version
+          _deleted
         }
         nextToken
         startedAt

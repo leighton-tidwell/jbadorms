@@ -133,7 +133,7 @@ const DormsManagementPage = ({
             data={verifiedUsersList}
             preview
           />
-          {verifiedUsersList?.length && (
+          {verifiedUsersList.length ? (
             <div className={classes.more}>
               <Link href="/management/dorms/resident">
                 <a className={classes['more-link']}>
@@ -142,6 +142,8 @@ const DormsManagementPage = ({
                 </a>
               </Link>
             </div>
+          ) : (
+            ''
           )}
         </Card>
         <Card title="Verification Needed" icon="checkBoxSharp">
@@ -150,7 +152,7 @@ const DormsManagementPage = ({
             data={unVerifiedUsersList}
             preview
           />
-          {unVerifiedUsersList?.length && (
+          {unVerifiedUsersList.length ? (
             <div className={classes.more}>
               <Link href="/management/dorms/resident">
                 <a className={classes['more-link']}>
@@ -159,11 +161,13 @@ const DormsManagementPage = ({
                 </a>
               </Link>
             </div>
+          ) : (
+            ''
           )}
         </Card>
         <Card title="Current Buildings" icon="warehouseSharp">
           <DataTable data={buildingList} headers={buildingHeaders} preview />
-          {buildingList?.length && (
+          {buildingList.length ? (
             <div className={classes.more}>
               <Link href="/management/dorms/buildings">
                 <a className={classes['more-link']}>
@@ -172,11 +176,13 @@ const DormsManagementPage = ({
                 </a>
               </Link>
             </div>
+          ) : (
+            ''
           )}
         </Card>
         <Card title="Current Staff" icon="emojiPeopleSharp">
           <DataTable data={staffList} headers={staffHeaders} preview />
-          {staffList?.length && (
+          {staffList.length ? (
             <div className={classes.more}>
               <Link href="/management/dorms/staff/">
                 <a className={classes['more-link']}>
@@ -185,6 +191,8 @@ const DormsManagementPage = ({
                 </a>
               </Link>
             </div>
+          ) : (
+            ''
           )}
         </Card>
       </div>
