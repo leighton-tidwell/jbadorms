@@ -1,0 +1,49 @@
+.container {
+  flex-basis: 100%;
+  cursor: pointer;
+  position: relative;
+}
+
+.select-visible-container {
+  background-color: #030f1a;
+  border: 1px solid #1d7ccf00;
+  transition: border 0.2s ease;
+  font-weight: 400;
+  display: flex;
+  align-items: center;
+  padding: 0.5em;
+  height: calc(1em + 2px);
+}
+
+.selected-item {
+  flex-grow: 1;
+}
+
+.select-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.select-items {
+  background: #04121e;
+  color: white;
+  padding: 0.5em;
+  position: absolute;
+  z-index: 1;
+  max-height: 300px;
+  overflow: auto;
+}
+
+.select-items::-webkit-scrollbar {
+  width: 0;
+  background: transparent;
+}
+
+.select-items div {
+  padding: 1em;
+}
+
+.select-items div:hover {
+  background: #051a2c;
+}

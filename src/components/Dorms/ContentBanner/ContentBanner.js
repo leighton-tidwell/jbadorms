@@ -1,7 +1,5 @@
-import React from "react";
-import classes from "./ContentBanner.module.css";
-
-import ContentWrapper from "../../UI/ContentWrapper";
+import classes from './ContentBanner.module.css';
+import { ContentWrapper } from '../../UI/';
 
 const ContentBanner = () => {
   return (

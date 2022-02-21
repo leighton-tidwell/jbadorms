@@ -18,30 +18,15 @@
   margin-right: 5px;
 }
 
-.form {
-  display: flex;
-  flex-direction: column;
+.flex {
+  display: grid;
+  gap: 1em;
   margin-bottom: 1em;
 }
 
-.flex {
-  margin: 0 1em;
-}
-
 .form-control {
-  display: flex;
-  align-items: center;
-  margin: 1em 0;
-  width: 100%;
-}
-
-.label {
-  padding-right: 1em;
-  width: 30%;
-}
-
-.input {
-  width: 100%;
+  display: grid;
+  grid-template-columns: 200px 1fr;
 }
 
 .verify {
@@ -49,14 +34,12 @@
   margin-left: 1em;
   font-size: 1em;
 }
-
-.button {
-  width: 100%;
-  font-size: 1em;
+.control {
+  display: flex;
+  justify-content: flex-end;
 }
 
-@media only screen and (min-width: 1200px) {
-  .button {
-    width: 15%;
-  }
+.button {
+  font-size: 1em;
+  float: right;
 }

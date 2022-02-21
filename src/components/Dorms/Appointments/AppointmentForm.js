@@ -1,97 +1,80 @@
 import React, { useState, useEffect } from 'react';
-import uuid from 'react-uuid';
-
 import Amplify, { API, graphqlOperation } from 'aws-amplify';
 import {
   createAppointments,
   createNotifications
 } from '../../../graphql/mutations';
 import { listAppointments, listUsers } from '../../../graphql/queries';
+import classes from './AppointmentForm.module.css';
+import {
+  Select,
+  Calendar,
+  Button,
+  Input,
+  Form,
+  Label,
+  Spinner,
+  AlertBox
+} from '../../UI/';
+import dayjs from 'dayjs';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
-import classes from './AppointmentForm.module.css';
-import Select from '../../UI/Select';
-import Calendar from '../../UI/Calendar/Calendar';
-import Button from '../../UI/Button';
-import Input from '../../UI/Input';
-import Label from '../../UI/Label';
-import Form from '../../UI/Form';
-import SuccessText from '../../UI/SuccessText';
-import ErrorText from '../../UI/ErrorText';
+const serviceOptions = [
+  { value: 'Check In', label: 'Check In' },
+  { value: 'Check Out', label: 'Check Out' },
+  { value: 'Inspection', label: 'Inspection' }
+];
+
+const availableTimesDefault = [
+  '08:00',
+  '09:00',
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00'
+];
 
 const AppointmentForm = ({ name, phone, email }) => {
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [selectedTime, setSelectedTime] = useState(null);
-  const [selectedService, setSelectedService] = useState('Check In');
+  const [formData, setFormData] = useState({
+    date: null,
+    time: null,
+    service: null,
+    employee: null,
+    name,
+    phone,
+    email
+  });
   const [employeeOpts, setEmployeeOpts] = useState([]);
-  const serviceOptions = [
-    { value: 'Check In', id: uuid() },
-    { value: 'Check Out', id: uuid() },
-    { value: 'Inspection', id: uuid() }
-  ];
-  const [selectedEmployee, setSelectedEmployee] = useState(null);
-  const availableTimesDefault = [
-    '08:00',
-    '09:00',
-    '10:00',
-    '11:00',
-    '12:00',
-    '13:00',
-    '14:00',
-    '15:00',
-    '16:00'
-  ];
   const [availableTimes, setAvailableTimes] = useState(availableTimesDefault);
-
-  const [enteredName, setEnteredName] = useState(name);
-  const [enteredPhone, setEnteredPhone] = useState(phone);
-  const [enteredEmail, setEnteredEmail] = useState(email);
-
-  const handleSelectService = selectedValue => {
-    setSuccess(null);
-    setSelectedService(selectedValue);
-  };
-
-  const handleSelectEmployee = selectedValue => {
-    setSuccess(null);
-    setSelectedEmployee(selectedValue);
-  };
+  const [loading, setLoading] = useState(false);
 
   const handleDateSelect = async dateObject => {
-    const currentDate = new Date();
-    currentDate.setHours(0, 0, 0, 0);
-
-    const appointmentDateObject = new Date(
-      `${dateObject.month} ${dateObject.day}, ${dateObject.year}`
-    );
-    const selectedDateInPast =
-      currentDate.getTime() > appointmentDateObject.getTime();
-
-    if (selectedDateInPast) return setAvailableTimes(null);
-
-    setSelectedDate(dateObject);
+    setFormData(prevData => ({ ...prevData, date: dateObject }));
   };
 
   const findAvailableAppointmentsForEmployee = async () => {
     const employeeEmail = employeeOpts.find(
-      employee => employee.value === selectedEmployee
+      employee => employee.value === formData.employee
     ).email;
 
-    const appointmentDateObject = new Date(
-      `${selectedDate.month} ${selectedDate.day}, ${selectedDate.year}`
+    const appointmentDateObject = dayjs(
+      `${formData.date?.month} ${formData.date?.day}, ${formData.date?.year}`
     );
-    const month = ('0' + (appointmentDateObject.getMonth() + 1)).slice(-2);
-    const day = ('0' + selectedDate.day).slice(-2);
+
+    const formattedDate = appointmentDateObject.format('YYYY-MM-DD');
 
     const existingAppointments = await API.graphql(
       graphqlOperation(listAppointments, {
         filter: {
           and: [
             {
-              dateOfAppointment: { eq: `${selectedDate.year}-${month}-${day}` }
+              dateOfAppointment: { eq: formattedDate }
             },
             { employeeEmail: { eq: employeeEmail } }
           ]
@@ -111,67 +94,58 @@ const AppointmentForm = ({ name, phone, email }) => {
     );
   };
 
-  const handleTimeSelect = time => {
-    setSuccess(null);
-    setSelectedTime(time);
-  };
-
-  const handleChangeName = event => {
-    setEnteredName(event.target.value);
-  };
-
-  const handleChangePhone = event => {
-    setEnteredPhone(event.target.value);
-  };
-
-  const handleChangeEmail = event => {
-    setEnteredEmail(event.target.value);
+  const handleChange = e => {
+    const { name, value } = e.target;
+    setFormData(prevData => ({ ...prevData, [name]: value }));
+    setSuccess('');
+    setError('');
   };
 
   const handleSubmitForm = async event => {
     event.preventDefault();
     setError(null);
-    if (!selectedEmployee) return setError('You must pick an employee!');
-    if (!selectedService) return setError('You must pick a service!');
-    if (!enteredEmail) return setError('You must provide your email.');
-    if (!enteredPhone) return setError('You must provide your phone number.');
-    if (!enteredName) return setError('You must provide your name!');
+    if (!formData.employee) return setError('You must pick an employee!');
+    if (!formData.service) return setError('You must pick a service!');
+    if (!formData.email) return setError('You must provide your email.');
+    if (!formData.phone) return setError('You must provide your phone number.');
+    if (!formData.name) return setError('You must provide your name!');
+    setLoading(true);
 
-    const appointmentDateObject = new Date(
-      `${selectedDate.month} ${selectedDate.day}, ${selectedDate.year}`
+    const appointmentDateObject = dayjs(
+      `${formData.date?.month} ${formData.date?.day}, ${formData.date?.year}`
     );
 
-    const month = ('0' + (appointmentDateObject.getMonth() + 1)).slice(-2);
-    const day = ('0' + selectedDate.day).slice(-2);
+    const formattedDate = appointmentDateObject.format('YYYY-MM-DD');
+    const messageFormat = appointmentDateObject.format('MM/DD/YYYY');
 
     const employeeEmail = employeeOpts.find(
-      employee => employee.value === selectedEmployee
+      employee => employee.value === formData.employee
     ).email;
 
     const expiryDate = Math.round(new Date().getTime() / 1000);
 
     const newAppointment = {
-      service: selectedService,
-      employeeName: selectedEmployee,
+      service: formData.service,
+      employeeName: formData.employee,
       employeeEmail: employeeEmail,
-      dateOfAppointment: `${selectedDate.year}-${month}-${day}`,
-      timeOfAppointment: selectedTime,
-      nameOfResident: enteredName,
-      emailOfResident: enteredEmail,
-      phoneOfResident: enteredPhone,
+      dateOfAppointment: formattedDate,
+      timeOfAppointment: formData.time,
+      nameOfResident: formData.name,
+      emailOfResident: formData.email,
+      phoneOfResident: formData.phone,
       expiryTime: expiryDate
     };
     try {
-      const newAppointmentQuery = await API.graphql(
+      await API.graphql(
         graphqlOperation(createAppointments, { input: newAppointment })
       );
-      const message = `An appointment with you for ${selectedService} has been scheduled for ${month}/${day}/${selectedDate.year} at ${selectedTime} with ${enteredName}.`;
+      const message = `An appointment with you for ${formData.service} has been scheduled for ${messageFormat} at ${formData.time} with ${formData.name}.`;
 
       const expiryDate = Math.round(new Date().getTime() / 1000);
-      const sendNotification = await API.graphql(
+      await API.graphql(
         graphqlOperation(createNotifications, {
           input: {
-            name: enteredName,
+            name: formData.name,
             email: employeeEmail,
             subject: 'An Appointment Has Been Scheduled!',
             message: message,
@@ -180,11 +154,30 @@ const AppointmentForm = ({ name, phone, email }) => {
         })
       );
 
+      const confirmation = `An appointment with ${formData.employee} for ${formData.service} has been scheduled for ${messageFormat} at ${formData.time}.`;
+      await API.graphql(
+        graphqlOperation(createNotifications, {
+          input: {
+            name: formData.name,
+            email: formData.email,
+            subject: 'Appointment Confirmation',
+            message: confirmation,
+            expiryTime: expiryDate
+          }
+        })
+      );
+
       setSuccess('Your appointment was scheduled successfully!');
-      setSelectedTime(null);
-      findAvailableAppointmentsForEmployee();
+      setLoading(false);
+      setFormData(prevData => ({
+        ...prevData,
+        time: null,
+        service: null,
+        employee: null
+      }));
     } catch (error) {
       setError('An error has occured.');
+      setLoading(false);
       console.log(error);
     }
   };
@@ -200,6 +193,7 @@ const AppointmentForm = ({ name, phone, email }) => {
 
     const filteredStaffList = staffList.data.listUsers.items.map(staff => ({
       id: staff.id,
+      label: staff.name,
       value: staff.name,
       email: staff.email
     }));
@@ -212,8 +206,8 @@ const AppointmentForm = ({ name, phone, email }) => {
   }, []);
 
   useEffect(() => {
-    if (selectedEmployee) findAvailableAppointmentsForEmployee();
-  }, [selectedEmployee, selectedDate]); // eslint-disable-line react-hooks/exhaustive-deps
+    if (formData.employee) findAvailableAppointmentsForEmployee();
+  }, [formData.employee, formData.date]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <div className={classes.flex}>
@@ -224,7 +218,10 @@ const AppointmentForm = ({ name, phone, email }) => {
             <Select
               className={classes.select}
               options={serviceOptions}
-              onSelect={handleSelectService}
+              onSelect={value =>
+                handleChange({ target: { name: 'service', value } })
+              }
+              value={formData.service}
             />
           </div>
           <div className={classes['form-control']}>
@@ -232,8 +229,10 @@ const AppointmentForm = ({ name, phone, email }) => {
             <Select
               className={classes.select}
               options={employeeOpts}
-              onSelect={handleSelectEmployee}
-              value={selectedEmployee}
+              onSelect={value =>
+                handleChange({ target: { name: 'employee', value } })
+              }
+              value={formData.employee}
             />
           </div>
           <div className={classes['form-control']}>
@@ -244,11 +243,14 @@ const AppointmentForm = ({ name, phone, email }) => {
         <div className={classes['second-step']}>
           <div className={classes['form-control']}>
             <div className={classes['appointments-available']}>
-              {selectedDate
-                ? `Available times on ${selectedDate.month} ${selectedDate.day}, ${selectedDate.year}:`
-                : ''}
+              {formData.date
+                ? `Available times on ${formData.date?.month} ${formData.date?.day}, ${formData.date?.year}:`
+                : 'Please select a date to see available times.'}
             </div>
-            <div className={classes['time-selector']}>
+            <div
+              className={classes['time-selector']}
+              style={{ display: formData.date ? 'flex' : 'none' }}
+            >
               {!availableTimes && (
                 <div className={classes['no-time-available']}>
                   No available times
@@ -258,11 +260,11 @@ const AppointmentForm = ({ name, phone, email }) => {
                 availableTimes.map((time, i) => (
                   <div
                     onClick={() => {
-                      handleTimeSelect(time);
+                      handleChange({ target: { name: 'time', value: time } });
                     }}
                     key={i}
                     className={`${classes['time-element']} ${
-                      selectedTime === time ? classes['time-selected'] : ''
+                      formData.time === time ? classes['time-selected'] : ''
                     }`}
                   >
                     {time}
@@ -279,11 +281,12 @@ const AppointmentForm = ({ name, phone, email }) => {
                 Full Name:
               </Label>
               <Input
-                onChange={handleChangeName}
+                onChange={handleChange}
                 id="fullName"
+                name="name"
                 type="text"
                 className={classes['input']}
-                value={enteredName}
+                value={formData.name}
               />
             </div>
             <div className={classes['inline-form']}>
@@ -291,11 +294,12 @@ const AppointmentForm = ({ name, phone, email }) => {
                 Phone:
               </Label>
               <Input
-                onChange={handleChangePhone}
+                onChange={handleChange}
                 id="phone"
+                name="phone"
                 type="tel"
                 className={classes['input']}
-                value={enteredPhone}
+                value={formData.phone}
               />
             </div>
             <div className={classes['inline-form']}>
@@ -303,20 +307,37 @@ const AppointmentForm = ({ name, phone, email }) => {
                 Email:
               </Label>
               <Input
-                onChange={handleChangeEmail}
+                onChange={handleChange}
                 id="email"
                 type="email"
+                name="email"
                 className={classes['input']}
-                value={enteredEmail}
+                value={formData.email}
               />
             </div>
-            {error && <ErrorText>{error}</ErrorText>}
-            {success && <SuccessText>{success}</SuccessText>}
-            {selectedTime && (
-              <Button onClick={handleSubmitForm} className={classes.confirm}>
-                Confirm
-              </Button>
+            {error && (
+              <AlertBox type="error" title="Error!" message={error} closable />
             )}
+            {success && (
+              <AlertBox
+                type="success"
+                title="Success!"
+                message={success}
+                closable
+              />
+            )}
+            {formData.time &&
+              formData.date &&
+              formData.employee &&
+              formData.service && (
+                <Button
+                  onClick={handleSubmitForm}
+                  disabled={loading}
+                  className={classes.confirm}
+                >
+                  {loading ? <Spinner /> : 'Confirm'}
+                </Button>
+              )}
           </div>
         </div>
       </Form>

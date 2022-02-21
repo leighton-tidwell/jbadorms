@@ -1,17 +1,17 @@
 import React from 'react';
 import Amplify, { withSSRContext } from 'aws-amplify';
 import getNavItems from '../../../api/getNavItems';
-import config from '../../../aws-exports';
 import dynamic from 'next/dynamic';
-Amplify.configure({ ...config, ssr: true });
-
 import DefaultLayout from '../../../layouts/dorms/default';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Content from '../../../components/UI/Content';
-import Subtitle from '../../../components/UI/Subtitle';
-import AlertBox from '../../../components/UI/AlertBox';
-
+import {
+  ImageBanner,
+  Content,
+  Subtitle,
+  AlertBox
+} from '../../../components/UI/';
 import classes from './briefing.module.css';
+import config from '../../../aws-exports';
+Amplify.configure({ ...config, ssr: true });
 
 const BriefingPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
@@ -34,6 +34,7 @@ const BriefingPage = ({ navLinks }) => {
         <AlertBox
           title="Notice"
           message="This is the official Bay Orderly Briefing, after reading this use the Bay Orderly Checklist to complete your tasks."
+          containerStyle={{ width: '100%' }}
         />
       </Content>
       <Content className={classes.flex}>

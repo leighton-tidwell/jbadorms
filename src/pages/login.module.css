@@ -20,13 +20,20 @@
   padding: 1em;
 }
 
-.href {
+.inline {
+  display: flex;
+  align-items: center;
   color: white;
+  text-decoration: none;
+  background-color: #04121e80;
+  padding: 1em;
 }
 
-.inline {
-  display: inline-block;
-  color: white;
+.redirect {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
 }
 
 @media only screen and (min-width: 1200px) {

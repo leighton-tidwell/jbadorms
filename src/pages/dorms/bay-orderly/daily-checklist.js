@@ -1,17 +1,17 @@
 import React from 'react';
 import Amplify, { withSSRContext } from 'aws-amplify';
 import getNavItems from '../../../api/getNavItems';
-import config from '../../../aws-exports';
 import dynamic from 'next/dynamic';
-Amplify.configure({ ...config, ssr: true });
-
 import DefaultLayout from '../../../layouts/dorms/default';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Content from '../../../components/UI/Content';
-import Subtitle from '../../../components/UI/Subtitle';
-import AlertBox from '../../../components/UI/AlertBox';
-
+import {
+  ImageBanner,
+  Content,
+  Subtitle,
+  AlertBox
+} from '../../../components/UI/';
 import classes from './daily-checklist.module.css';
+import config from '../../../aws-exports';
+Amplify.configure({ ...config, ssr: true });
 
 const DailyChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
@@ -34,6 +34,7 @@ const DailyChecklistPage = ({ navLinks }) => {
         <AlertBox
           title="Notice"
           message="Download this form, fill it out and return it to the Dorm Office for processing."
+          containerStyle={{ width: '100%' }}
         />
       </Content>
       <Content className={classes.flex}>

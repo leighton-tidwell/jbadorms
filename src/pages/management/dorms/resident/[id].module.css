@@ -1,32 +1,35 @@
 .title {
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 700;
-  color: white;
-  text-decoration: none;
+  margin: 0.8em;
+  padding-left: 8px;
+  position: relative;
 }
 
-.title:hover {
-  text-decoration: underline;
-}
-
-.flex-title {
-  display: flex;
-  flex-direction: column;
+.title::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 3px;
+  margin-right: 8px;
+  height: 1.5em;
+  background: #1d7dcf;
+  margin-bottom: 0.5em;
 }
 
 .subtitle {
-  font-size: 1.5em;
-  padding-left: 5px;
+  display: inline-block;
+  font-size: 0.9em;
+  font-weight: 500;
+  margin-left: 8px;
 }
 
-.subtitle-link {
-  padding-left: 5px;
-  color: white;
-  text-decoration: none;
-}
-
-.subtitle-link:hover {
-  text-decoration: underline;
+.tables {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1em;
+  margin: 0 1em;
 }
 
 @media only screen and (min-width: 1200px) {

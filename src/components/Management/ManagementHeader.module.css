@@ -7,7 +7,6 @@
 }
 
 .logo {
-  font-size: 1.8em;
   font-weight: 700;
   flex-basis: 100%;
 }
@@ -23,6 +22,7 @@
   text-align: right;
   flex-basis: 100%;
   font-size: 0.8em;
+  display: none;
 }
 
 .user {
@@ -34,8 +34,17 @@
   color: white;
 }
 
+.mobile-nav-toggle {
+  cursor: pointer;
+}
+
 @media only screen and (min-width: 1200px) {
   .logo {
     flex-basis: 85%;
+    font-size: 1.8em;
+  }
+
+  .mobile-nav-toggle {
+    display: none;
   }
 }

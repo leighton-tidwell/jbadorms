@@ -14,6 +14,15 @@
   text-align: center;
   font-weight: 300;
   padding-bottom: 2em;
+  display: flex;
+  width: 60%;
+  word-wrap: break-word;
+}
+
+.address svg {
+  height: 50px;
+  width: 50px;
+  margin-right: -2em;
 }
 
 .map-container {
@@ -38,6 +47,12 @@
     width: 100%;
     padding-top: 1em;
     padding-bottom: 0.5em;
+  }
+
+  .address svg {
+    height: 24px;
+    width: 24px;
+    margin-right: 8px;
   }
 
   .map-container {

@@ -1,62 +1,201 @@
 import React, { useState } from 'react';
 import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listFAQS, listEvents } from '../../../../graphql/queries';
-import { createEvents, createFAQ } from '../../../../graphql/mutations';
+import {
+  createEvents,
+  createFAQ,
+  deleteFAQ,
+  deleteEvents
+} from '../../../../graphql/mutations';
 import Link from 'next/link';
 
 import config from '../../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
+import { Card, Icon, ConfirmModal } from '../../../../components/UI/';
 import classes from './index.module.css';
 import ManagementLayout from '../../../../layouts/management/default';
 import AddFAQForm from '../../../../components/Management/AddFAQForm';
 import AddEventsForm from '../../../../components/Management/AddEventsForm';
-import ResidentsTable from '../../../../components/Management/ResidentsTable';
+import DataTable from '../../../../components/Management/DataTable';
+
+const eventHeaders = [
+  {
+    key: 'title',
+    value: 'Event'
+  },
+  {
+    key: 'date',
+    value: 'Date'
+  },
+  {
+    key: 'delete',
+    value: 'Delete'
+  }
+];
+
+const faqHeaders = [
+  {
+    key: 'question',
+    value: 'Question'
+  },
+  {
+    key: 'answer',
+    value: 'Answer'
+  },
+  {
+    key: 'delete',
+    value: 'Delete'
+  }
+];
 
 const SiteSettingsPage = ({ userName, faqsList, eventsList }) => {
-  const [faqs, setFaqs] = useState(faqsList);
-  const [events, setEvents] = useState(eventsList);
+  const [showDeleteFAQModal, setShowDeleteFAQModal] = useState(false);
+  const [showDeleteEventModal, setShowDeleteEventModal] = useState(false);
+  const [deleteObject, setDeleteObject] = useState({});
+  const [faqs, setFaqs] = useState(
+    faqsList.map(faq => ({
+      ...faq,
+      delete: (
+        <span
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            setShowDeleteFAQModal(true);
+            setDeleteObject(faq);
+          }}
+        >
+          <Icon name="deleteForeverSharp" />
+        </span>
+      )
+    }))
+  );
+  const [events, setEvents] = useState(
+    eventsList.map(event => ({
+      ...event,
+      delete: (
+        <span
+          style={{ cursor: 'pointer' }}
+          onClick={() => {
+            setShowDeleteEventModal(true);
+            setDeleteObject(event);
+          }}
+        >
+          <Icon name="deleteForeverSharp" />
+        </span>
+      )
+    }))
+  );
 
-  const handleAddFaq = async faq => {
-    const addFAQ = await API.graphql(
-      graphqlOperation(createFAQ, { input: faq })
+  const handleAddFaq = faq =>
+    new Promise((resolve, reject) => {
+      API.graphql(graphqlOperation(createFAQ, { input: faq }))
+        .then(data => {
+          setFaqs(prevState => [
+            ...prevState,
+            {
+              ...data.data.createFAQ,
+              delete: (
+                <span
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setShowDeleteEventModal(true);
+                    setDeleteObject(data.data.createFAQ);
+                  }}
+                >
+                  <Icon name="deleteForeverSharp" />
+                </span>
+              )
+            }
+          ]);
+          resolve(true);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+
+  const handleAddEvent = event =>
+    new Promise((resolve, reject) => {
+      API.graphql(graphqlOperation(createEvents, { input: event }))
+        .then(data => {
+          setEvents(prevState => [
+            ...prevState,
+            {
+              ...data.data.createEvents,
+              delete: (
+                <span
+                  style={{ cursor: 'pointer' }}
+                  onClick={() => {
+                    setShowDeleteEventModal(true);
+                    setDeleteObject(data.data.createEvents);
+                  }}
+                >
+                  <Icon name="deleteForeverSharp" />
+                </span>
+              )
+            }
+          ]);
+          resolve(true);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
+
+  const handleDeleteFAQ = () => {
+    const { id, _version } = deleteObject;
+    API.graphql(graphqlOperation(deleteFAQ, { input: { id, _version } })).then(
+      () => {
+        setShowDeleteFAQModal(false);
+        setDeleteObject(null);
+        setFaqs(prevState => prevState.filter(faq => faq.id !== id));
+      }
     );
-    setFaqs(prevState => [...prevState, faq]);
   };
 
-  const handleAddEvent = async event => {
-    const addEvent = await API.graphql(
-      graphqlOperation(createEvents, { input: event })
-    );
-    const newEvent = { event: event.title, date: event.date };
-    setEvents(prevState => [...prevState, newEvent]);
+  const handleDeleteEvent = () => {
+    const { id, _version } = deleteObject;
+    API.graphql(
+      graphqlOperation(deleteEvents, { input: { id, _version } })
+    ).then(() => {
+      setShowDeleteEventModal(false);
+      setDeleteObject(null);
+      setEvents(prevState => prevState.filter(event => event.id !== id));
+    });
   };
 
   return (
-    <ManagementLayout userName={userName}>
-      <div className={classes['flex-title']}>
-        <Link href="/management/dorms">
-          <a className={classes.title}>Dorms Management</a>
-        </Link>
-        <div className={classes.subtitle}>/ Site Settings</div>
-      </div>
-      <div className={classes.forms}>
-        <AddFAQForm onSubmit={handleAddFaq} />
-        <ResidentsTable
-          image="/images/management/verification.svg"
-          title="FAQS"
-          data={faqs}
-        />
-      </div>
-      <div className={classes.forms}>
-        <AddEventsForm onSubmit={handleAddEvent} />
-        <ResidentsTable
-          image="/images/management/verification.svg"
-          title="Events"
-          data={events}
-        />
-      </div>
-    </ManagementLayout>
+    <>
+      <ConfirmModal
+        show={showDeleteFAQModal}
+        onConfirm={handleDeleteFAQ}
+        onCancel={() => setShowDeleteFAQModal(false)}
+        message="Are you sure you want to delete this FAQ?"
+      />
+      <ConfirmModal
+        show={showDeleteEventModal}
+        onConfirm={handleDeleteEvent}
+        onCancel={() => setShowDeleteEventModal(false)}
+        message="Are you sure you want to delete this event?"
+      />
+      <ManagementLayout userName={userName}>
+        <div className={classes['title']}>Manage Residents</div>
+        <div className={classes.tables}>
+          <Card icon="checkBoxSharp" title="Add an FAQ">
+            <AddFAQForm onSubmit={handleAddFaq} />
+          </Card>
+          <Card icon="checkBoxSharp" title="FAQS">
+            <DataTable data={faqs} headers={faqHeaders} pagination />
+          </Card>
+          <Card icon="checkBoxSharp" title="Add an Event">
+            <AddEventsForm onSubmit={handleAddEvent} />
+          </Card>
+          <Card icon="checkBoxSharp" title="Events">
+            <DataTable data={events} headers={eventHeaders} pagination />
+          </Card>
+        </div>
+      </ManagementLayout>
+    </>
   );
 };
 
@@ -82,16 +221,10 @@ export const getServerSideProps = async context => {
   }
 
   const getFaqs = await API.graphql(graphqlOperation(listFAQS));
-  props.faqsList = getFaqs.data.listFAQS.items.map(faq => ({
-    question: faq.question,
-    answer: faq.answer
-  }));
+  props.faqsList = getFaqs.data.listFAQS.items.filter(b => !b._deleted);
 
   const getEvents = await API.graphql(graphqlOperation(listEvents));
-  props.eventsList = getEvents.data.listEvents.items.map(event => ({
-    event: event.title,
-    date: event.date
-  }));
+  props.eventsList = getEvents.data.listEvents.items.filter(b => !b._deleted);
 
   return {
     props: props

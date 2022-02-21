@@ -1,7 +1,4 @@
-import React from 'react';
-
-import Header from '../../components/UI/Header';
-import Footer from '../../components/UI/Footer';
+import { Header, Footer } from '../../components/UI/';
 
 const DefaultLayout = ({ children, navLinks }) => {
   const logo = 'JBA Dorms';

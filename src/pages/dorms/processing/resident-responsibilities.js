@@ -3,21 +3,22 @@ import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers } from '../../../graphql/queries';
 import { updateUsers } from '../../../graphql/mutations';
 import getNavItems from '../../../api/getNavItems';
+import DefaultLayout from '../../../layouts/dorms/default';
+import {
+  ImageBanner,
+  Content,
+  Subtitle,
+  AlertBox,
+  Input,
+  Button,
+  SuccessText,
+  Spinner
+} from '../../../components/UI/';
+import { ResidentResponsibilitiesText } from '../../../components/Dorms/';
+import classes from './resident-responsibilities.module.css';
+
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
-
-import DefaultLayout from '../../../layouts/dorms/default';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Content from '../../../components/UI/Content';
-import Subtitle from '../../../components/UI/Subtitle';
-import AlertBox from '../../../components/UI/AlertBox';
-import ResidentResponsibilitiesText from '../../../components/Dorms/ProcessingForms/ResidentResponsibilitiesText';
-import Input from '../../../components/UI/Input';
-import Button from '../../../components/UI/Button';
-import ErrorText from '../../../components/UI/ErrorText';
-import SuccessText from '../../../components/UI/SuccessText';
-
-import classes from './resident-responsibilities.module.css';
 
 const ResidentResponsibilitiesPage = ({
   verified,
@@ -32,13 +33,15 @@ const ResidentResponsibilitiesPage = ({
   const [enteredName, setEnteredName] = useState(name);
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
+  const [loading, setLoading] = useState(false);
 
   const handleFormSubmit = async event => {
     event.preventDefault();
     if (!enteredName) return setError('You must enter your name.');
 
     try {
-      const updateUser = await API.graphql(
+      setLoading(true);
+      await API.graphql(
         graphqlOperation(updateUsers, {
           input: {
             id: id,
@@ -48,10 +51,11 @@ const ResidentResponsibilitiesPage = ({
         })
       );
       setError(null);
+      setLoading(false);
       setSuccess('Successfully signed form.');
     } catch (error) {
       console.log(error);
-      return setError('An error has occured.');
+      return setError('An error has occured, please try again later.');
     }
   };
 
@@ -283,9 +287,27 @@ const ResidentResponsibilitiesPage = ({
                     type="text"
                   />
                 </div>
-                {error && <ErrorText>{error}</ErrorText>}
-                {success && <SuccessText>{success}</SuccessText>}
-                <Button className={classes.button}>Sign</Button>
+                {error && (
+                  <AlertBox
+                    type="error"
+                    title="Error!"
+                    message={error}
+                    closable
+                  />
+                )}
+                {success && (
+                  <AlertBox
+                    type="success"
+                    title="Success!"
+                    message={success}
+                    closable
+                  />
+                )}
+                {!success && (
+                  <Button disabled={loading} className={classes.button}>
+                    {loading ? <Spinner /> : 'Sign'}
+                  </Button>
+                )}
               </form>
             )}
             {residentresponsibilities && (

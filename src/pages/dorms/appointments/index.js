@@ -2,18 +2,18 @@ import React, { useState } from 'react';
 import Amplify, { graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers } from '../../../graphql/queries';
 import getNavItems from '../../../api/getNavItems';
+import DefaultLayout from '../../../layouts/dorms/default';
+import {
+  ImageBanner,
+  Subtitle,
+  Content,
+  AlertBox
+} from '../../../components/UI/';
+import { AppointmentScheduler } from '../../../components/Dorms/';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Subtitle from '../../../components/UI/Subtitle';
-import Content from '../../../components/UI/Content';
-import AppointmentScheduler from '../../../components/Dorms/Appointments/AppointmentScheduler';
-import DefaultLayout from '../../../layouts/dorms/default';
-import AlertBox from '../../../components/UI/AlertBox';
-
 const Appointments = ({ navLinks, verified, name, phone, email }) => {
-  const [userIsVerified, setUserIsVerified] = useState(verified);
   const bannerBackgroundImage = '/images/appointment_banner.png';
 
   return (

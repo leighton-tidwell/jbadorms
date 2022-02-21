@@ -1,0 +1,93 @@
+.table {
+  table-layout: auto;
+  width: 100%;
+  word-wrap: break-word;
+  word-break: normal;
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid rgba(255, 255, 255, 0.13);
+  overflow: auto;
+}
+
+.thead {
+  background: #143552;
+}
+
+.tr {
+  box-sizing: border-box;
+  background-clip: padding-box;
+}
+
+.th {
+  padding: 0.5em;
+  text-align: start;
+  border-bottom: 1px solid #143552;
+  box-sizing: border-box;
+  position: relative;
+  font-weight: 500;
+}
+
+.td {
+  padding: 0.5em;
+  text-align: start;
+  box-sizing: border-box;
+  border-bottom: 1px solid #143552;
+}
+
+.td a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.empty {
+  padding: 1em;
+  text-align: center;
+}
+
+.loading {
+  text-align: center;
+  padding: 1em;
+}
+
+.pagination {
+  display: flex;
+  justify-content: flex-end;
+  margin: 0.5em 0;
+}
+
+.page {
+  padding: 0.5em;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #143552;
+  cursor: pointer;
+  margin-right: 0.5em;
+  font-size: 0.8em;
+  width: 1em;
+  height: 1em;
+  transition: all 0.2s ease;
+}
+
+.active {
+  background: #143552;
+}
+
+.page:hover {
+  background: #143552;
+}
+
+.page:nth-last-child(1) {
+  margin-right: 0;
+}
+
+.search {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0.5em 0;
+}
+
+.search input {
+  width: calc(100% - 1.1em);
+}

@@ -1,0 +1,19 @@
+.textarea {
+  outline: none;
+  background-color: #030f1a;
+  border: 1px solid #1d7ccf00;
+  transition: border 0.2s ease;
+  color: white;
+  resize: none;
+  min-height: 200px;
+  font-family: inherit;
+  padding: 0.5em;
+}
+
+.textarea:focus {
+  border: 1px solid #1d7dcf;
+}
+
+.textarea:hover {
+  border: 1px solid #1d7dcf;
+}

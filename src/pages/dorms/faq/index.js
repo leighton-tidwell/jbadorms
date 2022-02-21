@@ -1,18 +1,13 @@
 import React from 'react';
-import uuid from 'react-uuid';
-import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
+import Amplify, { API, withSSRContext } from 'aws-amplify';
 import getNavItems from '../../../api/getNavItems';
-import { listEvents, listFAQS } from '../../../graphql/queries';
+import { listFAQS } from '../../../graphql/queries';
+import DefaultLayout from '../../../layouts/dorms/default';
+import { ImageBanner, Subtitle, Content } from '../../../components/UI/';
+import { FaqElement } from '../../../components/Dorms/';
+import classes from './index.module.css';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
-
-import DefaultLayout from '../../../layouts/dorms/default';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Subtitle from '../../../components/UI/Subtitle';
-import Content from '../../../components/UI/Content';
-import FaqElement from '../../../components/Dorms/FAQ/FaqElement';
-
-import classes from './index.module.css';
 
 const FaqPage = ({ navLinks, faqList }) => {
   const bannerBackgroundImage = '/images/faq_banner.png';
@@ -45,11 +40,13 @@ export const getServerSideProps = async context => {
       query: listFAQS,
       authMode: 'API_KEY'
     });
-    const faqList = getFaqsList.data.listFAQS.items.map(faq => ({
-      id: faq.id,
-      question: faq.question,
-      answer: faq.answer
-    }));
+    const faqList = getFaqsList.data.listFAQS.items
+      .filter(b => !b._deleted)
+      .map(faq => ({
+        id: faq.id,
+        question: faq.question,
+        answer: faq.answer
+      }));
 
     return faqList;
   };

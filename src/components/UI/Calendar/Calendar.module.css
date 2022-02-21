@@ -58,10 +58,15 @@
   background: #1c2a35;
 }
 
+.disabled {
+  background: #121b22;
+  pointer-events: none;
+}
+
 .today {
-  background: #1c3447;
+  background: #083052;
 }
 
 .selected {
-  background: #083052;
+  background: #1d7dcf;
 }

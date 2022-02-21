@@ -1,16 +1,20 @@
-import React from 'react';
-import Subtitle from '../components/UI/Subtitle';
+import { Subtitle, Content } from '../components/UI/';
 import Link from 'next/link';
+import classes from './404.module.css';
 
 const Error404 = () => {
   return (
     <>
       <Subtitle>This page was not found.&nbsp;</Subtitle>
-      <div style={{ textAlign: 'center' }}>
-        <Link href="/">
-          <a style={{ color: 'white' }}>Go back home</a>
-        </Link>
-      </div>
+      <Content className={classes.flex}>
+        <div className={classes.redirect}>
+          <Link href="/">
+            <a className={classes.inline} style={{ marginTop: '1em' }}>
+              Click here to go home!
+            </a>
+          </Link>
+        </div>
+      </Content>
     </>
   );
 };

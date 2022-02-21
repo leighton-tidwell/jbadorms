@@ -1,0 +1,5 @@
+.flex {
+  flex-direction: column;
+  flex-basis: 90%;
+  padding: 1em;
+}

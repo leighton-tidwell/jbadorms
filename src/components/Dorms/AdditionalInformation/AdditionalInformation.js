@@ -1,38 +1,13 @@
-import React, { useState, useEffect } from 'react';
-
-import Amplify, { API, graphqlOperation } from 'aws-amplify';
+import { useState, useEffect } from 'react';
+import Amplify, { API } from 'aws-amplify';
 import { listEvents } from '../../../graphql/queries';
+import classes from './AdditionalInformation.module.css';
+import { ContentWrapper, Icon } from '../../UI/';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
-import classes from './AdditionalInformation.module.css';
-
-import ContentWrapper from '../../UI/ContentWrapper';
-
 const AdditionalInformation = () => {
   const [events, setEvents] = useState([]);
-  // const events = [
-  //   {
-  //     date: "June 16th",
-  //     title: "Dorm dinner at 18:00 building 1657.",
-  //   },
-  //   {
-  //     date: "June 19th",
-  //     title: "Dorm dinner at 20:30 building 1657.",
-  //   },
-  //   {
-  //     date: "June 25th",
-  //     title: "Chaplain mentorship board at 16:00 building 1654.",
-  //   },
-  //   {
-  //     date: "July 4th",
-  //     title: "Dorm dinner at 18:00 building 1657.",
-  //   },
-  //   {
-  //     date: "July 8th",
-  //     title: "Dorm dinner at 18:00 building 1657.",
-  //   },
-  // ];
 
   const baseContacts = [
     {
@@ -64,6 +39,7 @@ const AdditionalInformation = () => {
     });
     const dateOptions = { month: 'long', day: 'numeric' };
     const eventsList = fetchEvents.data.listEvents.items
+      .filter(b => !b._deleted)
       .sort((first, second) => {
         const firstDate = new Date(first.date);
         const secondDate = new Date(second.date);
@@ -86,7 +62,10 @@ const AdditionalInformation = () => {
     <ContentWrapper>
       <div className={classes.grid}>
         <div className={classes['grid-item']}>
-          <div className={classes['item-title']}>Upcoming Events</div>
+          <div className={classes['item-title']}>
+            <Icon name="calendarTodaySharp" />
+            Upcoming Events
+          </div>
           {events.length !== 0 &&
             events.map((event, i) => (
               <div key={i} className={classes['item-row']}>
@@ -99,7 +78,10 @@ const AdditionalInformation = () => {
           )}
         </div>
         <div className={classes['grid-item']}>
-          <div className={classes['item-title']}>JBA Contacts</div>
+          <div className={classes['item-title']}>
+            <Icon name="phoneAndroidSharp" />
+            JBA Contacts
+          </div>
           {baseContacts.map((contact, i) => (
             <div key={i} className={classes['item-row']}>
               <span className={classes.bold}>{contact.name}</span>

@@ -7,29 +7,25 @@ import {
   AmplifySignIn,
   AmplifySignUp
 } from '@aws-amplify/ui-react';
+import { Content, Subtitle, Icon, Spinner } from '../components/UI/';
+import classes from './login.module.css';
 import config from '../aws-exports';
 Amplify.configure({ ...config, ssr: true });
-
-import Content from '../components/UI/Content';
-import Subtitle from '../components/UI/Subtitle';
-
-import classes from './login.module.css';
 
 const Login = ({ previousPage }) => {
   const [authState, setAuthState] = useState('');
   const router = useRouter();
-  const handleAuthStateChange = state => {
-    setAuthState(state);
+  const handleAuthStateChange = state => setAuthState(state);
+  const previousPageValid =
+    previousPage &&
+    previousPage.indexOf('/login') === -1 &&
+    previousPage.indexOf('/signout') === -1;
 
-    if (
-      authState === 'signedin' &&
-      previousPage &&
-      previousPage.indexOf('/signout') === -1
-    )
-      return router.push(previousPage);
-
-    if (authState === 'signedin') return router.push('/dorms/');
-  };
+  useEffect(() => {
+    if (authState === 'signedin' && previousPageValid)
+      router.push(previousPage);
+    else if (authState === 'signedin') router.push('/dorms/');
+  }, [authState, previousPage, previousPageValid, router]);
 
   return (
     <>
@@ -58,18 +54,21 @@ const Login = ({ previousPage }) => {
           />
           <AmplifySignIn slot="sign-in" usernameAlias="email" />
         </AmplifyAuthenticator>
-        {authState !== 'signedin' &&
-          previousPage &&
-          previousPage.indexOf('/signout') === -1 && (
-            <Link href={previousPage}>
-              <a className={classes.inline}>Click to go back</a>
-            </Link>
-          )}
+        {authState !== 'signedin' && previousPageValid && (
+          <Link href={previousPage}>
+            <a className={classes.inline}>
+              <Icon size="24" name="arrowBackSharp" />
+              Click to go back
+            </a>
+          </Link>
+        )}
         {authState === 'signedin' && (
           <div className={classes.redirect}>
-            Sit tight! We are logging you in...&nbsp;
-            <Link href={previousPage || '/'}>
-              <a className={classes.inline}>or click here to continue.</a>
+            <Spinner size="50" />
+            <Link href={previousPageValid ? previousPage : '/'}>
+              <a className={classes.inline} style={{ marginTop: '1em' }}>
+                Sit tight! We are logging you in... or click here to continue.
+              </a>
             </Link>
           </div>
         )}

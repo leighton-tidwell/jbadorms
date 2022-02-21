@@ -1,8 +1,5 @@
-import React from "react";
-import classes from "./index.module.css";
-
-import HeroLogo from "../components/SplashPage/HeroLogo";
-import SplashNavigation from "../components/SplashPage/SplashNavigation";
+import classes from './index.module.css';
+import { HeroLogo, SplashNavigation } from '../components/SplashPage/';
 
 const Splashpage = () => {
   return (

@@ -1,8 +1,6 @@
-import React from 'react';
 import uuid from 'react-uuid';
 import classes from './Contact.module.css';
-
-import ContentWrapper from '../../UI/ContentWrapper';
+import { ContentWrapper } from '../../UI/';
 
 const Contact = () => {
   const contactInformation = [

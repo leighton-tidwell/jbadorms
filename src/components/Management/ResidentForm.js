@@ -2,48 +2,27 @@ import React, { useState, useEffect } from 'react';
 
 import classes from './ResidentForm.module.css';
 import { API, graphqlOperation } from 'aws-amplify';
-import { updateUsers, createNotifications } from '../../graphql/mutations';
+import {
+  updateUsers,
+  createNotifications,
+  updateDormRooms
+} from '../../graphql/mutations';
 import {
   listDormBuildings,
   listDormRooms,
   listUsers
 } from '../../graphql/queries';
 
-import Input from '../UI/Input';
-import Button from '../UI/Button';
-import ErrorText from '../UI/ErrorText';
-import SuccessText from '../UI/SuccessText';
-import Select from '../UI/Select';
+import { Input, Button, ErrorText, SuccessText, Spinner } from '../UI/';
 
 const ResidentForm = ({ data }) => {
-  const [userId, setUserId] = useState(data.id);
-  const [userType, setUserType] = useState(data.userType);
-  const [userName, setUserName] = useState(data.name);
-  const [userVersion, setUserVersion] = useState(data._version);
-  const [userEmail, setUserEmail] = useState(data.email);
-  const [userPhone, setUserPhone] = useState(data.phone);
   const [dormBuilding, setDormBuilding] = useState(data.dormbuilding || '');
   const [dormRoom, setDormRoom] = useState(data.dormroom || '');
   const [userVerified, setUserVerified] = useState(data.verified);
-  const [residentResponsibilities, setResidentResponsibilities] = useState(
-    data.residentresponsibilities || false
-  );
-  const [mattressAgreement, setMattressAgreement] = useState(
-    data.mattressagreement || false
-  );
   const [error, setError] = useState(null);
   const [success, setSuccess] = useState(null);
-
-  const userTypeOptions = [
-    {
-      id: 1,
-      value: 'Dorm'
-    },
-    {
-      id: 2,
-      value: 'Dormstaff'
-    }
-  ];
+  const [loading, setLoading] = useState(false);
+  const [verifyLoading, setVerifyLoading] = useState(false);
 
   const handleChangeDormRoom = event => {
     setSuccess(null);
@@ -78,7 +57,8 @@ const ResidentForm = ({ data }) => {
         }
       })
     );
-    return roomExists.data.listDormRooms.items.length !== 0;
+    if (roomExists.data.listDormRooms.items.length === 0) return false;
+    return roomExists.data.listDormRooms.items[0];
   };
 
   const checkForPersonInDorm = async (building, room, userId) => {
@@ -96,98 +76,131 @@ const ResidentForm = ({ data }) => {
     return userInThisRoom.data.listUsers.items.length !== 0;
   };
 
-  const handleSubmitForm = async () => {
+  const checkForPreviousDorm = async () => {
+    const foundUser = await API.graphql(
+      graphqlOperation(listDormRooms, {
+        filter: { dormresident: { eq: data.id } }
+      })
+    );
+    if (foundUser.data.listDormRooms.items.length === 0) return false;
+    return foundUser.data.listDormRooms.items[0];
+  };
+
+  const handleSubmitForm = async event => {
     event.preventDefault();
     if (!dormBuilding || !dormRoom)
       return setError('You must enter a dorm building and room.');
+
     try {
       const buildingExists = await checkDormBuildingValidity(dormBuilding);
       if (!buildingExists)
         return setError('The specified dorm building does not exist!');
-      const roomExists = await checkDormRoomValidity(buildingExists, dormRoom);
 
+      const roomExists = await checkDormRoomValidity(buildingExists, dormRoom);
       if (!roomExists)
         return setError('The specified dorm room does not exist.');
 
       const roomOccupied = await checkForPersonInDorm(
         dormBuilding,
         dormRoom,
-        userId
+        data.id
       );
       if (roomOccupied)
         return setError('A person is already living in this dorm!');
 
-      const verifyUser = await API.graphql(
+      setLoading(true);
+      await API.graphql(
         graphqlOperation(updateUsers, {
           input: {
-            id: userId,
+            id: data.id,
             dormroom: dormRoom,
             dormbuilding: dormBuilding,
-            userType: userType?.toLowerCase(),
-            _version: userVersion
+            _version: data._version
           }
         })
       );
 
+      if (data.dormroom && data.dormbuilding) {
+        const previousDorm = await checkForPreviousDorm();
+        if (previousDorm) {
+          await API.graphql(
+            graphqlOperation(updateDormRooms, {
+              input: {
+                id: previousDorm.id,
+                dormresident: null,
+                _version: previousDorm._version
+              }
+            })
+          );
+        }
+      }
+
+      await API.graphql(
+        graphqlOperation(updateDormRooms, {
+          input: {
+            id: roomExists.id,
+            dormresident: data.id,
+            _version: roomExists._version
+          }
+        })
+      );
+      setLoading(false);
       setSuccess('User updated successfully!');
     } catch (error) {
+      setLoading(false);
       setError('An error has occurred.');
       console.error(error);
     }
   };
 
-  const handleChangeUserType = option => {
-    setUserType(option);
-  };
-
   const handleVerifyUser = async () => {
-    try {
-      const verifyUser = await API.graphql(
-        graphqlOperation(updateUsers, {
-          input: {
-            id: userId,
-            verified: true,
-            _version: userVersion
-          }
-        })
-      );
+    setVerifyLoading(true);
+    await API.graphql(
+      graphqlOperation(updateUsers, {
+        input: {
+          id: data.id,
+          verified: true,
+          _version: data._version
+        }
+      })
+    )
+      .then(() => {
+        const message =
+          data.userType?.toLowerCase() === 'dorm'
+            ? 'Your account has been verified! You can now continue in-processing on the JBA MHO site.'
+            : 'Your account has been verified, you must be moved into the staff group by an administrator now.';
 
-      const message =
-        userType?.toLowerCase() === 'dorm'
-          ? 'Your account has been verified! You can now continue in-processing on the JBA MHO site.'
-          : 'Your account has been verified, you must be moved into the staff group by an administrator now.';
-
-      const expiryDate = Math.round(new Date().getTime() / 1000);
-      const sendNotification = await API.graphql(
-        graphqlOperation(createNotifications, {
-          input: {
-            name: userName,
-            email: userEmail,
-            subject: 'Account Verified',
-            message: message,
-            expiryTime: expiryDate
-          }
-        })
-      );
-
-      setSuccess('User verified successfully!');
-    } catch (error) {
-      setError('An error occurred.');
-      console.error(error);
-    }
+        const expiryDate = Math.round(new Date().getTime() / 1000);
+        API.graphql(
+          graphqlOperation(createNotifications, {
+            input: {
+              name: data.name,
+              email: data.email,
+              subject: 'Account Verified',
+              message: message,
+              expiryTime: expiryDate
+            }
+          })
+        )
+          .then(() => {
+            setUserVerified(true);
+            setVerifyLoading(false);
+            setSuccess('User verified successfully!');
+          })
+          .catch(error => {
+            console.log(error);
+            setError('An error occured, please try again.');
+          });
+      })
+      .catch(error => {
+        console.log(error);
+        setVerifyLoading(false);
+        setError('An error occured, please try again.');
+      });
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.name}>
-        <img
-          className={classes.image}
-          src="/images/management/residents.svg"
-          alt="table icon"
-        />
-        Resident:&nbsp;
-        <span className={classes['resident-name']}>{userName}</span>
-      </div>
+    <>
       <form onSubmit={handleSubmitForm}>
         <div className={classes.flex}>
           <div className={classes['form-control']}>
@@ -195,7 +208,7 @@ const ResidentForm = ({ data }) => {
             <Input
               className={classes.input}
               type="text"
-              value={userEmail}
+              value={data.email}
               disabled
             />
           </div>
@@ -204,11 +217,11 @@ const ResidentForm = ({ data }) => {
             <Input
               className={classes.input}
               type="text"
-              value={userPhone}
+              value={data.phone}
               disabled
             />
           </div>
-          {userType?.toLowerCase() != 'dormstaff' && (
+          {data.userType?.toLowerCase() != 'dormstaff' && (
             <>
               <div className={classes['form-control']}>
                 <label className={classes.label}>Dorm Building: </label>
@@ -234,7 +247,7 @@ const ResidentForm = ({ data }) => {
                 </label>
                 <Input
                   className={classes.input}
-                  value={residentResponsibilities}
+                  value={data.residentresponsibilities || false}
                   type="text"
                   disabled
                 />
@@ -245,7 +258,7 @@ const ResidentForm = ({ data }) => {
                 </label>
                 <Input
                   className={classes.input}
-                  value={mattressAgreement}
+                  value={data.mattressagreement || false}
                   type="text"
                   disabled
                 />
@@ -254,30 +267,40 @@ const ResidentForm = ({ data }) => {
           )}
           <div className={classes['form-control']}>
             <label className={classes.label}>User Type: </label>
-            <Select
+            <Input
               className={classes.input}
-              options={userTypeOptions}
-              value={userType}
-              onSelect={handleChangeUserType}
+              value={
+                data.userType === 'dormstaff' ? 'Dorm Staff' : 'Dorm Resident'
+              }
+              disabled
             />
           </div>
         </div>
         {error && <ErrorText>{error}</ErrorText>}
         {success && <SuccessText>{success}</SuccessText>}
-        <Button className={classes.button} onClick={handleSubmitForm}>
-          Update
-        </Button>
-        {!userVerified && (
-          <Button
-            type="button"
-            className={classes.verify}
-            onClick={handleVerifyUser}
-          >
-            Verify
-          </Button>
-        )}
+        <div className={classes.control}>
+          {!data.userType === 'dormstaff' && (
+            <Button
+              disabled={loading}
+              className={classes.button}
+              onClick={handleSubmitForm}
+            >
+              {loading ? <Spinner /> : 'Update'}
+            </Button>
+          )}
+          {!userVerified && (
+            <Button
+              type="button"
+              disabled={verifyLoading}
+              className={`${classes.verify} ${classes.button}`}
+              onClick={handleVerifyUser}
+            >
+              {verifyLoading ? <Spinner /> : 'Verify'}
+            </Button>
+          )}
+        </div>
       </form>
-    </div>
+    </>
   );
 };
 

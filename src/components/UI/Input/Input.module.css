@@ -1,0 +1,48 @@
+.container {
+  position: relative;
+  width: 100%;
+}
+
+.input {
+  border: none;
+  font-size: 1em;
+  font-weight: 400;
+  padding: 0.5em;
+  display: flex;
+  outline: none;
+  color: white;
+  background-color: #030f1a;
+  border: 1px solid #1d7ccf00;
+  transition: border 0.2s ease;
+  position: relative;
+}
+
+.input:focus {
+  border: 1px solid #1d7dcf;
+}
+
+.input:hover {
+  border: 1px solid #1d7dcf;
+}
+
+.container svg {
+  position: absolute;
+  bottom: 0.5em;
+  right: 8px;
+  transition: all 0.2s ease;
+  color: rgba(255, 255, 255, 0.411);
+}
+
+.container:hover svg {
+  color: #1d7dcf;
+}
+
+.container:focus svg {
+  color: #1d7dcf;
+}
+
+@media only screen and (min-width: 1200px) {
+  .input {
+    height: 20px;
+  }
+}

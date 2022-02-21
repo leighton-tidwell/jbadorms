@@ -2,73 +2,88 @@ import React, { useState } from 'react';
 
 import classes from './AddEventsForm.module.css';
 
-import Input from '../UI/Input';
-import Button from '../UI/Button';
-import ErrorText from '../UI/ErrorText';
+import { Input, Button, ErrorText, Spinner } from '../UI/';
 
 const AddEventsForm = ({ onSubmit }) => {
-  const [eventTitle, setEventTitle] = useState('');
-  const [date, setDate] = useState('');
+  const [formData, setFormData] = useState({
+    date: '',
+    title: ''
+  });
   const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(false);
 
-  const handleChangeEventTitle = event => {
-    setEventTitle(event.target.value);
+  const handleChangeData = event => {
     setError(null);
-  };
-
-  const handleChangeDate = event => {
-    setDate(event.target.value);
-    setError(null);
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleSubmitForm = event => {
     event.preventDefault();
     setError(null);
-    const enteredDate = new Date(date);
+    if (!formData.date || !formData.title)
+      return setError('You must fill in both fields!');
+
+    const enteredDate = new Date(formData.date);
     enteredDate.setDate(enteredDate.getDate() + 1);
     const expiryDate = Math.round(enteredDate.getTime() / 1000);
-    if (!date || !eventTitle) return setError('You must fill in both fields!');
-    const newEvent = {
-      date: date,
-      title: eventTitle,
+
+    setLoading(true);
+    onSubmit({
+      date: formData.date,
+      title: formData.title,
       expiryTime: expiryDate
-    };
-    onSubmit(newEvent);
-    setDate('');
-    setEventTitle('');
+    })
+      .then(() => {
+        setLoading(false);
+        setFormData({
+          date: '',
+          title: ''
+        });
+      })
+      .catch(error => {
+        setLoading(false);
+        setError('Something went wrong, please try again!');
+      });
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.title}>Add an Event</div>
-      <form className={classes.form} onSubmit={handleSubmitForm}>
-        <div className={classes.flex}>
-          <div className={classes['form-control']}>
-            <label className={classes.label}>Event Title: </label>
-            <Input
-              onChange={handleChangeEventTitle}
-              value={eventTitle}
-              className={classes.input}
-              type="text"
-            />
-          </div>
-          <div className={classes['form-control']}>
-            <label className={classes.label}>Date: </label>
-            <Input
-              onChange={handleChangeDate}
-              value={date}
-              className={classes.input}
-              placeholder="2021-08-17"
-              type="date"
-            />
-          </div>
+    <form className={classes.form} onSubmit={handleSubmitForm}>
+      <div className={classes.flex}>
+        <div className={classes['form-control']}>
+          <label className={classes.label}>Event Title: </label>
+          <Input
+            onChange={handleChangeData}
+            name="title"
+            value={formData.title}
+            className={classes.input}
+            type="text"
+          />
         </div>
-        {error && <ErrorText>{error}</ErrorText>}
-        <Button className={classes.button} onClick={handleSubmitForm}>
-          Add
-        </Button>
-      </form>
-    </div>
+        <div className={classes['form-control']}>
+          <label className={classes.label}>Date: </label>
+          <Input
+            onChange={handleChangeData}
+            value={formData.date}
+            name="date"
+            className={classes.input}
+            placeholder="2021-08-17"
+            type="date"
+          />
+        </div>
+      </div>
+      {error && <ErrorText>{error}</ErrorText>}
+      <Button
+        disabled={loading}
+        className={classes.button}
+        onClick={handleSubmitForm}
+      >
+        {loading ? <Spinner /> : 'Add'}
+      </Button>
+    </form>
   );
 };
 

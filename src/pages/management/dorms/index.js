@@ -1,13 +1,14 @@
-import React, { useEffect, useState } from 'react';
-import uuid from 'react-uuid';
+import React from 'react';
 import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers, listDormBuildings } from '../../../graphql/queries';
+import Link from 'next/link';
 
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
 import DormCapacity from '../../../components/Management/DormCapacity';
-import ResidentsTable from '../../../components/Management/ResidentsTable';
+import DataTable from '../../../components/Management/DataTable';
+import { Card, Icon } from '../../../components/UI/';
 
 import ManagementLayout from '../../../layouts/management/default';
 
@@ -20,54 +21,172 @@ const DormsManagementPage = ({
   listOfVerifiedUsers,
   listOfStaff
 }) => {
-  const [verifiedUsersList, setVerifiedUsers] = useState(listOfVerifiedUsers);
-  const [unVerifiedUsersList, setunVerifiedUsersList] = useState(
-    listOfUnverifiedUsers
-  );
-  const [buildingList, setBuildingList] = useState(listOfBuildings);
+  const verifiedHeaders = [
+    {
+      key: 'name',
+      value: 'Name'
+    },
+    {
+      key: 'email',
+      value: 'Email'
+    },
+    {
+      key: 'phone',
+      value: 'Phone'
+    },
+    {
+      key: 'dormbuilding',
+      value: 'Dorm Building'
+    },
+    {
+      key: 'dormroom',
+      value: 'Dorm Room'
+    }
+  ];
+  const verifiedUsersList = listOfVerifiedUsers.map(user => ({
+    ...user,
+    name: (
+      <Link href={`/management/dorms/resident/${user.email}`}>{user.name}</Link>
+    )
+  }));
+
+  const unverifiedHeaders = [
+    {
+      key: 'name',
+      value: 'Name'
+    },
+    {
+      key: 'email',
+      value: 'Email'
+    },
+    {
+      key: 'phone',
+      value: 'Phone'
+    }
+  ];
+  const unVerifiedUsersList = listOfUnverifiedUsers.map(user => ({
+    ...user,
+    name: (
+      <Link href={`/management/dorms/resident/${user.email}`}>{user.name}</Link>
+    )
+  }));
+
+  const buildingHeaders = [
+    {
+      key: 'building',
+      value: 'Building'
+    },
+    {
+      key: 'capacity',
+      value: 'Capacity'
+    }
+  ];
+
+  const buildingList = listOfBuildings.map(building => {
+    return {
+      ...building,
+      building: (
+        <Link href={`/management/dorms/buildings/${building.building}`}>
+          {String(building.building)}
+        </Link>
+      )
+    };
+  });
+
+  const staffHeaders = [
+    {
+      key: 'name',
+      value: 'Name'
+    },
+    {
+      key: 'email',
+      value: 'Email'
+    },
+    {
+      key: 'phone',
+      value: 'Phone'
+    }
+  ];
+  const staffList = listOfStaff.map(staff => ({
+    ...staff,
+    name: (
+      <Link href={`/management/dorms/staff/${staff.email}`}>{staff.name}</Link>
+    )
+  }));
 
   return (
     <ManagementLayout userName={userName}>
       <div className={classes.title}>Dorms Management</div>
       <div className={classes.occupancy}>
-        {buildingList.map(building => (
+        {listOfBuildings.map(building => (
           <DormCapacity
-            key={uuid()}
+            key={building.id}
             building={building.building}
             total={building.capacity}
           />
         ))}
       </div>
       <div className={classes.tables}>
-        <ResidentsTable
-          title="Current Residents"
-          image="/images/management/residents.svg"
-          data={verifiedUsersList}
-          type="resident"
-          showMore
-        />
-        <ResidentsTable
-          title="Verification Needed"
-          image="/images/management/verification.svg"
-          data={unVerifiedUsersList}
-          type="resident"
-          showMore
-        />
-      </div>
-      <div className={classes.tables}>
-        <ResidentsTable
-          title="Current Buildings"
-          image="/images/management/dorms_active.svg"
-          data={buildingList}
-          type="building"
-          showMore
-        />
-        <ResidentsTable
-          title="Current Staff"
-          image="/images/management/verification.svg"
-          data={listOfStaff}
-          type="dormstaff"
-        />
+        <Card title="Current Residents" icon="peopleSharp">
+          <DataTable
+            headers={verifiedHeaders}
+            data={verifiedUsersList}
+            preview
+          />
+          {verifiedUsersList?.length && (
+            <div className={classes.more}>
+              <Link href="/management/dorms/resident">
+                <a className={classes['more-link']}>
+                  View all{' '}
+                  <Icon name="arrowRightAltFilled" color="currentColor" />
+                </a>
+              </Link>
+            </div>
+          )}
+        </Card>
+        <Card title="Verification Needed" icon="checkBoxSharp">
+          <DataTable
+            headers={unverifiedHeaders}
+            data={unVerifiedUsersList}
+            preview
+          />
+          {unVerifiedUsersList?.length && (
+            <div className={classes.more}>
+              <Link href="/management/dorms/resident">
+                <a className={classes['more-link']}>
+                  View all{' '}
+                  <Icon name="arrowRightAltFilled" color="currentColor" />
+                </a>
+              </Link>
+            </div>
+          )}
+        </Card>
+        <Card title="Current Buildings" icon="warehouseSharp">
+          <DataTable data={buildingList} headers={buildingHeaders} preview />
+          {buildingList?.length && (
+            <div className={classes.more}>
+              <Link href="/management/dorms/buildings">
+                <a className={classes['more-link']}>
+                  View all{' '}
+                  <Icon name="arrowRightAltFilled" color="currentColor" />
+                </a>
+              </Link>
+            </div>
+          )}
+        </Card>
+        <Card title="Current Staff" icon="emojiPeopleSharp">
+          <DataTable data={staffList} headers={staffHeaders} preview />
+          {staffList?.length && (
+            <div className={classes.more}>
+              <Link href="/management/dorms/staff/">
+                <a className={classes['more-link']}>
+                  View all{' '}
+                  <Icon name="arrowRightAltFilled" color="currentColor" />
+                </a>
+              </Link>
+            </div>
+          )}
+        </Card>
       </div>
     </ManagementLayout>
   );
@@ -96,8 +215,11 @@ export const getServerSideProps = async context => {
 
   // Get building Data
   const buildingData = await API.graphql(graphqlOperation(listDormBuildings));
-  const buildings = buildingData.data.listDormBuildings.items;
+  const buildings = buildingData.data.listDormBuildings.items.filter(
+    b => !b._deleted
+  );
   props.listOfBuildings = buildings.map(building => ({
+    id: building.id,
     building: building.dormbuilding,
     capacity: building.capacity
   }));
@@ -113,6 +235,7 @@ export const getServerSideProps = async context => {
   const users = userData.data.listUsers.items;
   props.listOfVerifiedUsers = users.map(user => {
     return {
+      id: user.id,
       name: user.name,
       email: user.email,
       phone: user.phone,
@@ -123,13 +246,16 @@ export const getServerSideProps = async context => {
 
   const unverifiedUsersData = await API.graphql(
     graphqlOperation(listUsers, {
-      filter: { verified: { eq: false } }
+      filter: {
+        and: [{ verified: { eq: false } }, { userType: { eq: 'dorm' } }]
+      }
     })
   );
 
   const unverifiedUsers = unverifiedUsersData.data.listUsers.items;
   props.listOfUnverifiedUsers = unverifiedUsers.map(user => {
     return {
+      id: user.id,
       name: user.name,
       email: user.email,
       phone: user.phone
@@ -148,6 +274,7 @@ export const getServerSideProps = async context => {
   const listOfStaff = staffData.data.listUsers.items;
   props.listOfStaff = listOfStaff.map(staff => {
     return {
+      id: staff.id,
       name: staff.name,
       email: staff.email,
       phone: staff.phone

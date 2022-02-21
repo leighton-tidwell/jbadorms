@@ -9,65 +9,96 @@ import {
 import config from '../../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
-import ResidentsTable from '../../../../components/Management/ResidentsTable';
+import { Card } from '../../../../components/UI/';
+import DataTable from '../../../../components/Management/DataTable';
 import ManagementLayout from '../../../../layouts/management/default';
 import AddBuildingForm from '../../../../components/Management/AddBuildingForm';
 import classes from './index.module.css';
 
+const buildingHeaders = [
+  {
+    value: 'Building',
+    key: 'dormbuilding'
+  },
+  {
+    value: 'Capacity',
+    key: 'capacity'
+  }
+];
+
 const BuildingPage = ({ userName, listOfBuildings }) => {
-  const [buildingList, setBuildingList] = useState(listOfBuildings);
+  const [buildingList, setBuildingList] = useState(
+    listOfBuildings.map(b => {
+      const { dormbuilding } = b;
+      return {
+        ...b,
+        dormbuilding: (
+          <Link href={`/management/dorms/building/${dormbuilding}`}>
+            {String(dormbuilding)}
+          </Link>
+        )
+      };
+    })
+  );
 
-  const addBuildingHandler = async (
-    building,
-    buildingCapacity,
-    roomNumbers
-  ) => {
-    try {
+  const addBuildingHandler = async (dormbuilding, capacity, roomNumbers) =>
+    new Promise((resolve, reject) => {
       const newBuilding = {
-        dormbuilding: building,
-        capacity: buildingCapacity
+        dormbuilding,
+        capacity
       };
 
-      const newBuildingState = {
-        building: building,
-        capacity: buildingCapacity
-      };
+      API.graphql(graphqlOperation(createDormBuildings, { input: newBuilding }))
+        .then(async data => {
+          await Promise.all(
+            roomNumbers.map(roomNumber => {
+              const newRoom = {
+                dormbuildingsID: data.data.createDormBuildings.id,
+                dormroom: roomNumber
+              };
 
-      setBuildingList(prevList => [...prevList, newBuildingState]);
+              return API.graphql(
+                graphqlOperation(createDormRooms, { input: newRoom })
+              );
+            })
+          );
 
-      const buildingData = await API.graphql(
-        graphqlOperation(createDormBuildings, { input: newBuilding })
-      );
-
-      for (const room in roomNumbers) {
-        const newRoom = {
-          dormbuildingsID: buildingData.data.createDormBuildings.id,
-          dormroom: roomNumbers[room]
-        };
-        const dormData = await API.graphql(
-          graphqlOperation(createDormRooms, { input: newRoom })
-        );
-      }
-    } catch (error) {
-      console.error(error);
-    }
-  };
+          setBuildingList(prevList => [
+            ...prevList,
+            {
+              ...newBuilding,
+              id: data.data.createDormBuildings.id,
+              dormbuilding: (
+                <Link href={`/management/dorms/building/${dormbuilding}`}>
+                  {dormbuilding}
+                </Link>
+              )
+            }
+          ]);
+          resolve('success');
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
 
   return (
     <ManagementLayout userName={userName}>
-      <div className={classes['flex-title']}>
-        <Link href="/management/dorms">
-          <a className={classes.title}>Dorms Management</a>
-        </Link>
-        <div className={classes.subtitle}>/ Buildings</div>
-      </div>
+      <div className={classes['title']}>Manage Buildings</div>
       <div className={classes.tables}>
-        <AddBuildingForm onSubmit={addBuildingHandler} />
-        <ResidentsTable
-          title="Building List"
-          image="/images/management/dorms_active.svg"
-          data={buildingList}
-        />
+        <Card title="Add a Building" icon="warehouseSharp">
+          <AddBuildingForm onSubmit={addBuildingHandler} />
+        </Card>
+        <Card title="Building List" icon="warehouseSharp">
+          <DataTable
+            data={buildingList}
+            headers={buildingHeaders}
+            pagination
+            searchPlaceholder="Search a building number..."
+            filterableColumns={['dormbuilding']}
+            search
+          />
+        </Card>
       </div>
     </ManagementLayout>
   );
@@ -96,10 +127,13 @@ export const getServerSideProps = async context => {
 
   const buildingData = await API.graphql(graphqlOperation(listDormBuildings));
   const buildings = buildingData.data.listDormBuildings.items;
-  props.listOfBuildings = buildings.map(building => ({
-    building: building.dormbuilding,
-    capacity: building.capacity
-  }));
+  props.listOfBuildings = buildings
+    .filter(b => !b._deleted)
+    .map(building => ({
+      id: building.id,
+      dormbuilding: building.dormbuilding,
+      capacity: building.capacity
+    }));
 
   return { props: props };
 };

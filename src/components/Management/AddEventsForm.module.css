@@ -5,44 +5,20 @@
   flex-basis: 50%;
 }
 
-.title {
-  font-size: 1.2em;
-  font-weight: 600;
-}
-
-.form {
-  display: flex;
-  flex-direction: column;
-  margin-bottom: 1em;
-}
-
 .flex {
-  margin: 0 1em;
+  display: grid;
+  gap: 1em;
+  align-items: center;
 }
 
 .form-control {
-  display: flex;
+  display: grid;
+  grid-template-columns: 100px auto;
   align-items: center;
-  margin: 1em 0;
-  width: 100%;
-}
-
-.label {
-  padding-right: 1em;
-  width: 30%;
-}
-
-.input {
-  width: 100%;
 }
 
 .button {
-  width: 100%;
   font-size: 1em;
-}
-
-@media only screen and (min-width: 1200px) {
-  .button {
-    width: 30%;
-  }
+  float: right;
+  margin-top: 1em;
 }

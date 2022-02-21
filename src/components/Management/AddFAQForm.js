@@ -2,68 +2,78 @@ import React, { useState } from 'react';
 
 import classes from './AddFAQForm.module.css';
 
-import Input from '../UI/Input';
-import Button from '../UI/Button';
-import ErrorText from '../UI/ErrorText';
+import { Input, Button, ErrorText, Spinner } from '../UI/';
 
 const AddFAQForm = ({ onSubmit }) => {
-  const [question, setQuestion] = useState('');
-  const [answer, setAnswer] = useState('');
+  const [formData, setFormData] = useState({
+    question: '',
+    answer: ''
+  });
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  const handleChangeQuestion = event => {
-    setQuestion(event.target.value);
+  const handleChangeData = event => {
     setError(null);
-  };
-
-  const handleChangeAnswer = event => {
-    setAnswer(event.target.value);
-    setError(null);
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
   };
 
   const handleSubmitForm = event => {
     event.preventDefault();
     setError(null);
-    if (!answer || !question) return setError('You must fill in both fields!');
-    const newFAQ = {
-      question,
-      answer
-    };
-    onSubmit(newFAQ);
-    setQuestion('');
-    setAnswer('');
+    if (!formData.answer || !formData.question)
+      return setError('You must fill in both fields!');
+    setLoading(true);
+    onSubmit({ question: formData.question, answer: formData.answer })
+      .then(() => {
+        setLoading(false);
+        setFormData({
+          question: '',
+          answer: ''
+        });
+      })
+      .catch(error => {
+        setLoading(false);
+        setError('Something went wrong, please try again!');
+      });
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.title}>Add an FAQ</div>
-      <form className={classes.form} onSubmit={handleSubmitForm}>
-        <div className={classes.flex}>
-          <div className={classes['form-control']}>
-            <label className={classes.label}>Question: </label>
-            <Input
-              onChange={handleChangeQuestion}
-              value={question}
-              className={classes.input}
-              type="text"
-            />
-          </div>
-          <div className={classes['form-control']}>
-            <label className={classes.label}>Answer: </label>
-            <Input
-              onChange={handleChangeAnswer}
-              value={answer}
-              className={classes.input}
-              type="text"
-            />
-          </div>
+    <form className={classes.form} onSubmit={handleSubmitForm}>
+      <div className={classes.flex}>
+        <div className={classes['form-control']}>
+          <label className={classes.label}>Question: </label>
+          <Input
+            onChange={handleChangeData}
+            value={formData.question}
+            name="question"
+            className={classes.input}
+            type="text"
+          />
         </div>
-        {error && <ErrorText>{error}</ErrorText>}
-        <Button className={classes.button} onClick={handleSubmitForm}>
-          Add
-        </Button>
-      </form>
-    </div>
+        <div className={classes['form-control']}>
+          <label className={classes.label}>Answer: </label>
+          <Input
+            onChange={handleChangeData}
+            value={formData.answer}
+            name="answer"
+            className={classes.input}
+            type="text"
+          />
+        </div>
+      </div>
+      {error && <ErrorText>{error}</ErrorText>}
+      <Button
+        disabled={loading}
+        className={classes.button}
+        onClick={handleSubmitForm}
+      >
+        {loading ? <Spinner /> : 'Add'}
+      </Button>
+    </form>
   );
 };
 

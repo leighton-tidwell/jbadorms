@@ -11,27 +11,28 @@
   },
   "dependencies": {
     "@aws-amplify/ui-react": "^1.2.8",
+    "@react-google-maps/api": "^2.7.0",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "aws": "0.0.3-2",
     "aws-amplify": "^4.2.2",
+    "dayjs": "^1.10.7",
     "graphql-ttl-transformer": "^1.1.0",
     "moment": "^2.29.1",
     "next": "11.0.1",
     "react": "17.0.2",
     "react-doc-viewer": "^0.1.5",
     "react-dom": "17.0.2",
-    "react-google-maps": "^9.4.5",
     "react-scripts": "4.0.3",
-    "react-spring": "^9.2.3",
+    "react-select": "^5.2.2",
     "react-use": "^17.2.4",
     "react-uuid": "^1.0.2"
   },
   "devDependencies": {
-    "eslint": "7.32.0",
-    "eslint-config-next": "11.0.1",
     "aws-sdk": "^2.963.0",
-    "cross-env": "^7.0.3"
+    "cross-env": "^7.0.3",
+    "eslint": "7.32.0",
+    "eslint-config-next": "11.0.1"
   }
 }

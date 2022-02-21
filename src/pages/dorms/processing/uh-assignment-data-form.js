@@ -3,37 +3,39 @@ import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers, listWings, listUnits } from '../../../graphql/queries';
 import { createAssignmentDataForm } from '../../../graphql/mutations';
 import getNavItems from '../../../api/getNavItems';
+import DefaultLayout from '../../../layouts/dorms/default';
+import {
+  ImageBanner,
+  Content,
+  Subtitle,
+  AlertBox
+} from '../../../components/UI/';
+import { DataForm } from '../../../components/Dorms/';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
-
-import DefaultLayout from '../../../layouts/dorms/default';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Content from '../../../components/UI/Content';
-import Subtitle from '../../../components/UI/Subtitle';
-import AlertBox from '../../../components/UI/AlertBox';
-import DataForm from '../../../components/Dorms/ProcessingForms/DataForm';
 
 const UhAssignmentDataFormPage = ({
   name,
   phone,
   email,
   navLinks,
-  verified,
   wings,
   units
 }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
 
-  const addDataFormHandler = async details => {
-    try {
-      console.log(details);
-      const formData = await API.graphql(
+  const addDataFormHandler = details =>
+    new Promise((resolve, reject) => {
+      API.graphql(
         graphqlOperation(createAssignmentDataForm, { input: details })
-      );
-    } catch (error) {
-      console.error(error);
-    }
-  };
+      )
+        .then(() => {
+          resolve(true);
+        })
+        .catch(error => {
+          reject(error);
+        });
+    });
 
   return (
     <DefaultLayout navLinks={navLinks}>
@@ -47,9 +49,10 @@ const UhAssignmentDataFormPage = ({
         <AlertBox
           title="Notice"
           message="If you have already filled this form out, please wait for dorm staff to verify your account. Do not re-submit the form unless you are asked."
+          containerStyle={{ width: '100%' }}
         />
       </Content>
-      <Content>
+      <Content style={{ maxWidth: '100%' }}>
         <DataForm
           onSubmit={addDataFormHandler}
           userName={name}

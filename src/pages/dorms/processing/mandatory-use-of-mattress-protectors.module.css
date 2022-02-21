@@ -43,6 +43,7 @@
 
 @media only screen and (min-width: 1200px) {
   .button {
-    width: 30%;
+    float: right;
+    width: fit-content;
   }
 }

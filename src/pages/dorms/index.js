@@ -1,18 +1,18 @@
-import React from 'react';
 import Amplify, { withSSRContext } from 'aws-amplify';
 import getNavItems from '../../api/getNavItems';
+import DefaultLayout from '../../layouts/dorms/default';
+import { Carousel } from '../../components/UI/';
+import {
+  QuickLinks,
+  Contact,
+  MapSection,
+  ContentBanner,
+  AdditionalInformation
+} from '../../components/Dorms/';
 import config from '../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
 
-import DefaultLayout from '../../layouts/dorms/default';
-import Carousel from '../../components/UI/Carousel';
-import QuickLinks from '../../components/Dorms/QuickLinks/QuickLinks';
-import Contact from '../../components/Dorms/Contact/Contact';
-import MapSection from '../../components/Dorms/Map/MapSection';
-import ContentBanner from '../../components/Dorms/ContentBanner/ContentBanner';
-import AdditionalInformation from '../../components/Dorms/AdditionalInformation/AdditionalInformation';
-
-const HomePage = ({ navLinks, username, authenticated }) => {
+const HomePage = ({ navLinks }) => {
   return (
     <DefaultLayout navLinks={navLinks}>
       <Carousel />

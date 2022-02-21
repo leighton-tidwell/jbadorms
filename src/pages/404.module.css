@@ -1,0 +1,19 @@
+.flex {
+  flex-direction: column;
+  flex-basis: 90%;
+  padding: 1em;
+}
+
+.inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  background-color: #04121e80;
+  padding: 1em;
+}
+
+.redirect {
+  font-size: 1.2em;
+}

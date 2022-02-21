@@ -1,6 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import { useRouter } from 'next/router';
-import Link from 'next/link';
+import React, { useState } from 'react';
 import { listUsers } from '../../../../graphql/queries';
 import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import config from '../../../../aws-exports';
@@ -9,25 +7,31 @@ Amplify.configure({ ...config, ssr: true });
 import classes from './[id].module.css';
 import ManagementLayout from '../../../../layouts/management/default';
 import ResidentForm from '../../../../components/Management/ResidentForm';
+import { Card } from '../../../../components/UI';
 
 const ResidentPage = ({ userName, id, selectedUserData }) => {
   const [userData, setUserData] = useState(selectedUserData);
 
   return (
     <ManagementLayout userName={userName}>
-      <div className={classes['flex-title']}>
-        <Link href="/management/dorms">
-          <a className={classes.title}>Dorms Management</a>
-        </Link>
-        <div className={classes.subtitle}>
-          /
-          <Link href="/management/dorms/resident">
-            <a className={classes['subtitle-link']}>Residents</a>
-          </Link>{' '}
-          / {id}
-        </div>
+      <div className={classes['title']}>
+        {selectedUserData?.userType === 'dorm'
+          ? 'Manage Resident'
+          : 'Manage Staff'}
+        <div className={classes.subtitle}>{selectedUserData.name}</div>
       </div>
-      {userData && <ResidentForm data={userData} />}
+      <div className={classes.tables}>
+        <Card
+          title={
+            selectedUserData?.userType === 'dorm'
+              ? 'Resident Information'
+              : 'Staff Information'
+          }
+          icon="peopleSharp"
+        >
+          <ResidentForm data={userData} />
+        </Card>
+      </div>
     </ManagementLayout>
   );
 };
@@ -62,8 +66,13 @@ export const getServerSideProps = async context => {
       filter: { email: { eq: id } }
     })
   );
-  props.selectedUserData = userData.data.listUsers.items[0] || null;
-  props.id = id;
+
+  if (userData.data.listUsers.items.length === 0)
+    return {
+      redirect: { destination: '/management/dorms/residents', permanent: false }
+    };
+
+  props.selectedUserData = userData.data.listUsers.items[0];
 
   return { props: props };
 };

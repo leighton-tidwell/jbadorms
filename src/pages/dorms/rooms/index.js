@@ -2,16 +2,12 @@ import React from 'react';
 import uuid from 'react-uuid';
 import Amplify, { withSSRContext } from 'aws-amplify';
 import getNavItems from '../../../api/getNavItems';
+import DefaultLayout from '../../../layouts/dorms/default';
+import { ImageBanner, Subtitle, Content } from '../../../components/UI/';
+import { RoomGallery } from '../../../components/Dorms/';
+import classes from './index.module.css';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
-
-import DefaultLayout from '../../../layouts/dorms/default';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Subtitle from '../../../components/UI/Subtitle';
-import Content from '../../../components/UI/Content';
-import RoomGallery from '../../../components/Dorms/RoomGallery/RoomGallery';
-
-import classes from './index.module.css';
 
 const RoomsPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/rooms_banner.png';
@@ -56,15 +52,15 @@ const RoomsPage = ({ navLinks }) => {
       />
       <Subtitle>Dorm Room Gallery</Subtitle>
       <Content className={classes.grid}>
-        Building 1657
+        <div className={classes.building}>Building 1657</div>
         <RoomGallery images={buildingOneImages} />
       </Content>
       <Content className={classes.grid}>
-        Building 1658
+        <div className={classes.building}>Building 1658</div>
         <RoomGallery images={buildingOneImages} />
       </Content>
       <Content className={classes.grid}>
-        Building 1659
+        <div className={classes.building}>Building 1659</div>
         <RoomGallery images={buildingOneImages} />
       </Content>
     </DefaultLayout>

@@ -3,18 +3,17 @@ import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers } from '../../../graphql/queries';
 import { createWorkOrders } from '../../../graphql/mutations';
 import getNavItems from '../../../api/getNavItems';
+import DefaultLayout from '../../../layouts/dorms/default';
+import {
+  AlertBox,
+  ImageBanner,
+  Subtitle,
+  Content
+} from '../../../components/UI/';
+import { WorkOrderForm } from '../../../components/Dorms/';
+
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
-
-import AlertBox from '../../../components/UI/AlertBox';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Subtitle from '../../../components/UI/Subtitle';
-import Content from '../../../components/UI/Content';
-import DefaultLayout from '../../../layouts/dorms/default';
-
-import WorkOrderForm from '../../../components/Dorms/WorkOrderForms/WorkOrderForm';
-
-import classes from './index.module.css';
 
 const WorkOrdersPage = ({
   navLinks,
@@ -25,17 +24,22 @@ const WorkOrdersPage = ({
   building
 }) => {
   const bannerBackgroundImage = '/images/carousel_two.png';
-  const [userIsVerified, setUserIsVerified] = useState(verified);
+  const [loading, setLoading] = useState(false);
 
-  const handleNewWorkOrder = async newWorkOrder => {
-    try {
-      const createWorkOrder = await API.graphql(
-        graphqlOperation(createWorkOrders, { input: newWorkOrder })
-      );
-    } catch (error) {
-      console.log(error);
-    }
-  };
+  const handleNewWorkOrder = async newWorkOrder =>
+    new Promise((resolve, reject) => {
+      setLoading(true);
+      API.graphql(graphqlOperation(createWorkOrders, { input: newWorkOrder }))
+        .then(() => {
+          setLoading(false);
+          resolve(true);
+        })
+        .catch(error => {
+          setLoading(false);
+          reject(false);
+          console.log(error);
+        });
+    });
 
   return (
     <DefaultLayout navLinks={navLinks}>
@@ -52,6 +56,7 @@ const WorkOrdersPage = ({
             fetchedName={name}
             fetchedRoom={room}
             fetchedPhone={phone}
+            loading={loading}
             onSubmit={handleNewWorkOrder}
           />
         ) : (

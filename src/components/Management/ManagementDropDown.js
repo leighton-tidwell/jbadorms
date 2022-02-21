@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import classes from './ManagementDropDown.module.css';
 
 const ManagementDropDown = ({ mainLink }) => {
+  const router = useRouter();
   const hasActiveLink = () => {
     if (mainLink.dropdown) {
       return mainLink.dropdown.some(link => link.active);
@@ -11,8 +13,17 @@ const ManagementDropDown = ({ mainLink }) => {
     return false;
   };
 
+  const isInSimilarPath = () => {
+    if (mainLink.dropdown) {
+      return mainLink.dropdown.some(link =>
+        router.pathname.includes(link.href)
+      );
+    }
+    return false;
+  };
+
   const [showDropDown, setShowDropDown] = useState(
-    hasActiveLink() ? true : false
+    hasActiveLink() || isInSimilarPath() ? true : false
   );
 
   const handleShowDropDown = () => {
@@ -34,7 +45,9 @@ const ManagementDropDown = ({ mainLink }) => {
         )}
       </div>
       <div
-        style={{ height: showDropDown ? '200px' : 0 }}
+        style={{
+          height: showDropDown ? `${mainLink.dropdown.length * 50}px` : 0
+        }}
         className={`${classes['dropdown-content']}`}
       >
         {mainLink.dropdown?.map(link => (

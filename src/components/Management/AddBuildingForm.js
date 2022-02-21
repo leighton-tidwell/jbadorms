@@ -1,68 +1,105 @@
 import React, { useState } from 'react';
-
 import classes from './AddBuildingForm.module.css';
-
-import Input from '../../components/UI/Input';
-import Button from '../../components/UI/Button';
-import ErrorText from '../../components/UI/ErrorText';
+import { Input, Button, AlertBox, Spinner } from '../../components/UI/';
 
 const AddBuildingForm = ({ onSubmit }) => {
-  const [enteredBuildingNumber, setEnteredBuildingNumber] = useState('');
-  const [enteredRooms, setEnteredRooms] = useState('');
-  const [error, setError] = useState(null);
+  const [formData, setFormData] = useState({
+    dormbuilding: '',
+    capacity: '',
+    roomNumbers: ''
+  });
+  const [error, setError] = useState('');
+  const [success, setSuccess] = useState('');
+  const [loading, setLoading] = useState(false);
 
   const handleSubmitForm = event => {
     event.preventDefault();
-    if (!enteredBuildingNumber || !enteredRooms)
+    if (!formData.dormbuilding || !formData.roomNumbers)
       return setError('You forgot to fill in a value!');
+    setLoading(true);
 
-    const sanitizedRooms = enteredRooms.replace(/\s/g, '').match(/([^,]+)/g);
+    const sanitizedRooms = formData.roomNumbers
+      .replace(/\s/g, '')
+      .match(/([^,]+)/g);
     const buildingCapacity = sanitizedRooms.length;
-    onSubmit(enteredBuildingNumber, buildingCapacity, sanitizedRooms);
-    setEnteredRooms('');
-    setEnteredBuildingNumber('');
+
+    if (!sanitizedRooms.length)
+      return setError(
+        'Room numbers must be entered in a comma seperated format (ex. 1,2,3,4,5)'
+      );
+
+    onSubmit(formData.dormbuilding, buildingCapacity, sanitizedRooms)
+      .then(() => {
+        setLoading(false);
+        setFormData({
+          dormbuilding: '',
+          capacity: '',
+          roomNumbers: ''
+        });
+        setSuccess('Building added successfully!');
+        setTimeout(() => setSuccess(''), 3000);
+      })
+      .catch(error => {
+        setLoading(false);
+        setError('Something went wrong, please try again!');
+        console.log(error);
+      });
   };
 
-  const handleChangeBuilding = event => {
-    setEnteredBuildingNumber(event.target.value);
-    setError(null);
-  };
+  const handleDataChange = event => {
+    const { name, value } = event.target;
+    setFormData(prevState => ({
+      ...prevState,
+      [name]: value
+    }));
 
-  const handleChangeRooms = event => {
-    setEnteredRooms(event.target.value);
-    setError(null);
+    setError('');
+    setSuccess('');
   };
 
   return (
-    <div className={classes.container}>
-      <div className={classes.title}>Add a Building</div>
-      <form className={classes.form} onSubmit={handleSubmitForm}>
-        <div className={classes.flex}>
-          <div className={classes['form-control']}>
-            <label className={classes.label}>Building Number: </label>
-            <Input
-              onChange={handleChangeBuilding}
-              value={enteredBuildingNumber}
-              className={classes.input}
-              type="text"
-            />
-          </div>
-          <div className={classes['form-control']}>
-            <label className={classes.label}>Room Numbers: </label>
-            <Input
-              onChange={handleChangeRooms}
-              value={enteredRooms}
-              className={classes.input}
-              type="text"
-            />
-          </div>
+    <form className={classes.form} onSubmit={handleSubmitForm}>
+      <div className={classes.flex}>
+        <div className={classes['form-control']}>
+          <label className={classes.label}>Building Number: </label>
+          <Input
+            onChange={handleDataChange}
+            value={formData.dormbuilding}
+            className={classes.input}
+            type="text"
+            name="dormbuilding"
+          />
         </div>
-        {error && <ErrorText>{error}</ErrorText>}
-        <Button className={classes.button} onClick={handleSubmitForm}>
-          Add
-        </Button>
-      </form>
-    </div>
+        <div className={classes['form-control']}>
+          <label className={classes.label}>Room Numbers: </label>
+          <Input
+            onChange={handleDataChange}
+            value={formData.roomNumbers}
+            className={classes.input}
+            type="text"
+            name="roomNumbers"
+          />
+        </div>
+        <div
+          className={classes['form-control']}
+          style={{ justifyContent: 'flex-end' }}
+        >
+          <Button
+            className={classes.button}
+            disabled={loading}
+            onClick={handleSubmitForm}
+          >
+            {loading ? <Spinner /> : 'Add'}
+          </Button>
+        </div>
+      </div>
+      {error && (
+        <AlertBox title="Error!" type="error" message={error} closable />
+      )}
+      {success && (
+        <AlertBox title="Success!" type="success" message={success} closable />
+      )}
+    </form>
   );
 };
 

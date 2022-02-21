@@ -1,6 +1,21 @@
 .title {
-  font-size: 2em;
+  font-size: 1.5em;
   font-weight: 700;
+  margin: 0.8em;
+  padding-left: 8px;
+  position: relative;
+}
+
+.title::before {
+  content: '';
+  display: block;
+  position: absolute;
+  left: 0;
+  width: 3px;
+  margin-right: 8px;
+  height: 1.5em;
+  background: #1d7dcf;
+  margin-bottom: 0.5em;
 }
 
 .occupancy {
@@ -8,12 +23,42 @@
 }
 
 .tables {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1em;
+  margin: 1em;
+}
+
+.more {
+  padding: 0.5em 0;
   display: flex;
-  flex-direction: column;
+  justify-content: flex-end;
+  width: 100%;
+  margin-bottom: -1em;
+  font-size: 0.9em;
+}
+
+.more-link {
+  text-decoration: none;
+  color: #99b5cd;
+  display: flex;
+  align-items: center;
+}
+
+.more-link svg {
+  color: #99b5cd;
+}
+
+.more-link:hover {
+  color: white;
+}
+
+.more-link:hover svg {
+  color: white;
 }
 
 @media only screen and (min-width: 1200px) {
   .tables {
-    flex-direction: row;
+    grid-template-columns: repeat(2, 1fr);
   }
 }

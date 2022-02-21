@@ -11,15 +11,41 @@
 .form-control {
   display: flex;
   flex-direction: column;
-  margin: 1.5em 0;
+  min-width: 0;
 }
 
 .button {
   width: 100%;
 }
 
+.grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1em;
+  margin-bottom: 1em;
+  padding-bottom: 1em;
+  border-bottom: 1px dashed rgba(255, 255, 255, 0.473);
+}
+
 @media only screen and (min-width: 1200px) {
   .button {
-    width: 20%;
+    width: fit-content;
+    float: right;
+  }
+
+  .grid {
+    grid-template-columns: repeat(12, 1fr);
+  }
+
+  .spanTwo {
+    grid-column: span 2;
+  }
+
+  .spanThree {
+    grid-column: span 3;
+  }
+
+  .spanFour {
+    grid-column: span 4;
   }
 }

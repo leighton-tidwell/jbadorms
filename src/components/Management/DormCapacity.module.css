@@ -7,13 +7,30 @@
   justify-content: center;
   padding: 1em;
   margin: 0 1em;
+  position: relative;
 }
 
 .building {
   font-size: 1.2em;
+  text-align: center;
 }
 
 .occupancy {
   font-size: 1.3em;
   font-weight: 600;
+}
+
+.view {
+  cursor: pointer;
+  position: absolute;
+  bottom: 0;
+  right: 1em;
+}
+
+.view svg {
+  color: #99b5cd;
+}
+
+.view:hover svg {
+  color: white;
 }

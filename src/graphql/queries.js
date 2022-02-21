@@ -174,6 +174,12 @@ export const getDormBuildings = /* GraphQL */ `
       createdAt
       updatedAt
       DormRooms {
+        items {
+          id
+          dormroom
+          dormresident
+          _version
+        }
         nextToken
         startedAt
       }

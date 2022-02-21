@@ -1,39 +1,28 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import uuid from 'react-uuid';
-
 import classes from './Calendar.module.css';
-import moment from 'moment';
+import dayjs from 'dayjs';
+import timezone from 'dayjs/plugin/timezone';
+import localeData from 'dayjs/plugin/localeData';
+import utc from 'dayjs/plugin/utc';
+dayjs.extend(timezone);
+dayjs.extend(localeData);
+dayjs.extend(utc);
+dayjs.tz.setDefault('America/New_York');
 
-const Calendar = props => {
-  const today = moment();
+import { Icon } from '../';
 
-  const arrows = {
-    arrowLeft: '/images/calendar-arrow-left.svg',
-    arrowRight: '/images/calendar-arrow-right.svg'
-  };
-
-  const [dateObject, setDateObject] = useState({
-    dateObj: moment()
+const Calendar = ({ onDateChange }) => {
+  const today = dayjs();
+  const [dayDateObject, setDayDateObject] = useState(dayjs.tz());
+  const [selectedDate, setSelectedDate] = useState({
+    day: '',
+    month: '',
+    year: ''
   });
 
-  moment.addRealMonth = d => {
-    let fm = moment(d).add(1, 'M');
-    let fmEnd = moment(fm).endOf('month');
-    return d.date() != fm.date() && fm.isSame(fmEnd.format('YYYY-MM-DD'))
-      ? fm.add(1, 'd')
-      : fm;
-  };
-
-  moment.subtractRealMonth = d => {
-    let fm = moment(d).subtract(1, 'M');
-    let fmEnd = moment(fm).endOf('month');
-    return d.date() != fm.date() && fm.isSame(fmEnd.format('YYYY-MM-DD'))
-      ? fm.subtract(1, 'd')
-      : fm;
-  };
-
   const shortWeekDays = () => {
-    const listOfWeekDays = moment.weekdaysShort();
+    const listOfWeekDays = dayjs.weekdaysShort();
     return (
       <div className={classes['week-day-header']}>
         {listOfWeekDays.map(weekDay => (
@@ -46,30 +35,20 @@ const Calendar = props => {
   };
 
   const firstDayOfMonth = () => {
-    return moment(dateObject.dateObj).startOf('month').format('d');
+    return dayDateObject.startOf('month').format('d');
   };
 
   const daysInMonth = () => {
-    return moment(dateObject.dateObj).daysInMonth();
-  };
-
-  const currentDay = () => {
-    return moment(dateObject.dateObj).format('D');
+    return dayDateObject.daysInMonth();
   };
 
   const currentMonth = () => {
-    return moment(dateObject.dateObj).format('MMMM');
+    return dayDateObject.format('MMMM');
   };
 
   const currentYear = () => {
-    return moment(dateObject.dateObj).year();
+    return dayDateObject.format('YYYY');
   };
-
-  const [selectedDate, setSelectedDate] = useState({
-    day: currentDay(),
-    month: currentMonth(),
-    year: currentYear()
-  });
 
   // generate blank dates
   let blanks = [];
@@ -83,24 +62,45 @@ const Calendar = props => {
 
   // generate days in month
   let daysInMonthList = [];
-  for (let d = 1; d < daysInMonth(); d++) {
+  for (let day = 1; day <= daysInMonth(); day++) {
     const currentDayCheck =
-      d === +currentDay() && today.format('MMMM') === currentMonth()
-        ? 'today'
-        : '';
+      day === Number(today.format('D')) &&
+      today.format('MMMM') === currentMonth()
+        ? true
+        : false;
+
     const selectedDayCheck =
-      d === selectedDate.day && currentMonth() === selectedDate.month
-        ? 'selected'
-        : '';
+      day === selectedDate.day && currentMonth() === selectedDate.month
+        ? true
+        : false;
+
+    const thisDateObject = dayjs(
+      `${dayDateObject.format('MM')}/${day}/${dayDateObject.format('YYYY')}`,
+      'MM/DD/YYYY'
+    );
+
+    const weekendCheck =
+      thisDateObject.format('ddd') === 'Sat' ||
+      thisDateObject.format('ddd') === 'Sun'
+        ? true
+        : false;
+
+    const dayInPast =
+      !currentDayCheck && today.diff(thisDateObject) > 0 ? true : false;
+
     daysInMonthList.push(
       <div
         key={uuid()}
-        onClick={e => {
-          handleDayClick(e, d);
-        }}
-        className={`${classes['calendar-day']} ${classes[currentDayCheck]} ${classes[selectedDayCheck]}`}
+        onClick={e =>
+          !weekendCheck || !dayInPast ? handleDayClick(e, day) : null
+        }
+        className={`${classes['calendar-day']} ${
+          currentDayCheck ? classes.today : ''
+        } ${selectedDayCheck ? classes.selected : ''} ${
+          weekendCheck || dayInPast ? classes['disabled'] : ''
+        }`}
       >
-        {d}
+        {day}
       </div>
     );
   }
@@ -108,15 +108,13 @@ const Calendar = props => {
   const totalCalendarSlots = [...blanks, ...daysInMonthList];
 
   const handlePrevious = () => {
-    setDateObject(prevState => ({
-      dateObj: moment.subtractRealMonth(prevState.dateObj)
-    }));
+    setDayDateObject(prevDate =>
+      prevDate.startOf('month').subtract(1, 'month')
+    );
   };
 
   const handleNext = () => {
-    setDateObject(prevState => ({
-      dateObj: moment.addRealMonth(prevState.dateObj)
-    }));
+    setDayDateObject(prevDate => prevDate.startOf('month').add(1, 'month'));
   };
 
   const handleDayClick = (event, day) => {
@@ -125,26 +123,22 @@ const Calendar = props => {
       month: currentMonth(),
       year: currentYear()
     });
-    props.onDateChange({
+    onDateChange({
       day: day,
       month: currentMonth(),
       year: currentYear()
     });
   };
 
-  useEffect(() => {
-    props.onDateChange(selectedDate);
-  }, []);
-
   return (
     <div className={classes.calendar}>
       <div className={classes['month-picker']}>
         <div onClick={handlePrevious} className={classes.previous}>
-          <img alt="change month back one" src={arrows.arrowLeft} />
+          <Icon name="arrowBackIosSharp" />
         </div>
         <div className={classes['month-title']}>{currentMonth()}</div>
         <div onClick={handleNext} className={classes.next}>
-          <img alt="change month forward one" src={arrows.arrowRight} />
+          <Icon name="arrowForwardIosSharp" />
         </div>
       </div>
       {shortWeekDays()}

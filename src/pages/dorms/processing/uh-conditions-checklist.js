@@ -2,18 +2,17 @@ import React from 'react';
 import Amplify, { API, graphqlOperation, withSSRContext } from 'aws-amplify';
 import { listUsers } from '../../../graphql/queries';
 import getNavItems from '../../../api/getNavItems';
+import dynamic from 'next/dynamic';
+import DefaultLayout from '../../../layouts/dorms/default';
+import {
+  ImageBanner,
+  Content,
+  Subtitle,
+  AlertBox
+} from '../../../components/UI/';
+import classes from './uh-conditions-checklist.module.css';
 import config from '../../../aws-exports';
 Amplify.configure({ ...config, ssr: true });
-
-import dynamic from 'next/dynamic';
-
-import DefaultLayout from '../../../layouts/dorms/default';
-import ImageBanner from '../../../components/UI/ImageBanner';
-import Content from '../../../components/UI/Content';
-import Subtitle from '../../../components/UI/Subtitle';
-import AlertBox from '../../../components/UI/AlertBox';
-
-import classes from './uh-conditions-checklist.module.css';
 
 const ConditionsChecklistPage = ({ navLinks }) => {
   const bannerBackgroundImage = '/images/processing_banner.png';
@@ -36,6 +35,7 @@ const ConditionsChecklistPage = ({ navLinks }) => {
         <AlertBox
           title="Notice"
           message="Download this form, fill it out and return it to the Dorm Office for processing."
+          containerStyle={{ width: '100%' }}
         />
       </Content>
       <Content className={classes.flex}>

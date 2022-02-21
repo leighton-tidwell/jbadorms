@@ -1,0 +1,52 @@
+.container {
+  padding: 1em;
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.grid {
+  display: grid;
+  gap: 1em;
+  grid-template-columns: 1fr;
+}
+
+.form-control {
+  display: flex;
+  flex: 1 0 100%;
+  flex-direction: column;
+}
+
+.form-control-check {
+  display: flex;
+  flex: 1 0 100%;
+  flex-direction: row;
+  align-items: center;
+}
+
+.checkbox {
+  margin-right: 1em;
+}
+
+.button {
+  font-weight: 700;
+  font-size: 1em;
+}
+
+@media only screen and (min-width: 1200px) {
+  .grid {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .spanTwo {
+    grid-column: span 2;
+  }
+
+  .spanThree {
+    grid-column: span 3;
+  }
+
+  .button {
+    width: fit-content;
+  }
+}
