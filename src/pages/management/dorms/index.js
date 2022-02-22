@@ -86,7 +86,7 @@ const DormsManagementPage = ({
     return {
       ...building,
       building: (
-        <Link href={`/management/dorms/buildings/${building.building}`}>
+        <Link href={`/management/dorms/building/${building.building}`}>
           {String(building.building)}
         </Link>
       )
