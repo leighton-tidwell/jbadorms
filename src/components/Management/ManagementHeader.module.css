@@ -47,4 +47,8 @@
   .mobile-nav-toggle {
     display: none;
   }
+
+  .profile {
+    display: block;
+  }
 }
